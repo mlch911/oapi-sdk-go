@@ -41,6 +41,7 @@ type Client struct {
 	pingInterval      time.Duration // Ping间隔
 	cache             *larkcache.Cache
 	mu                sync.Mutex
+	done              chan struct{} // 用于控制所有 goroutine 的生命周期
 }
 
 type ClientOption func(cli *Client)
@@ -92,6 +93,7 @@ func NewClient(appId, appSecret string, opts ...ClientOption) *Client {
 		pingInterval:      2 * time.Minute,
 		cache:             larkcache.New(30 * time.Second),
 		domain:            lark.FeishuBaseUrl,
+		done:              make(chan struct{}),
 	}
 
 	for _, opt := range opts {
@@ -122,12 +124,28 @@ func (c *Client) Start(ctx context.Context) (err error) {
 		}
 	}
 	go c.pingLoop(ctx)
-	select {}
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	case <-c.done:
+		return nil
+	}
 }
 
 // Stop 停止客户端
 func (c *Client) Stop(ctx context.Context) {
+	// 断开连接
 	c.disconnect(ctx)
+
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	// 关闭 done channel，通知所有 goroutine 退出
+	select {
+	case <-c.done:
+	default:
+		close(c.done)
+	}
 }
 
 func (c *Client) connect(ctx context.Context) (err error) {
@@ -184,22 +202,36 @@ func (c *Client) reconnect(ctx context.Context) (err error) {
 
 	if c.reconnectCount >= 0 {
 		for i := 0; i < c.reconnectCount; i++ {
-			success, err := c.tryConnect(ctx, i)
-			if success || err != nil {
-				return err
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			case <-c.done:
+				return nil
+			default:
+				success, err := c.tryConnect(ctx, i)
+				if success || err != nil {
+					return err
+				}
+				time.Sleep(c.reconnectInterval)
 			}
-			time.Sleep(c.reconnectInterval)
 		}
 		return fmt.Errorf("unable to connect to server after %d retries", c.reconnectCount)
 	} else {
 		i := 0
 		for {
-			success, err := c.tryConnect(ctx, i)
-			if success || err != nil {
-				return err
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			case <-c.done:
+				return nil
+			default:
+				success, err := c.tryConnect(ctx, i)
+				if success || err != nil {
+					return err
+				}
+				time.Sleep(c.reconnectInterval)
+				i += 1
 			}
-			time.Sleep(c.reconnectInterval)
-			i += 1
 		}
 	}
 }
@@ -304,23 +336,29 @@ func (c *Client) pingLoop(ctx context.Context) {
 		if err := recover(); err != nil {
 			c.logger.Warn(ctx, c.fmtLog("ping loop panic, err: %v, stack: %s", err, string(debug.Stack()))...)
 		}
-		go c.pingLoop(ctx)
 	}()
 
 	for {
-		if c.conn != nil {
-			i, _ := strconv.ParseInt(c.serviceID, 10, 32)
-			frame := NewPingFrame(int32(i))
-			bs, _ := frame.Marshal()
+		select {
+		case <-ctx.Done():
+			return
+		case <-c.done:
+			return
+		default:
+			if c.conn != nil {
+				i, _ := strconv.ParseInt(c.serviceID, 10, 32)
+				frame := NewPingFrame(int32(i))
+				bs, _ := frame.Marshal()
 
-			err := c.writeMessage(ws.BinaryMessage, bs)
-			if err != nil {
-				c.logger.Warn(ctx, c.fmtLog("ping failed, err: %v", err)...)
-			} else {
-				c.logger.Debug(ctx, c.fmtLog("ping success")...)
+				err := c.writeMessage(ws.BinaryMessage, bs)
+				if err != nil {
+					c.logger.Warn(ctx, c.fmtLog("ping failed, err: %v", err)...)
+				} else {
+					c.logger.Debug(ctx, c.fmtLog("ping success")...)
+				}
 			}
+			time.Sleep(c.pingInterval)
 		}
-		time.Sleep(c.pingInterval)
 	}
 }
 
@@ -331,30 +369,44 @@ func (c *Client) receiveMessageLoop(ctx context.Context) {
 		}
 		c.disconnect(ctx)
 		if c.autoReconnect {
-			if err := c.reconnect(ctx); err != nil {
-				c.logger.Error(ctx, err)
+			select {
+			case <-ctx.Done():
+				return
+			case <-c.done:
+				return
+			default:
+				if err := c.reconnect(ctx); err != nil {
+					c.logger.Error(ctx, err)
+				}
 			}
 		}
 	}()
 
 	for {
-		if c.conn == nil {
-			c.logger.Error(ctx, c.fmtLog("connection is closed, receive message loop exit")...)
+		select {
+		case <-ctx.Done():
 			return
-		}
-
-		mt, msg, err := c.conn.ReadMessage()
-		if err != nil {
-			c.logger.Error(ctx, c.fmtLog("receive message failed, err: %v", err)...)
+		case <-c.done:
 			return
-		}
+		default:
+			if c.conn == nil {
+				c.logger.Error(ctx, c.fmtLog("connection is closed, receive message loop exit")...)
+				return
+			}
 
-		if mt != ws.BinaryMessage {
-			c.logger.Warn(ctx, c.fmtLog("receive unknown message, message_type: %d, message: %s", mt, msg)...)
-			continue
-		}
+			mt, msg, err := c.conn.ReadMessage()
+			if err != nil {
+				c.logger.Error(ctx, c.fmtLog("receive message failed, err: %v", err)...)
+				return
+			}
 
-		go c.handleMessage(ctx, msg)
+			if mt != ws.BinaryMessage {
+				c.logger.Warn(ctx, c.fmtLog("receive unknown message, message_type: %d, message: %s", mt, msg)...)
+				continue
+			}
+
+			go c.handleMessage(ctx, msg)
+		}
 	}
 }
 
