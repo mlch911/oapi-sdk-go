@@ -125,6 +125,11 @@ func (c *Client) Start(ctx context.Context) (err error) {
 	select {}
 }
 
+// Stop 停止客户端
+func (c *Client) Stop(ctx context.Context) {
+	c.disconnect(ctx)
+}
+
 func (c *Client) connect(ctx context.Context) (err error) {
 	if c.conn != nil {
 		return
