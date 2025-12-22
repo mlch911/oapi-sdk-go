@@ -20,7 +20,33 @@ import (
 type AppAccessToken struct {
 }
 
+type AppAccessTokenBuilder struct {
+}
+
+func NewAppAccessTokenBuilder() *AppAccessTokenBuilder {
+	builder := &AppAccessTokenBuilder{}
+	return builder
+}
+
+func (builder *AppAccessTokenBuilder) Build() *AppAccessToken {
+	req := &AppAccessToken{}
+	return req
+}
+
 type AppTicket struct {
+}
+
+type AppTicketBuilder struct {
+}
+
+func NewAppTicketBuilder() *AppTicketBuilder {
+	builder := &AppTicketBuilder{}
+	return builder
+}
+
+func (builder *AppTicketBuilder) Build() *AppTicket {
+	req := &AppTicket{}
+	return req
 }
 
 type DepartmentId struct {
@@ -42,6 +68,8 @@ func NewDepartmentIdBuilder() *DepartmentIdBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *DepartmentIdBuilder {
 	builder.departmentId = departmentId
@@ -49,6 +77,8 @@ func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *Departmen
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) OpenDepartmentId(openDepartmentId string) *DepartmentIdBuilder {
 	builder.openDepartmentId = openDepartmentId
@@ -176,6 +206,19 @@ func (builder *RevokeTokenEventBuilder) Build() *RevokeTokenEvent {
 type TenantAccessToken struct {
 }
 
+type TenantAccessTokenBuilder struct {
+}
+
+func NewTenantAccessTokenBuilder() *TenantAccessTokenBuilder {
+	builder := &TenantAccessTokenBuilder{}
+	return builder
+}
+
+func (builder *TenantAccessTokenBuilder) Build() *TenantAccessToken {
+	req := &TenantAccessToken{}
+	return req
+}
+
 type CreateAppAccessTokenReqBodyBuilder struct {
 	appId     string // 应用唯一标识，创建应用后获得。有关app_id 的详细介绍。
 	appIdFlag bool
@@ -194,7 +237,7 @@ func NewCreateAppAccessTokenReqBodyBuilder() *CreateAppAccessTokenReqBodyBuilder
 
 // 应用唯一标识，创建应用后获得。有关app_id 的详细介绍。
 //
-// 示例值：cli_ddfgkk38emd38
+//示例值：cli_ddfgkk38emd38
 func (builder *CreateAppAccessTokenReqBodyBuilder) AppId(appId string) *CreateAppAccessTokenReqBodyBuilder {
 	builder.appId = appId
 	builder.appIdFlag = true
@@ -203,7 +246,7 @@ func (builder *CreateAppAccessTokenReqBodyBuilder) AppId(appId string) *CreateAp
 
 // 应用秘钥，创建应用后获得。
 //
-// 示例值：clkfgkfdjes384kjdf9830d3k
+//示例值：clkfgkfdjes384kjdf9830d3k
 func (builder *CreateAppAccessTokenReqBodyBuilder) AppSecret(appSecret string) *CreateAppAccessTokenReqBodyBuilder {
 	builder.appSecret = appSecret
 	builder.appSecretFlag = true
@@ -212,7 +255,7 @@ func (builder *CreateAppAccessTokenReqBodyBuilder) AppSecret(appSecret string) *
 
 // 平台定时推送给应用的临时凭证，通过事件监听机制获得。
 //
-// 示例值：jdjlsd03jk34hj3kldjflcmkel
+//示例值：jdjlsd03jk34hj3kldjflcmkel
 func (builder *CreateAppAccessTokenReqBodyBuilder) AppTicket(appTicket string) *CreateAppAccessTokenReqBodyBuilder {
 	builder.appTicket = appTicket
 	builder.appTicketFlag = true
@@ -302,6 +345,7 @@ func NewCreateAppAccessTokenReqBuilder() *CreateAppAccessTokenReqBuilder {
 	return builder
 }
 
+//
 func (builder *CreateAppAccessTokenReqBuilder) Body(body *CreateAppAccessTokenReqBody) *CreateAppAccessTokenReqBuilder {
 	builder.body = body
 	return builder
@@ -351,7 +395,7 @@ func NewInternalAppAccessTokenReqBodyBuilder() *InternalAppAccessTokenReqBodyBui
 
 // 应用唯一标识，创建应用后获得。
 //
-// 示例值：cli_hsjeriogfkd93jf84
+//示例值：cli_hsjeriogfkd93jf84
 func (builder *InternalAppAccessTokenReqBodyBuilder) AppId(appId string) *InternalAppAccessTokenReqBodyBuilder {
 	builder.appId = appId
 	builder.appIdFlag = true
@@ -360,7 +404,7 @@ func (builder *InternalAppAccessTokenReqBodyBuilder) AppId(appId string) *Intern
 
 // 应用秘钥，创建应用后获得。
 //
-// 示例值：jdsfslkjdg8e73hdf9237enbd
+//示例值：jdsfslkjdg8e73hdf9237enbd
 func (builder *InternalAppAccessTokenReqBodyBuilder) AppSecret(appSecret string) *InternalAppAccessTokenReqBodyBuilder {
 	builder.appSecret = appSecret
 	builder.appSecretFlag = true
@@ -433,6 +477,7 @@ func NewInternalAppAccessTokenReqBuilder() *InternalAppAccessTokenReqBuilder {
 	return builder
 }
 
+//
 func (builder *InternalAppAccessTokenReqBuilder) Body(body *InternalAppAccessTokenReqBody) *InternalAppAccessTokenReqBuilder {
 	builder.body = body
 	return builder
@@ -480,7 +525,7 @@ func NewResendAppTicketReqBodyBuilder() *ResendAppTicketReqBodyBuilder {
 
 // 应用唯一标识，创建应用后获得
 //
-// 示例值：cli_slkdjalasdkjasd
+//示例值：cli_slkdjalasdkjasd
 func (builder *ResendAppTicketReqBodyBuilder) AppId(appId string) *ResendAppTicketReqBodyBuilder {
 	builder.appId = appId
 	builder.appIdFlag = true
@@ -489,7 +534,7 @@ func (builder *ResendAppTicketReqBodyBuilder) AppId(appId string) *ResendAppTick
 
 // 应用秘钥，创建应用后获得
 //
-// 示例值：dskLLdkasdjlasdKK
+//示例值：dskLLdkasdjlasdKK
 func (builder *ResendAppTicketReqBodyBuilder) AppSecret(appSecret string) *ResendAppTicketReqBodyBuilder {
 	builder.appSecret = appSecret
 	builder.appSecretFlag = true
@@ -562,6 +607,7 @@ func NewResendAppTicketReqBuilder() *ResendAppTicketReqBuilder {
 	return builder
 }
 
+//
 func (builder *ResendAppTicketReqBuilder) Body(body *ResendAppTicketReqBody) *ResendAppTicketReqBuilder {
 	builder.body = body
 	return builder
@@ -609,7 +655,7 @@ func NewCreateTenantAccessTokenReqBodyBuilder() *CreateTenantAccessTokenReqBodyB
 
 // 应用访问凭证，通过商店应用获取 app_access_token接口获取。
 //
-// 示例值：a-32bd8551db2f081cbfd26293f27516390b9feb04
+//示例值：a-32bd8551db2f081cbfd26293f27516390b9feb04
 func (builder *CreateTenantAccessTokenReqBodyBuilder) AppAccessToken(appAccessToken string) *CreateTenantAccessTokenReqBodyBuilder {
 	builder.appAccessToken = appAccessToken
 	builder.appAccessTokenFlag = true
@@ -618,7 +664,7 @@ func (builder *CreateTenantAccessTokenReqBodyBuilder) AppAccessToken(appAccessTo
 
 // 租户在飞书上的唯一标识，也可以理解为企业标识可以通过如下方式获取：  业开通应用时，开放平台推送给应用，具体可参考【首次启用应用】事件； 用户登录到小程序、H5 应用或者浏览器应用时，在用户的身份信息中获取。
 //
-// 示例值：73658811060f175d
+//示例值：73658811060f175d
 func (builder *CreateTenantAccessTokenReqBodyBuilder) TenantKey(tenantKey string) *CreateTenantAccessTokenReqBodyBuilder {
 	builder.tenantKey = tenantKey
 	builder.tenantKeyFlag = true
@@ -691,6 +737,7 @@ func NewCreateTenantAccessTokenReqBuilder() *CreateTenantAccessTokenReqBuilder {
 	return builder
 }
 
+//
 func (builder *CreateTenantAccessTokenReqBuilder) Body(body *CreateTenantAccessTokenReqBody) *CreateTenantAccessTokenReqBuilder {
 	builder.body = body
 	return builder
@@ -738,7 +785,7 @@ func NewInternalTenantAccessTokenReqBodyBuilder() *InternalTenantAccessTokenReqB
 
 // 应用唯一标识，创建应用后获得。
 //
-// 示例值：cli_slkdjalasdkjasd
+//示例值：cli_slkdjalasdkjasd
 func (builder *InternalTenantAccessTokenReqBodyBuilder) AppId(appId string) *InternalTenantAccessTokenReqBodyBuilder {
 	builder.appId = appId
 	builder.appIdFlag = true
@@ -747,7 +794,7 @@ func (builder *InternalTenantAccessTokenReqBodyBuilder) AppId(appId string) *Int
 
 // 应用秘钥，创建应用后获得。
 //
-// 示例值：dskLLdkasdjlasdKK
+//示例值：dskLLdkasdjlasdKK
 func (builder *InternalTenantAccessTokenReqBodyBuilder) AppSecret(appSecret string) *InternalTenantAccessTokenReqBodyBuilder {
 	builder.appSecret = appSecret
 	builder.appSecretFlag = true
@@ -820,6 +867,7 @@ func NewInternalTenantAccessTokenReqBuilder() *InternalTenantAccessTokenReqBuild
 	return builder
 }
 
+//
 func (builder *InternalTenantAccessTokenReqBuilder) Body(body *InternalTenantAccessTokenReqBody) *InternalTenantAccessTokenReqBuilder {
 	builder.body = body
 	return builder

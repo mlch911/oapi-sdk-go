@@ -20,9 +20,9 @@ import (
 )
 
 const (
-	UserIdTypeUserId  = "user_id"  // 以user_id来识别用户
-	UserIdTypeUnionId = "union_id" // 以union_id来识别用户
-	UserIdTypeOpenId  = "open_id"  // 以open_id来识别用户
+	GetSpreadsheetUserIDTypeUserId  = "user_id"  // 以user_id来识别用户
+	GetSpreadsheetUserIDTypeUnionId = "union_id" // 以union_id来识别用户
+	GetSpreadsheetUserIDTypeOpenId  = "open_id"  // 以open_id来识别用户
 )
 
 type AddSheet struct {
@@ -806,6 +806,8 @@ func (builder *CellValueBuilder) Type(type_ string) *CellValueBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *CellValueBuilder) Text(text *Text) *CellValueBuilder {
 	builder.text = text
@@ -813,6 +815,8 @@ func (builder *CellValueBuilder) Text(text *Text) *CellValueBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *CellValueBuilder) MentionUser(mentionUser *MentionUser) *CellValueBuilder {
 	builder.mentionUser = mentionUser
@@ -820,6 +824,8 @@ func (builder *CellValueBuilder) MentionUser(mentionUser *MentionUser) *CellValu
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *CellValueBuilder) MentionDocument(mentionDocument *MentionDocument) *CellValueBuilder {
 	builder.mentionDocument = mentionDocument
@@ -827,6 +833,8 @@ func (builder *CellValueBuilder) MentionDocument(mentionDocument *MentionDocumen
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *CellValueBuilder) Value(value *ValueElement) *CellValueBuilder {
 	builder.value = value
@@ -834,6 +842,8 @@ func (builder *CellValueBuilder) Value(value *ValueElement) *CellValueBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *CellValueBuilder) DateTime(dateTime *DateTime) *CellValueBuilder {
 	builder.dateTime = dateTime
@@ -841,6 +851,8 @@ func (builder *CellValueBuilder) DateTime(dateTime *DateTime) *CellValueBuilder 
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *CellValueBuilder) File(file *File) *CellValueBuilder {
 	builder.file = file
@@ -848,6 +860,8 @@ func (builder *CellValueBuilder) File(file *File) *CellValueBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *CellValueBuilder) Image(image *Image) *CellValueBuilder {
 	builder.image = image
@@ -855,6 +869,8 @@ func (builder *CellValueBuilder) Image(image *Image) *CellValueBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *CellValueBuilder) Link(link *Link) *CellValueBuilder {
 	builder.link = link
@@ -862,6 +878,8 @@ func (builder *CellValueBuilder) Link(link *Link) *CellValueBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *CellValueBuilder) Reminder(reminder *Reminder) *CellValueBuilder {
 	builder.reminder = reminder
@@ -869,6 +887,8 @@ func (builder *CellValueBuilder) Reminder(reminder *Reminder) *CellValueBuilder 
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *CellValueBuilder) Formula(formula *Formula) *CellValueBuilder {
 	builder.formula = formula
@@ -1852,6 +1872,8 @@ func NewDepartmentIdBuilder() *DepartmentIdBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *DepartmentIdBuilder {
 	builder.departmentId = departmentId
@@ -1859,6 +1881,8 @@ func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *Departmen
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) OpenDepartmentId(openDepartmentId string) *DepartmentIdBuilder {
 	builder.openDepartmentId = openDepartmentId
@@ -2039,6 +2063,8 @@ func (builder *FileBuilder) Name(name string) *FileBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *FileBuilder) SegmentStyle(segmentStyle *SegmentStyle) *FileBuilder {
 	builder.segmentStyle = segmentStyle
@@ -3036,6 +3062,8 @@ func (builder *LinkBuilder) Link(link string) *LinkBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *LinkBuilder) SegmentStyles(segmentStyles []*SegmentStyle) *LinkBuilder {
 	builder.segmentStyles = segmentStyles
@@ -5096,6 +5124,8 @@ type Spreadsheet struct {
 	Url *string `json:"url,omitempty"` // 文档url
 
 	SpreadsheetToken *string `json:"spreadsheet_token,omitempty"` // 表格token
+
+	WithoutMount *bool `json:"without_mount,omitempty"` // 是否挂载到云空间
 }
 
 type SpreadsheetBuilder struct {
@@ -5110,6 +5140,9 @@ type SpreadsheetBuilder struct {
 
 	spreadsheetToken     string // 表格token
 	spreadsheetTokenFlag bool
+
+	withoutMount     bool // 是否挂载到云空间
+	withoutMountFlag bool
 }
 
 func NewSpreadsheetBuilder() *SpreadsheetBuilder {
@@ -5153,6 +5186,15 @@ func (builder *SpreadsheetBuilder) SpreadsheetToken(spreadsheetToken string) *Sp
 	return builder
 }
 
+// 是否挂载到云空间
+//
+// 示例值：false
+func (builder *SpreadsheetBuilder) WithoutMount(withoutMount bool) *SpreadsheetBuilder {
+	builder.withoutMount = withoutMount
+	builder.withoutMountFlag = true
+	return builder
+}
+
 func (builder *SpreadsheetBuilder) Build() *Spreadsheet {
 	req := &Spreadsheet{}
 	if builder.titleFlag {
@@ -5169,6 +5211,10 @@ func (builder *SpreadsheetBuilder) Build() *Spreadsheet {
 	}
 	if builder.spreadsheetTokenFlag {
 		req.SpreadsheetToken = &builder.spreadsheetToken
+
+	}
+	if builder.withoutMountFlag {
+		req.WithoutMount = &builder.withoutMount
 
 	}
 	return req
@@ -5282,6 +5328,8 @@ func (builder *TextBuilder) Text(text string) *TextBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *TextBuilder) SegmentStyle(segmentStyle *SegmentStyle) *TextBuilder {
 	builder.segmentStyle = segmentStyle

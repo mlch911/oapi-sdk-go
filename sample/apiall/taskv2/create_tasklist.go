@@ -31,6 +31,7 @@ func main() {
 		InputTasklist(larktask.NewInputTasklistBuilder().
 			Name("年会工作任务清单").
 			Members([]*larktask.Member{larktask.NewMemberBuilder().Build()}).
+			ArchiveTasklist(false).
 			Build()).
 		Build()
 	// 发起请求

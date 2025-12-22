@@ -31,6 +31,8 @@ func main() {
 		Locale("zh-CN").
 		WithAdminId(false).
 		UserIdType("user_id").
+		WithOption(false).
+		UserId("ou_7a4aaac5650dc0b77e85e96e7476ff1d").
 		Build()
 	// 发起请求
 	resp, err := client.Approval.V4.Approval.Get(context.Background(), req)

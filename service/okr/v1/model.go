@@ -24,61 +24,61 @@ import (
 )
 
 const (
-	TargetTypeObjective = 2 // okr的O
-	TargetTypeKeyResult = 3 // okr的KR
+	OpenAPIUploadImageTargetTypeObjective = 2 // okr的O
+	OpenAPIUploadImageTargetTypeKeyResult = 3 // okr的KR
 
 )
 
 const (
-	UserIdTypeUserId        = "user_id"         // 以user_id来识别用户
-	UserIdTypeUnionId       = "union_id"        // 以union_id来识别用户
-	UserIdTypeOpenId        = "open_id"         // 以open_id来识别用户
-	UserIdTypePeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+	OpenAPIBatchGetOkrUserIDTypeUserId        = "user_id"         // 以user_id来识别用户
+	OpenAPIBatchGetOkrUserIDTypeUnionId       = "union_id"        // 以union_id来识别用户
+	OpenAPIBatchGetOkrUserIDTypeOpenId        = "open_id"         // 以open_id来识别用户
+	OpenAPIBatchGetOkrUserIDTypePeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
 )
 
 const (
-	StatusNormalStatus = 1 // 正常状态
-	StatusMarkInvalid  = 2 // 标记失效
-	StatusHiddenPeriod = 3 // 隐藏周期
-
-)
-
-const (
-	TargetTypeCreateProgressRecordObjective = 2 // okr的O
-	TargetTypeCreateProgressRecordKeyResult = 3 // okr的KR
+	OpenAPIPatchPeriodStatusNormalStatus = 1 // 正常状态
+	OpenAPIPatchPeriodStatusMarkInvalid  = 2 // 标记失效
+	OpenAPIPatchPeriodStatusHiddenPeriod = 3 // 隐藏周期
 
 )
 
 const (
-	UserIdTypeCreateProgressRecordUserId  = "user_id"  // 以user_id来识别用户
-	UserIdTypeCreateProgressRecordUnionId = "union_id" // 以union_id来识别用户
-	UserIdTypeCreateProgressRecordOpenId  = "open_id"  // 以open_id来识别用户
+	OpenAPICreateProgressRecordTargetTypeObjective = 2 // okr的O
+	OpenAPICreateProgressRecordTargetTypeKeyResult = 3 // okr的KR
+
 )
 
 const (
-	UserIdTypeGetProgressRecordUserId  = "user_id"  // 以user_id来识别用户
-	UserIdTypeGetProgressRecordUnionId = "union_id" // 以union_id来识别用户
-	UserIdTypeGetProgressRecordOpenId  = "open_id"  // 以open_id来识别用户
+	OpenAPICreateProgressRecordUserIDTypeUserId  = "user_id"  // 以user_id来识别用户
+	OpenAPICreateProgressRecordUserIDTypeUnionId = "union_id" // 以union_id来识别用户
+	OpenAPICreateProgressRecordUserIDTypeOpenId  = "open_id"  // 以open_id来识别用户
 )
 
 const (
-	UserIdTypeUpdateProgressRecordUserId  = "user_id"  // 以user_id来识别用户
-	UserIdTypeUpdateProgressRecordUnionId = "union_id" // 以union_id来识别用户
-	UserIdTypeUpdateProgressRecordOpenId  = "open_id"  // 以open_id来识别用户
+	OpenAPIGetProgressRecordUserIDTypeUserId  = "user_id"  // 以user_id来识别用户
+	OpenAPIGetProgressRecordUserIDTypeUnionId = "union_id" // 以union_id来识别用户
+	OpenAPIGetProgressRecordUserIDTypeOpenId  = "open_id"  // 以open_id来识别用户
 )
 
 const (
-	UserIdTypeQueryReviewUserId        = "user_id"         // 以user_id来识别用户
-	UserIdTypeQueryReviewUnionId       = "union_id"        // 以union_id来识别用户
-	UserIdTypeQueryReviewOpenId        = "open_id"         // 以open_id来识别用户
-	UserIdTypeQueryReviewPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+	OpenAPIUpdateProgressRecordUserIDTypeUserId  = "user_id"  // 以user_id来识别用户
+	OpenAPIUpdateProgressRecordUserIDTypeUnionId = "union_id" // 以union_id来识别用户
+	OpenAPIUpdateProgressRecordUserIDTypeOpenId  = "open_id"  // 以open_id来识别用户
 )
 
 const (
-	UserIdTypeListUserOkrUserId        = "user_id"         // 以user_id来识别用户
-	UserIdTypeListUserOkrUnionId       = "union_id"        // 以union_id来识别用户
-	UserIdTypeListUserOkrOpenId        = "open_id"         // 以open_id来识别用户
-	UserIdTypeListUserOkrPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+	OpenAPIQueryReviewUserIDTypeUserId        = "user_id"         // 以user_id来识别用户
+	OpenAPIQueryReviewUserIDTypeUnionId       = "union_id"        // 以union_id来识别用户
+	OpenAPIQueryReviewUserIDTypeOpenId        = "open_id"         // 以open_id来识别用户
+	OpenAPIQueryReviewUserIDTypePeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+)
+
+const (
+	OpenAPIListUserOkrUserIDTypeUserId        = "user_id"         // 以user_id来识别用户
+	OpenAPIListUserOkrUserIDTypeUnionId       = "union_id"        // 以union_id来识别用户
+	OpenAPIListUserOkrUserIDTypeOpenId        = "open_id"         // 以open_id来识别用户
+	OpenAPIListUserOkrUserIDTypePeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
 )
 
 type AlignObjective struct {
@@ -1012,6 +1012,8 @@ func NewDepartmentIdBuilder() *DepartmentIdBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *DepartmentIdBuilder {
 	builder.departmentId = departmentId
@@ -1019,6 +1021,8 @@ func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *Departmen
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) OpenDepartmentId(openDepartmentId string) *DepartmentIdBuilder {
 	builder.openDepartmentId = openDepartmentId
@@ -4724,7 +4728,7 @@ func (builder *ProgressRateBuilder) Percent(percent int) *ProgressRateBuilder {
 
 // 状态
 //
-// 示例值：
+// 示例值：0
 func (builder *ProgressRateBuilder) Status(status int) *ProgressRateBuilder {
 	builder.status = status
 	builder.statusFlag = true
@@ -4744,12 +4748,64 @@ func (builder *ProgressRateBuilder) Build() *ProgressRate {
 	return req
 }
 
+type ProgressRateNew struct {
+	Percent *float64 `json:"percent,omitempty"` // 进展百分比，保留两位小数
+
+	Status *int `json:"status,omitempty"` // 进展状态
+}
+
+type ProgressRateNewBuilder struct {
+	percent     float64 // 进展百分比，保留两位小数
+	percentFlag bool
+
+	status     int // 进展状态
+	statusFlag bool
+}
+
+func NewProgressRateNewBuilder() *ProgressRateNewBuilder {
+	builder := &ProgressRateNewBuilder{}
+	return builder
+}
+
+// 进展百分比，保留两位小数
+//
+// 示例值：50.21
+func (builder *ProgressRateNewBuilder) Percent(percent float64) *ProgressRateNewBuilder {
+	builder.percent = percent
+	builder.percentFlag = true
+	return builder
+}
+
+// 进展状态
+//
+// 示例值：0
+func (builder *ProgressRateNewBuilder) Status(status int) *ProgressRateNewBuilder {
+	builder.status = status
+	builder.statusFlag = true
+	return builder
+}
+
+func (builder *ProgressRateNewBuilder) Build() *ProgressRateNew {
+	req := &ProgressRateNew{}
+	if builder.percentFlag {
+		req.Percent = &builder.percent
+
+	}
+	if builder.statusFlag {
+		req.Status = &builder.status
+
+	}
+	return req
+}
+
 type ProgressRecord struct {
 	ProgressId *string `json:"progress_id,omitempty"` // OKR 进展ID
 
 	ModifyTime *string `json:"modify_time,omitempty"` // 进展更新时间 毫秒
 
 	Content *ContentBlock `json:"content,omitempty"` // 进展 对应的 Content 详细内容
+
+	ProgressRate *ProgressRateNew `json:"progress_rate,omitempty"` // 进展，包括百分比和状态
 }
 
 type ProgressRecordBuilder struct {
@@ -4761,6 +4817,9 @@ type ProgressRecordBuilder struct {
 
 	content     *ContentBlock // 进展 对应的 Content 详细内容
 	contentFlag bool
+
+	progressRate     *ProgressRateNew // 进展，包括百分比和状态
+	progressRateFlag bool
 }
 
 func NewProgressRecordBuilder() *ProgressRecordBuilder {
@@ -4795,6 +4854,15 @@ func (builder *ProgressRecordBuilder) Content(content *ContentBlock) *ProgressRe
 	return builder
 }
 
+// 进展，包括百分比和状态
+//
+// 示例值：
+func (builder *ProgressRecordBuilder) ProgressRate(progressRate *ProgressRateNew) *ProgressRecordBuilder {
+	builder.progressRate = progressRate
+	builder.progressRateFlag = true
+	return builder
+}
+
 func (builder *ProgressRecordBuilder) Build() *ProgressRecord {
 	req := &ProgressRecord{}
 	if builder.progressIdFlag {
@@ -4807,6 +4875,9 @@ func (builder *ProgressRecordBuilder) Build() *ProgressRecord {
 	}
 	if builder.contentFlag {
 		req.Content = builder.content
+	}
+	if builder.progressRateFlag {
+		req.ProgressRate = builder.progressRate
 	}
 	return req
 }
@@ -5815,7 +5886,7 @@ func NewUploadImageReqBodyBuilder() *UploadImageReqBodyBuilder {
 
 // 图片
 //
-// 示例值：file binary
+//示例值：file binary
 func (builder *UploadImageReqBodyBuilder) Data(data io.Reader) *UploadImageReqBodyBuilder {
 	builder.data = data
 	builder.dataFlag = true
@@ -5824,7 +5895,7 @@ func (builder *UploadImageReqBodyBuilder) Data(data io.Reader) *UploadImageReqBo
 
 // 图片的目标ID
 //
-// 示例值：6974586812998174252
+//示例值：6974586812998174252
 func (builder *UploadImageReqBodyBuilder) TargetId(targetId string) *UploadImageReqBodyBuilder {
 	builder.targetId = targetId
 	builder.targetIdFlag = true
@@ -5833,7 +5904,7 @@ func (builder *UploadImageReqBodyBuilder) TargetId(targetId string) *UploadImage
 
 // 图片使用的目标类型
 //
-// 示例值：1
+//示例值：1
 func (builder *UploadImageReqBodyBuilder) TargetType(targetType int) *UploadImageReqBodyBuilder {
 	builder.targetType = targetType
 	builder.targetTypeFlag = true
@@ -6048,7 +6119,7 @@ func NewCreatePeriodReqBodyBuilder() *CreatePeriodReqBodyBuilder {
 
 // 周期规则 id
 //
-// 示例值：6969864184272078374
+//示例值：6969864184272078374
 func (builder *CreatePeriodReqBodyBuilder) PeriodRuleId(periodRuleId string) *CreatePeriodReqBodyBuilder {
 	builder.periodRuleId = periodRuleId
 	builder.periodRuleIdFlag = true
@@ -6057,7 +6128,7 @@ func (builder *CreatePeriodReqBodyBuilder) PeriodRuleId(periodRuleId string) *Cr
 
 // 周期起始年月
 //
-// 示例值：2022-01
+//示例值：2022-01
 func (builder *CreatePeriodReqBodyBuilder) StartMonth(startMonth string) *CreatePeriodReqBodyBuilder {
 	builder.startMonth = startMonth
 	builder.startMonthFlag = true
@@ -6242,7 +6313,7 @@ func NewPatchPeriodReqBodyBuilder() *PatchPeriodReqBodyBuilder {
 
 // 周期显示状态
 //
-// 示例值：1
+//示例值：1
 func (builder *PatchPeriodReqBodyBuilder) Status(status int) *PatchPeriodReqBodyBuilder {
 	builder.status = status
 	builder.statusFlag = true
@@ -6380,6 +6451,9 @@ type CreateProgressRecordReqBodyBuilder struct {
 
 	sourceUrlMobile     string // mobile进展来源链接
 	sourceUrlMobileFlag bool
+
+	progressRate     *ProgressRateNew // 进展，包括百分比和状态
+	progressRateFlag bool
 }
 
 func NewCreateProgressRecordReqBodyBuilder() *CreateProgressRecordReqBodyBuilder {
@@ -6389,7 +6463,7 @@ func NewCreateProgressRecordReqBodyBuilder() *CreateProgressRecordReqBodyBuilder
 
 // 进展来源
 //
-// 示例值：周报系统
+//示例值：周报系统
 func (builder *CreateProgressRecordReqBodyBuilder) SourceTitle(sourceTitle string) *CreateProgressRecordReqBodyBuilder {
 	builder.sourceTitle = sourceTitle
 	builder.sourceTitleFlag = true
@@ -6398,7 +6472,7 @@ func (builder *CreateProgressRecordReqBodyBuilder) SourceTitle(sourceTitle strin
 
 // 进展来源链接
 //
-// 示例值：https://www.zhoubao.com
+//示例值：https://www.zhoubao.com
 func (builder *CreateProgressRecordReqBodyBuilder) SourceUrl(sourceUrl string) *CreateProgressRecordReqBodyBuilder {
 	builder.sourceUrl = sourceUrl
 	builder.sourceUrlFlag = true
@@ -6407,7 +6481,7 @@ func (builder *CreateProgressRecordReqBodyBuilder) SourceUrl(sourceUrl string) *
 
 // 目标id，与target_type对应
 //
-// 示例值：7041430377642082323
+//示例值：7041430377642082323
 func (builder *CreateProgressRecordReqBodyBuilder) TargetId(targetId string) *CreateProgressRecordReqBodyBuilder {
 	builder.targetId = targetId
 	builder.targetIdFlag = true
@@ -6416,7 +6490,7 @@ func (builder *CreateProgressRecordReqBodyBuilder) TargetId(targetId string) *Cr
 
 // 目标类型
 //
-// 示例值：1
+//示例值：1
 func (builder *CreateProgressRecordReqBodyBuilder) TargetType(targetType int) *CreateProgressRecordReqBodyBuilder {
 	builder.targetType = targetType
 	builder.targetTypeFlag = true
@@ -6425,7 +6499,7 @@ func (builder *CreateProgressRecordReqBodyBuilder) TargetType(targetType int) *C
 
 // 进展详情 富文本格式
 //
-// 示例值：
+//示例值：
 func (builder *CreateProgressRecordReqBodyBuilder) Content(content *ContentBlock) *CreateProgressRecordReqBodyBuilder {
 	builder.content = content
 	builder.contentFlag = true
@@ -6434,7 +6508,7 @@ func (builder *CreateProgressRecordReqBodyBuilder) Content(content *ContentBlock
 
 // pc进展来源链接
 //
-// 示例值：open.feishu.cn
+//示例值：open.feishu.cn
 func (builder *CreateProgressRecordReqBodyBuilder) SourceUrlPc(sourceUrlPc string) *CreateProgressRecordReqBodyBuilder {
 	builder.sourceUrlPc = sourceUrlPc
 	builder.sourceUrlPcFlag = true
@@ -6443,10 +6517,19 @@ func (builder *CreateProgressRecordReqBodyBuilder) SourceUrlPc(sourceUrlPc strin
 
 // mobile进展来源链接
 //
-// 示例值：open.feishu.cn
+//示例值：open.feishu.cn
 func (builder *CreateProgressRecordReqBodyBuilder) SourceUrlMobile(sourceUrlMobile string) *CreateProgressRecordReqBodyBuilder {
 	builder.sourceUrlMobile = sourceUrlMobile
 	builder.sourceUrlMobileFlag = true
+	return builder
+}
+
+// 进展，包括百分比和状态
+//
+//示例值：
+func (builder *CreateProgressRecordReqBodyBuilder) ProgressRate(progressRate *ProgressRateNew) *CreateProgressRecordReqBodyBuilder {
+	builder.progressRate = progressRate
+	builder.progressRateFlag = true
 	return builder
 }
 
@@ -6473,6 +6556,9 @@ func (builder *CreateProgressRecordReqBodyBuilder) Build() *CreateProgressRecord
 	if builder.sourceUrlMobileFlag {
 		req.SourceUrlMobile = &builder.sourceUrlMobile
 	}
+	if builder.progressRateFlag {
+		req.ProgressRate = builder.progressRate
+	}
 	return req
 }
 
@@ -6491,6 +6577,8 @@ type CreateProgressRecordPathReqBodyBuilder struct {
 	sourceUrlPcFlag     bool
 	sourceUrlMobile     string
 	sourceUrlMobileFlag bool
+	progressRate        *ProgressRateNew
+	progressRateFlag    bool
 }
 
 func NewCreateProgressRecordPathReqBodyBuilder() *CreateProgressRecordPathReqBodyBuilder {
@@ -6561,6 +6649,15 @@ func (builder *CreateProgressRecordPathReqBodyBuilder) SourceUrlMobile(sourceUrl
 	return builder
 }
 
+// 进展，包括百分比和状态
+//
+// 示例值：
+func (builder *CreateProgressRecordPathReqBodyBuilder) ProgressRate(progressRate *ProgressRateNew) *CreateProgressRecordPathReqBodyBuilder {
+	builder.progressRate = progressRate
+	builder.progressRateFlag = true
+	return builder
+}
+
 func (builder *CreateProgressRecordPathReqBodyBuilder) Build() (*CreateProgressRecordReqBody, error) {
 	req := &CreateProgressRecordReqBody{}
 	if builder.sourceTitleFlag {
@@ -6583,6 +6680,9 @@ func (builder *CreateProgressRecordPathReqBodyBuilder) Build() (*CreateProgressR
 	}
 	if builder.sourceUrlMobileFlag {
 		req.SourceUrlMobile = &builder.sourceUrlMobile
+	}
+	if builder.progressRateFlag {
+		req.ProgressRate = builder.progressRate
 	}
 	return req, nil
 }
@@ -6637,6 +6737,8 @@ type CreateProgressRecordReqBody struct {
 	SourceUrlPc *string `json:"source_url_pc,omitempty"` // pc进展来源链接
 
 	SourceUrlMobile *string `json:"source_url_mobile,omitempty"` // mobile进展来源链接
+
+	ProgressRate *ProgressRateNew `json:"progress_rate,omitempty"` // 进展，包括百分比和状态
 }
 
 type CreateProgressRecordReq struct {
@@ -6650,6 +6752,8 @@ type CreateProgressRecordRespData struct {
 	ModifyTime *string `json:"modify_time,omitempty"` // 进展更新时间 毫秒
 
 	Content *ContentBlock `json:"content,omitempty"` // 进展 对应的 Content 详细内容
+
+	ProgressRate *ProgressRateNew `json:"progress_rate,omitempty"` // 进展，包括百分比和状态
 }
 
 type CreateProgressRecordResp struct {
@@ -6750,6 +6854,8 @@ type GetProgressRecordRespData struct {
 	ModifyTime *string `json:"modify_time,omitempty"` // 进展更新时间 毫秒
 
 	Content *ContentBlock `json:"content,omitempty"` // 进展 对应的 Content 详细内容
+
+	ProgressRate *ProgressRateNew `json:"progress_rate,omitempty"` // 进展，包括百分比和状态
 }
 
 type GetProgressRecordResp struct {
@@ -6765,6 +6871,9 @@ func (resp *GetProgressRecordResp) Success() bool {
 type UpdateProgressRecordReqBodyBuilder struct {
 	content     *ContentBlock // 进展详情 富文本格式
 	contentFlag bool
+
+	progressRate     *ProgressRateNew // 进展，包括百分比和状态
+	progressRateFlag bool
 }
 
 func NewUpdateProgressRecordReqBodyBuilder() *UpdateProgressRecordReqBodyBuilder {
@@ -6774,10 +6883,19 @@ func NewUpdateProgressRecordReqBodyBuilder() *UpdateProgressRecordReqBodyBuilder
 
 // 进展详情 富文本格式
 //
-// 示例值：
+//示例值：
 func (builder *UpdateProgressRecordReqBodyBuilder) Content(content *ContentBlock) *UpdateProgressRecordReqBodyBuilder {
 	builder.content = content
 	builder.contentFlag = true
+	return builder
+}
+
+// 进展，包括百分比和状态
+//
+//示例值：
+func (builder *UpdateProgressRecordReqBodyBuilder) ProgressRate(progressRate *ProgressRateNew) *UpdateProgressRecordReqBodyBuilder {
+	builder.progressRate = progressRate
+	builder.progressRateFlag = true
 	return builder
 }
 
@@ -6786,12 +6904,17 @@ func (builder *UpdateProgressRecordReqBodyBuilder) Build() *UpdateProgressRecord
 	if builder.contentFlag {
 		req.Content = builder.content
 	}
+	if builder.progressRateFlag {
+		req.ProgressRate = builder.progressRate
+	}
 	return req
 }
 
 type UpdateProgressRecordPathReqBodyBuilder struct {
-	content     *ContentBlock
-	contentFlag bool
+	content          *ContentBlock
+	contentFlag      bool
+	progressRate     *ProgressRateNew
+	progressRateFlag bool
 }
 
 func NewUpdateProgressRecordPathReqBodyBuilder() *UpdateProgressRecordPathReqBodyBuilder {
@@ -6808,10 +6931,22 @@ func (builder *UpdateProgressRecordPathReqBodyBuilder) Content(content *ContentB
 	return builder
 }
 
+// 进展，包括百分比和状态
+//
+// 示例值：
+func (builder *UpdateProgressRecordPathReqBodyBuilder) ProgressRate(progressRate *ProgressRateNew) *UpdateProgressRecordPathReqBodyBuilder {
+	builder.progressRate = progressRate
+	builder.progressRateFlag = true
+	return builder
+}
+
 func (builder *UpdateProgressRecordPathReqBodyBuilder) Build() (*UpdateProgressRecordReqBody, error) {
 	req := &UpdateProgressRecordReqBody{}
 	if builder.contentFlag {
 		req.Content = builder.content
+	}
+	if builder.progressRateFlag {
+		req.ProgressRate = builder.progressRate
 	}
 	return req, nil
 }
@@ -6863,6 +6998,8 @@ func (builder *UpdateProgressRecordReqBuilder) Build() *UpdateProgressRecordReq 
 
 type UpdateProgressRecordReqBody struct {
 	Content *ContentBlock `json:"content,omitempty"` // 进展详情 富文本格式
+
+	ProgressRate *ProgressRateNew `json:"progress_rate,omitempty"` // 进展，包括百分比和状态
 }
 
 type UpdateProgressRecordReq struct {
@@ -6876,6 +7013,8 @@ type UpdateProgressRecordRespData struct {
 	ModifyTime *string `json:"modify_time,omitempty"` // 进展更新时间 毫秒
 
 	Content *ContentBlock `json:"content,omitempty"` // 进展 对应的 Content 详细内容
+
+	ProgressRate *ProgressRateNew `json:"progress_rate,omitempty"` // 进展，包括百分比和状态
 }
 
 type UpdateProgressRecordResp struct {

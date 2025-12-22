@@ -14,6 +14,10 @@
 package larkaily
 
 import (
+	"io"
+
+	"bytes"
+
 	"fmt"
 
 	"context"
@@ -28,6 +32,18 @@ const (
 	AilyMessageContentTypeContentTypeClip      = "CLIP"      // GUI 卡片
 	AilyMessageContentTypeContentTypeSmartCard = "SmartCard" // SmartCard
 	AilyMessageContentTypeContentTypeJSON      = "JSON"      // JSON
+)
+
+const (
+	ConnectTypeImport = "import" // 导入模式
+	ConnectTypeDirect = "direct" // 直连模式
+)
+
+const (
+	SourceTypeFile          = "file"            // 文件，只支持导入模式
+	SourceTypeLarkWikiSpace = "lark_wiki_space" // 飞书知识空间，只支持直连模式
+	SourceTypeLarkDoc       = "lark_doc"        // 飞书云文档，导入模式只支持docx
+	SourceTypeLarkHelpdesk  = "lark_helpdesk"   // 飞书服务台，只支持直连模式
 )
 
 type AilyKnowledgeAskProcessData struct {
@@ -812,6 +828,8 @@ type AilyMessage struct {
 	CreatedAt *string `json:"created_at,omitempty"` // 消息的创建时间，毫秒时间戳
 
 	Status *string `json:"status,omitempty"` // 状态
+
+	ReasoningContent *string `json:"reasoning_content,omitempty"` // 推理内容
 }
 
 type AilyMessageBuilder struct {
@@ -850,6 +868,9 @@ type AilyMessageBuilder struct {
 
 	status     string // 状态
 	statusFlag bool
+
+	reasoningContent     string // 推理内容
+	reasoningContentFlag bool
 }
 
 func NewAilyMessageBuilder() *AilyMessageBuilder {
@@ -965,6 +986,15 @@ func (builder *AilyMessageBuilder) Status(status string) *AilyMessageBuilder {
 	return builder
 }
 
+// 推理内容
+//
+// 示例值：推理内容
+func (builder *AilyMessageBuilder) ReasoningContent(reasoningContent string) *AilyMessageBuilder {
+	builder.reasoningContent = reasoningContent
+	builder.reasoningContentFlag = true
+	return builder
+}
+
 func (builder *AilyMessageBuilder) Build() *AilyMessage {
 	req := &AilyMessage{}
 	if builder.idFlag {
@@ -1010,6 +1040,10 @@ func (builder *AilyMessageBuilder) Build() *AilyMessage {
 	}
 	if builder.statusFlag {
 		req.Status = &builder.status
+
+	}
+	if builder.reasoningContentFlag {
+		req.ReasoningContent = &builder.reasoningContent
 
 	}
 	return req
@@ -2954,6 +2988,8 @@ func NewDepartmentIdBuilder() *DepartmentIdBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *DepartmentIdBuilder {
 	builder.departmentId = departmentId
@@ -2961,6 +2997,8 @@ func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *Departmen
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) OpenDepartmentId(openDepartmentId string) *DepartmentIdBuilder {
 	builder.openDepartmentId = openDepartmentId
@@ -4157,7 +4195,7 @@ func (builder *MessageBuilder) Error(error *MessageError) *MessageBuilder {
 
 // 触发类型
 //
-// 示例值：”
+// 示例值：''
 func (builder *MessageBuilder) TriggerType(triggerType string) *MessageBuilder {
 	builder.triggerType = triggerType
 	builder.triggerTypeFlag = true
@@ -5202,7 +5240,7 @@ func (builder *SenderBuilder) Name(name string) *SenderBuilder {
 
 // 发送者描述
 //
-// 示例值：”
+// 示例值：''
 func (builder *SenderBuilder) Desc(desc string) *SenderBuilder {
 	builder.desc = desc
 	builder.descFlag = true
@@ -6186,7 +6224,7 @@ func NewCreateAilySessionReqBodyBuilder() *CreateAilySessionReqBodyBuilder {
 
 // 渠道上下文
 //
-// 示例值：{}
+//示例值：{}
 func (builder *CreateAilySessionReqBodyBuilder) ChannelContext(channelContext string) *CreateAilySessionReqBodyBuilder {
 	builder.channelContext = channelContext
 	builder.channelContextFlag = true
@@ -6195,7 +6233,7 @@ func (builder *CreateAilySessionReqBodyBuilder) ChannelContext(channelContext st
 
 // 其他透传信息
 //
-// 示例值：{}
+//示例值：{}
 func (builder *CreateAilySessionReqBodyBuilder) Metadata(metadata string) *CreateAilySessionReqBodyBuilder {
 	builder.metadata = metadata
 	builder.metadataFlag = true
@@ -6408,7 +6446,7 @@ func NewUpdateAilySessionReqBodyBuilder() *UpdateAilySessionReqBodyBuilder {
 
 // 渠道上下文
 //
-// 示例值：{}
+//示例值：{}
 func (builder *UpdateAilySessionReqBodyBuilder) ChannelContext(channelContext string) *UpdateAilySessionReqBodyBuilder {
 	builder.channelContext = channelContext
 	builder.channelContextFlag = true
@@ -6417,7 +6455,7 @@ func (builder *UpdateAilySessionReqBodyBuilder) ChannelContext(channelContext st
 
 // 其他透传信息
 //
-// 示例值：{}
+//示例值：{}
 func (builder *UpdateAilySessionReqBodyBuilder) Metadata(metadata string) *UpdateAilySessionReqBodyBuilder {
 	builder.metadata = metadata
 	builder.metadataFlag = true
@@ -6564,7 +6602,7 @@ func NewCreateAilySessionAilyMessageReqBodyBuilder() *CreateAilySessionAilyMessa
 
 // 幂等id，同一 session 下相同的幂等 id 算一条消息，有效期72h
 //
-// 示例值：idempotent_id_1
+//示例值：idempotent_id_1
 func (builder *CreateAilySessionAilyMessageReqBodyBuilder) IdempotentId(idempotentId string) *CreateAilySessionAilyMessageReqBodyBuilder {
 	builder.idempotentId = idempotentId
 	builder.idempotentIdFlag = true
@@ -6573,7 +6611,7 @@ func (builder *CreateAilySessionAilyMessageReqBodyBuilder) IdempotentId(idempote
 
 // 消息内容类型
 //
-// 示例值：MDX
+//示例值：MDX
 func (builder *CreateAilySessionAilyMessageReqBodyBuilder) ContentType(contentType string) *CreateAilySessionAilyMessageReqBodyBuilder {
 	builder.contentType = contentType
 	builder.contentTypeFlag = true
@@ -6582,7 +6620,7 @@ func (builder *CreateAilySessionAilyMessageReqBodyBuilder) ContentType(contentTy
 
 // 消息内容
 //
-// 示例值：你好
+//示例值：你好
 func (builder *CreateAilySessionAilyMessageReqBodyBuilder) Content(content string) *CreateAilySessionAilyMessageReqBodyBuilder {
 	builder.content = content
 	builder.contentFlag = true
@@ -6591,7 +6629,7 @@ func (builder *CreateAilySessionAilyMessageReqBodyBuilder) Content(content strin
 
 // 消息中包含的文件 ID 列表
 //
-// 示例值：
+//示例值：
 func (builder *CreateAilySessionAilyMessageReqBodyBuilder) FileIds(fileIds []string) *CreateAilySessionAilyMessageReqBodyBuilder {
 	builder.fileIds = fileIds
 	builder.fileIdsFlag = true
@@ -6600,7 +6638,7 @@ func (builder *CreateAilySessionAilyMessageReqBodyBuilder) FileIds(fileIds []str
 
 // 引用的消息 ID
 //
-// 示例值：message_4de9bpg70qskh
+//示例值：message_4de9bpg70qskh
 func (builder *CreateAilySessionAilyMessageReqBodyBuilder) QuoteMessageId(quoteMessageId string) *CreateAilySessionAilyMessageReqBodyBuilder {
 	builder.quoteMessageId = quoteMessageId
 	builder.quoteMessageIdFlag = true
@@ -6609,7 +6647,7 @@ func (builder *CreateAilySessionAilyMessageReqBodyBuilder) QuoteMessageId(quoteM
 
 // 被@的实体
 //
-// 示例值：
+//示例值：
 func (builder *CreateAilySessionAilyMessageReqBodyBuilder) Mentions(mentions []*AilyMention) *CreateAilySessionAilyMessageReqBodyBuilder {
 	builder.mentions = mentions
 	builder.mentionsFlag = true
@@ -7027,7 +7065,7 @@ func NewCreateAilySessionRunReqBodyBuilder() *CreateAilySessionRunReqBodyBuilder
 
 // 应用 ID
 //
-// 示例值：spring_xxx__c
+//示例值：spring_xxx__c
 func (builder *CreateAilySessionRunReqBodyBuilder) AppId(appId string) *CreateAilySessionRunReqBodyBuilder {
 	builder.appId = appId
 	builder.appIdFlag = true
@@ -7036,7 +7074,7 @@ func (builder *CreateAilySessionRunReqBodyBuilder) AppId(appId string) *CreateAi
 
 // 技能 ID
 //
-// 示例值：skill_6cc6166178ca
+//示例值：skill_6cc6166178ca
 func (builder *CreateAilySessionRunReqBodyBuilder) SkillId(skillId string) *CreateAilySessionRunReqBodyBuilder {
 	builder.skillId = skillId
 	builder.skillIdFlag = true
@@ -7045,7 +7083,7 @@ func (builder *CreateAilySessionRunReqBodyBuilder) SkillId(skillId string) *Crea
 
 // 指定技能 ID 时可以同时指定技能输入
 //
-// 示例值：{"key": "value"}
+//示例值：{"key": "value"}
 func (builder *CreateAilySessionRunReqBodyBuilder) SkillInput(skillInput string) *CreateAilySessionRunReqBodyBuilder {
 	builder.skillInput = skillInput
 	builder.skillInputFlag = true
@@ -7054,7 +7092,7 @@ func (builder *CreateAilySessionRunReqBodyBuilder) SkillInput(skillInput string)
 
 // 其他透传信息
 //
-// 示例值：{}
+//示例值：{}
 func (builder *CreateAilySessionRunReqBodyBuilder) Metadata(metadata string) *CreateAilySessionRunReqBodyBuilder {
 	builder.metadata = metadata
 	builder.metadataFlag = true
@@ -7343,6 +7381,371 @@ func (resp *ListAilySessionRunResp) Success() bool {
 	return resp.Code == 0
 }
 
+type CreateAppDataAssetReqBodyBuilder struct {
+	connectType     string // 连接类型
+	connectTypeFlag bool
+
+	sourceType     string // 数据源类型
+	sourceTypeFlag bool
+
+	importKnowledgeSetting     *DataAssetImportKnowledgeSetting // 知识导入配置
+	importKnowledgeSettingFlag bool
+
+	description     map[string]string // 数据知识描述信息
+	descriptionFlag bool
+}
+
+func NewCreateAppDataAssetReqBodyBuilder() *CreateAppDataAssetReqBodyBuilder {
+	builder := &CreateAppDataAssetReqBodyBuilder{}
+	return builder
+}
+
+// 连接类型
+//
+//示例值：direct
+func (builder *CreateAppDataAssetReqBodyBuilder) ConnectType(connectType string) *CreateAppDataAssetReqBodyBuilder {
+	builder.connectType = connectType
+	builder.connectTypeFlag = true
+	return builder
+}
+
+// 数据源类型
+//
+//示例值：
+func (builder *CreateAppDataAssetReqBodyBuilder) SourceType(sourceType string) *CreateAppDataAssetReqBodyBuilder {
+	builder.sourceType = sourceType
+	builder.sourceTypeFlag = true
+	return builder
+}
+
+// 知识导入配置
+//
+//示例值：
+func (builder *CreateAppDataAssetReqBodyBuilder) ImportKnowledgeSetting(importKnowledgeSetting *DataAssetImportKnowledgeSetting) *CreateAppDataAssetReqBodyBuilder {
+	builder.importKnowledgeSetting = importKnowledgeSetting
+	builder.importKnowledgeSettingFlag = true
+	return builder
+}
+
+// 数据知识描述信息
+//
+//示例值：
+func (builder *CreateAppDataAssetReqBodyBuilder) Description(description map[string]string) *CreateAppDataAssetReqBodyBuilder {
+	builder.description = description
+	builder.descriptionFlag = true
+	return builder
+}
+
+func (builder *CreateAppDataAssetReqBodyBuilder) Build() *CreateAppDataAssetReqBody {
+	req := &CreateAppDataAssetReqBody{}
+	if builder.connectTypeFlag {
+		req.ConnectType = &builder.connectType
+	}
+	if builder.sourceTypeFlag {
+		req.SourceType = &builder.sourceType
+	}
+	if builder.importKnowledgeSettingFlag {
+		req.ImportKnowledgeSetting = builder.importKnowledgeSetting
+	}
+	if builder.descriptionFlag {
+		req.Description = builder.description
+	}
+	return req
+}
+
+type CreateAppDataAssetPathReqBodyBuilder struct {
+	connectType                string
+	connectTypeFlag            bool
+	sourceType                 string
+	sourceTypeFlag             bool
+	importKnowledgeSetting     *DataAssetImportKnowledgeSetting
+	importKnowledgeSettingFlag bool
+	description                map[string]string
+	descriptionFlag            bool
+}
+
+func NewCreateAppDataAssetPathReqBodyBuilder() *CreateAppDataAssetPathReqBodyBuilder {
+	builder := &CreateAppDataAssetPathReqBodyBuilder{}
+	return builder
+}
+
+// 连接类型
+//
+// 示例值：direct
+func (builder *CreateAppDataAssetPathReqBodyBuilder) ConnectType(connectType string) *CreateAppDataAssetPathReqBodyBuilder {
+	builder.connectType = connectType
+	builder.connectTypeFlag = true
+	return builder
+}
+
+// 数据源类型
+//
+// 示例值：
+func (builder *CreateAppDataAssetPathReqBodyBuilder) SourceType(sourceType string) *CreateAppDataAssetPathReqBodyBuilder {
+	builder.sourceType = sourceType
+	builder.sourceTypeFlag = true
+	return builder
+}
+
+// 知识导入配置
+//
+// 示例值：
+func (builder *CreateAppDataAssetPathReqBodyBuilder) ImportKnowledgeSetting(importKnowledgeSetting *DataAssetImportKnowledgeSetting) *CreateAppDataAssetPathReqBodyBuilder {
+	builder.importKnowledgeSetting = importKnowledgeSetting
+	builder.importKnowledgeSettingFlag = true
+	return builder
+}
+
+// 数据知识描述信息
+//
+// 示例值：
+func (builder *CreateAppDataAssetPathReqBodyBuilder) Description(description map[string]string) *CreateAppDataAssetPathReqBodyBuilder {
+	builder.description = description
+	builder.descriptionFlag = true
+	return builder
+}
+
+func (builder *CreateAppDataAssetPathReqBodyBuilder) Build() (*CreateAppDataAssetReqBody, error) {
+	req := &CreateAppDataAssetReqBody{}
+	if builder.connectTypeFlag {
+		req.ConnectType = &builder.connectType
+	}
+	if builder.sourceTypeFlag {
+		req.SourceType = &builder.sourceType
+	}
+	if builder.importKnowledgeSettingFlag {
+		req.ImportKnowledgeSetting = builder.importKnowledgeSetting
+	}
+	if builder.descriptionFlag {
+		req.Description = builder.description
+	}
+	return req, nil
+}
+
+type CreateAppDataAssetReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *CreateAppDataAssetReqBody
+}
+
+func NewCreateAppDataAssetReqBuilder() *CreateAppDataAssetReqBuilder {
+	builder := &CreateAppDataAssetReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// APPID
+//
+// 示例值：spring_dfasdf__c
+func (builder *CreateAppDataAssetReqBuilder) AppId(appId string) *CreateAppDataAssetReqBuilder {
+	builder.apiReq.PathParams.Set("app_id", fmt.Sprint(appId))
+	return builder
+}
+
+// 应用环境，默认为线上环境，dev代表开发环境，只支持dev
+//
+// 示例值：dev
+func (builder *CreateAppDataAssetReqBuilder) TenantType(tenantType string) *CreateAppDataAssetReqBuilder {
+	builder.apiReq.QueryParams.Set("tenant_type", fmt.Sprint(tenantType))
+	return builder
+}
+
+// 创建数据知识
+func (builder *CreateAppDataAssetReqBuilder) Body(body *CreateAppDataAssetReqBody) *CreateAppDataAssetReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *CreateAppDataAssetReqBuilder) Build() *CreateAppDataAssetReq {
+	req := &CreateAppDataAssetReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type CreateAppDataAssetReqBody struct {
+	ConnectType *string `json:"connect_type,omitempty"` // 连接类型
+
+	SourceType *string `json:"source_type,omitempty"` // 数据源类型
+
+	ImportKnowledgeSetting *DataAssetImportKnowledgeSetting `json:"import_knowledge_setting,omitempty"` // 知识导入配置
+
+	Description map[string]string `json:"description,omitempty"` // 数据知识描述信息
+}
+
+type CreateAppDataAssetReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *CreateAppDataAssetReqBody `body:""`
+}
+
+type CreateAppDataAssetRespData struct {
+	DataAsset *DataAsset `json:"data_asset,omitempty"` // 数据知识
+}
+
+type CreateAppDataAssetResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *CreateAppDataAssetRespData `json:"data"` // 业务数据
+}
+
+func (resp *CreateAppDataAssetResp) Success() bool {
+	return resp.Code == 0
+}
+
+type DeleteAppDataAssetReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewDeleteAppDataAssetReqBuilder() *DeleteAppDataAssetReqBuilder {
+	builder := &DeleteAppDataAssetReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// APPID
+//
+// 示例值：spring_dfadsaf__c
+func (builder *DeleteAppDataAssetReqBuilder) AppId(appId string) *DeleteAppDataAssetReqBuilder {
+	builder.apiReq.PathParams.Set("app_id", fmt.Sprint(appId))
+	return builder
+}
+
+// 数据知识ID
+//
+// 示例值：data_asset_dfadsafe
+func (builder *DeleteAppDataAssetReqBuilder) DataAssetId(dataAssetId string) *DeleteAppDataAssetReqBuilder {
+	builder.apiReq.PathParams.Set("data_asset_id", fmt.Sprint(dataAssetId))
+	return builder
+}
+
+// 应用环境，默认为线上环境，dev代表开发环境，只支持dev
+//
+// 示例值：dev
+func (builder *DeleteAppDataAssetReqBuilder) TenantType(tenantType string) *DeleteAppDataAssetReqBuilder {
+	builder.apiReq.QueryParams.Set("tenant_type", fmt.Sprint(tenantType))
+	return builder
+}
+
+func (builder *DeleteAppDataAssetReqBuilder) Build() *DeleteAppDataAssetReq {
+	req := &DeleteAppDataAssetReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type DeleteAppDataAssetReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type DeleteAppDataAssetRespData struct {
+	DataAsset *DataAsset `json:"data_asset,omitempty"` // 数据知识
+}
+
+type DeleteAppDataAssetResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *DeleteAppDataAssetRespData `json:"data"` // 业务数据
+}
+
+func (resp *DeleteAppDataAssetResp) Success() bool {
+	return resp.Code == 0
+}
+
+type GetAppDataAssetReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewGetAppDataAssetReqBuilder() *GetAppDataAssetReqBuilder {
+	builder := &GetAppDataAssetReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// APIID
+//
+// 示例值：spring_feafdsaf__c
+func (builder *GetAppDataAssetReqBuilder) AppId(appId string) *GetAppDataAssetReqBuilder {
+	builder.apiReq.PathParams.Set("app_id", fmt.Sprint(appId))
+	return builder
+}
+
+// 数据知识ID
+//
+// 示例值：data_asset_dafefadsaf1
+func (builder *GetAppDataAssetReqBuilder) DataAssetId(dataAssetId string) *GetAppDataAssetReqBuilder {
+	builder.apiReq.PathParams.Set("data_asset_id", fmt.Sprint(dataAssetId))
+	return builder
+}
+
+// 结果是否包含数据与知识项
+//
+// 示例值：true
+func (builder *GetAppDataAssetReqBuilder) WithDataAssetItem(withDataAssetItem bool) *GetAppDataAssetReqBuilder {
+	builder.apiReq.QueryParams.Set("with_data_asset_item", fmt.Sprint(withDataAssetItem))
+	return builder
+}
+
+// 结果是否包含数据知识连接状态
+//
+// 示例值：true
+func (builder *GetAppDataAssetReqBuilder) WithConnectStatus(withConnectStatus bool) *GetAppDataAssetReqBuilder {
+	builder.apiReq.QueryParams.Set("with_connect_status", fmt.Sprint(withConnectStatus))
+	return builder
+}
+
+// 结果是否包含导入数据源信息
+//
+// 示例值：
+func (builder *GetAppDataAssetReqBuilder) WithImportSetting(withImportSetting bool) *GetAppDataAssetReqBuilder {
+	builder.apiReq.QueryParams.Set("with_import_setting", fmt.Sprint(withImportSetting))
+	return builder
+}
+
+// 应用环境，默认为线上环境，dev代表开发环境
+//
+// 示例值：dev
+func (builder *GetAppDataAssetReqBuilder) TenantType(tenantType string) *GetAppDataAssetReqBuilder {
+	builder.apiReq.QueryParams.Set("tenant_type", fmt.Sprint(tenantType))
+	return builder
+}
+
+func (builder *GetAppDataAssetReqBuilder) Build() *GetAppDataAssetReq {
+	req := &GetAppDataAssetReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type GetAppDataAssetReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type GetAppDataAssetRespData struct {
+	DataAsset *DataAsset `json:"data_asset,omitempty"` // 数据知识
+}
+
+type GetAppDataAssetResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *GetAppDataAssetRespData `json:"data"` // 业务数据
+}
+
+func (resp *GetAppDataAssetResp) Success() bool {
+	return resp.Code == 0
+}
+
 type ListAppDataAssetReqBuilder struct {
 	apiReq *larkcore.ApiReq
 	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
@@ -7472,6 +7875,132 @@ func (resp *ListAppDataAssetResp) Success() bool {
 	return resp.Code == 0
 }
 
+type UploadFileAppDataAssetReqBodyBuilder struct {
+	file     io.Reader // 需要上传的文件
+	fileFlag bool
+}
+
+func NewUploadFileAppDataAssetReqBodyBuilder() *UploadFileAppDataAssetReqBodyBuilder {
+	builder := &UploadFileAppDataAssetReqBodyBuilder{}
+	return builder
+}
+
+// 需要上传的文件
+//
+//示例值：
+func (builder *UploadFileAppDataAssetReqBodyBuilder) File(file io.Reader) *UploadFileAppDataAssetReqBodyBuilder {
+	builder.file = file
+	builder.fileFlag = true
+	return builder
+}
+
+func (builder *UploadFileAppDataAssetReqBodyBuilder) Build() *UploadFileAppDataAssetReqBody {
+	req := &UploadFileAppDataAssetReqBody{}
+	if builder.fileFlag {
+		req.File = builder.file
+	}
+	return req
+}
+
+type UploadFileAppDataAssetPathReqBodyBuilder struct {
+	filePath     string // 需要上传的文件
+	filePathFlag bool
+}
+
+func NewUploadFileAppDataAssetPathReqBodyBuilder() *UploadFileAppDataAssetPathReqBodyBuilder {
+	builder := &UploadFileAppDataAssetPathReqBodyBuilder{}
+	return builder
+}
+
+// 需要上传的文件
+//
+// 示例值：
+func (builder *UploadFileAppDataAssetPathReqBodyBuilder) FilePath(filePath string) *UploadFileAppDataAssetPathReqBodyBuilder {
+	builder.filePath = filePath
+	builder.filePathFlag = true
+	return builder
+}
+
+func (builder *UploadFileAppDataAssetPathReqBodyBuilder) Build() (*UploadFileAppDataAssetReqBody, error) {
+	req := &UploadFileAppDataAssetReqBody{}
+	if builder.filePathFlag {
+		data, err := larkcore.File2Bytes(builder.filePath)
+		if err != nil {
+			return nil, err
+		}
+		req.File = bytes.NewBuffer(data)
+	}
+	return req, nil
+}
+
+type UploadFileAppDataAssetReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *UploadFileAppDataAssetReqBody
+}
+
+func NewUploadFileAppDataAssetReqBuilder() *UploadFileAppDataAssetReqBuilder {
+	builder := &UploadFileAppDataAssetReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// APPID
+//
+// 示例值：spring_dsafdsaf__c
+func (builder *UploadFileAppDataAssetReqBuilder) AppId(appId string) *UploadFileAppDataAssetReqBuilder {
+	builder.apiReq.PathParams.Set("app_id", fmt.Sprint(appId))
+	return builder
+}
+
+// 应用环境，默认为线上环境，dev代表开发环境，只支持dev
+//
+// 示例值：dev
+func (builder *UploadFileAppDataAssetReqBuilder) TenantType(tenantType string) *UploadFileAppDataAssetReqBuilder {
+	builder.apiReq.QueryParams.Set("tenant_type", fmt.Sprint(tenantType))
+	return builder
+}
+
+// 上传数据知识文件
+func (builder *UploadFileAppDataAssetReqBuilder) Body(body *UploadFileAppDataAssetReqBody) *UploadFileAppDataAssetReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *UploadFileAppDataAssetReqBuilder) Build() *UploadFileAppDataAssetReq {
+	req := &UploadFileAppDataAssetReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type UploadFileAppDataAssetReqBody struct {
+	File io.Reader `json:"file,omitempty"` // 需要上传的文件
+}
+
+type UploadFileAppDataAssetReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *UploadFileAppDataAssetReqBody `body:""`
+}
+
+type UploadFileAppDataAssetRespData struct {
+	FileInfo *DataAssetFile `json:"file_info,omitempty"` // 数据知识文件
+}
+
+type UploadFileAppDataAssetResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *UploadFileAppDataAssetRespData `json:"data"` // 业务数据
+}
+
+func (resp *UploadFileAppDataAssetResp) Success() bool {
+	return resp.Code == 0
+}
+
 type ListAppDataAssetTagReqBuilder struct {
 	apiReq *larkcore.ApiReq
 	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
@@ -7585,7 +8114,7 @@ func NewAskAppKnowledgeReqBodyBuilder() *AskAppKnowledgeReqBodyBuilder {
 
 // 输入消息（当前仅支持纯文本输入）
 //
-// 示例值：
+//示例值：
 func (builder *AskAppKnowledgeReqBodyBuilder) Message(message *AilyKnowledgeMessage) *AskAppKnowledgeReqBodyBuilder {
 	builder.message = message
 	builder.messageFlag = true
@@ -7594,7 +8123,7 @@ func (builder *AskAppKnowledgeReqBodyBuilder) Message(message *AilyKnowledgeMess
 
 // 控制知识问答所依据的数据知识范围
 //
-// 示例值：
+//示例值：
 func (builder *AskAppKnowledgeReqBodyBuilder) DataAssetIds(dataAssetIds []string) *AskAppKnowledgeReqBodyBuilder {
 	builder.dataAssetIds = dataAssetIds
 	builder.dataAssetIdsFlag = true
@@ -7603,7 +8132,7 @@ func (builder *AskAppKnowledgeReqBodyBuilder) DataAssetIds(dataAssetIds []string
 
 // 控制知识问答所依据的数据知识分类范围
 //
-// 示例值：
+//示例值：
 func (builder *AskAppKnowledgeReqBodyBuilder) DataAssetTagIds(dataAssetTagIds []string) *AskAppKnowledgeReqBodyBuilder {
 	builder.dataAssetTagIds = dataAssetTagIds
 	builder.dataAssetTagIdsFlag = true
@@ -7898,7 +8427,7 @@ func NewStartAppSkillReqBodyBuilder() *StartAppSkillReqBodyBuilder {
 
 // 技能的全局变量
 //
-// 示例值：
+//示例值：
 func (builder *StartAppSkillReqBodyBuilder) GlobalVariable(globalVariable *SkillGlobalVariable) *StartAppSkillReqBodyBuilder {
 	builder.globalVariable = globalVariable
 	builder.globalVariableFlag = true
@@ -7907,7 +8436,7 @@ func (builder *StartAppSkillReqBodyBuilder) GlobalVariable(globalVariable *Skill
 
 // 技能的自定义变量
 //
-// 示例值：{"custom_s":"text","custom_i":12,"custom_b":true,"custom_f":1.2}
+//示例值：{"custom_s":"text","custom_i":12,"custom_b":true,"custom_f":1.2}
 func (builder *StartAppSkillReqBodyBuilder) Input(input string) *StartAppSkillReqBodyBuilder {
 	builder.input = input
 	builder.inputFlag = true

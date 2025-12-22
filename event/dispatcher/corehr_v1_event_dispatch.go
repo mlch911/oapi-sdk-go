@@ -22,6 +22,19 @@ import (
 // - 
 //
 // - 事件描述文档链接:
+func ( dispatcher * EventDispatcher ) OnP2CommonDataIdUserMappingChangedV1(handler func(ctx context.Context, event *larkcorehr.P2CommonDataIdUserMappingChangedV1) error) * EventDispatcher{
+	_, existed := dispatcher.eventType2EventHandler["corehr.common_data.id.user_mapping_changed_v1"]
+	if existed {
+		panic("event: multiple handler registrations for " + "corehr.common_data.id.user_mapping_changed_v1")
+	}
+	dispatcher.eventType2EventHandler["corehr.common_data.id.user_mapping_changed_v1"] = larkcorehr.NewP2CommonDataIdUserMappingChangedV1Handler(handler)
+	return dispatcher
+}
+// 
+//
+// - 
+//
+// - 事件描述文档链接:
 func ( dispatcher * EventDispatcher ) OnP2CommonDataMetaDataUpdatedV1(handler func(ctx context.Context, event *larkcorehr.P2CommonDataMetaDataUpdatedV1) error) * EventDispatcher{
 	_, existed := dispatcher.eventType2EventHandler["corehr.common_data.meta_data.updated_v1"]
 	if existed {

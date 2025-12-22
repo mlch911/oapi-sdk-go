@@ -34,6 +34,7 @@ func main() {
 		EmployeeTypeIdType("people_admin_employee_type_id").
 		Body(larkhire.NewListByIdJobRequirementReqBodyBuilder().
 			IdList([]string{}).
+			ShortCodeList([]string{}).
 			Build()).
 		Build()
 	// 发起请求

@@ -9,34 +9,44 @@ import (
 )
 
 type V1 struct {
-	Mailgroup                 *mailgroup                 // 邮件组
-	MailgroupAlias            *mailgroupAlias            // 邮件组别名
-	MailgroupManager          *mailgroupManager          // 邮件组管理员
-	MailgroupMember           *mailgroupMember           // 邮件组成员
-	MailgroupPermissionMember *mailgroupPermissionMember // 邮件组权限成员
-	PublicMailbox             *publicMailbox             // 公共邮箱
-	PublicMailboxAlias        *publicMailboxAlias        // 公共邮箱别名
-	PublicMailboxMember       *publicMailboxMember       // 公共邮箱成员
-	User                      *user                      // 邮箱地址
-	UserMailbox               *userMailbox               // 用户邮箱
-	UserMailboxAlias          *userMailboxAlias          // 用户邮箱别名
-	UserMailboxMessage        *userMailboxMessage        // user_mailbox.message
+	Mailgroup                    *mailgroup                    // 邮件组
+	MailgroupAlias               *mailgroupAlias               // 邮件组别名
+	MailgroupManager             *mailgroupManager             // 邮件组管理员
+	MailgroupMember              *mailgroupMember              // 邮件组成员
+	MailgroupPermissionMember    *mailgroupPermissionMember    // 邮件组权限成员
+	PublicMailbox                *publicMailbox                // 公共邮箱
+	PublicMailboxAlias           *publicMailboxAlias           // 公共邮箱别名
+	PublicMailboxMember          *publicMailboxMember          // 公共邮箱成员
+	User                         *user                         // 邮箱地址
+	UserMailbox                  *userMailbox                  // 用户邮箱
+	UserMailboxAlias             *userMailboxAlias             // 用户邮箱别名
+	UserMailboxEvent             *userMailboxEvent             // user_mailbox.event
+	UserMailboxFolder            *userMailboxFolder            // user_mailbox.folder
+	UserMailboxMailContact       *userMailboxMailContact       // user_mailbox.mail_contact
+	UserMailboxMessage           *userMailboxMessage           // user_mailbox.message
+	UserMailboxMessageAttachment *userMailboxMessageAttachment // user_mailbox.message.attachment
+	UserMailboxRule              *userMailboxRule              // user_mailbox.rule
 }
 
 func New(config *larkcore.Config) *V1 {
 	return &V1{
-		Mailgroup:                 &mailgroup{config: config},
-		MailgroupAlias:            &mailgroupAlias{config: config},
-		MailgroupManager:          &mailgroupManager{config: config},
-		MailgroupMember:           &mailgroupMember{config: config},
-		MailgroupPermissionMember: &mailgroupPermissionMember{config: config},
-		PublicMailbox:             &publicMailbox{config: config},
-		PublicMailboxAlias:        &publicMailboxAlias{config: config},
-		PublicMailboxMember:       &publicMailboxMember{config: config},
-		User:                      &user{config: config},
-		UserMailbox:               &userMailbox{config: config},
-		UserMailboxAlias:          &userMailboxAlias{config: config},
-		UserMailboxMessage:        &userMailboxMessage{config: config},
+		Mailgroup:                    &mailgroup{config: config},
+		MailgroupAlias:               &mailgroupAlias{config: config},
+		MailgroupManager:             &mailgroupManager{config: config},
+		MailgroupMember:              &mailgroupMember{config: config},
+		MailgroupPermissionMember:    &mailgroupPermissionMember{config: config},
+		PublicMailbox:                &publicMailbox{config: config},
+		PublicMailboxAlias:           &publicMailboxAlias{config: config},
+		PublicMailboxMember:          &publicMailboxMember{config: config},
+		User:                         &user{config: config},
+		UserMailbox:                  &userMailbox{config: config},
+		UserMailboxAlias:             &userMailboxAlias{config: config},
+		UserMailboxEvent:             &userMailboxEvent{config: config},
+		UserMailboxFolder:            &userMailboxFolder{config: config},
+		UserMailboxMailContact:       &userMailboxMailContact{config: config},
+		UserMailboxMessage:           &userMailboxMessage{config: config},
+		UserMailboxMessageAttachment: &userMailboxMessageAttachment{config: config},
+		UserMailboxRule:              &userMailboxRule{config: config},
 	}
 }
 
@@ -73,7 +83,22 @@ type userMailbox struct {
 type userMailboxAlias struct {
 	config *larkcore.Config
 }
+type userMailboxEvent struct {
+	config *larkcore.Config
+}
+type userMailboxFolder struct {
+	config *larkcore.Config
+}
+type userMailboxMailContact struct {
+	config *larkcore.Config
+}
 type userMailboxMessage struct {
+	config *larkcore.Config
+}
+type userMailboxMessageAttachment struct {
+	config *larkcore.Config
+}
+type userMailboxRule struct {
 	config *larkcore.Config
 }
 
@@ -871,6 +896,32 @@ func (p *publicMailbox) Patch(ctx context.Context, req *PatchPublicMailboxReq, o
 	return resp, err
 }
 
+// RemoveToRecycleBin
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=remove_to_recycle_bin&project=mail&resource=public_mailbox&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/removeToRecycleBin_publicMailbox.go
+func (p *publicMailbox) RemoveToRecycleBin(ctx context.Context, req *RemoveToRecycleBinPublicMailboxReq, options ...larkcore.RequestOptionFunc) (*RemoveToRecycleBinPublicMailboxResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/public_mailboxes/:public_mailbox_id/remove_to_recycle_bin"
+	apiReq.HttpMethod = http.MethodDelete
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &RemoveToRecycleBinPublicMailboxResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
 // Update 更新公共邮箱
 //
 // - 更新公共邮箱所有信息
@@ -1295,6 +1346,386 @@ func (u *userMailboxAlias) List(ctx context.Context, req *ListUserMailboxAliasRe
 	return resp, err
 }
 
+// Subscribe
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=subscribe&project=mail&resource=user_mailbox.event&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/subscribe_userMailboxEvent.go
+func (u *userMailboxEvent) Subscribe(ctx context.Context, req *SubscribeUserMailboxEventReq, options ...larkcore.RequestOptionFunc) (*SubscribeUserMailboxEventResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/event/subscribe"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &SubscribeUserMailboxEventResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Subscription
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=subscription&project=mail&resource=user_mailbox.event&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/subscription_userMailboxEvent.go
+func (u *userMailboxEvent) Subscription(ctx context.Context, req *SubscriptionUserMailboxEventReq, options ...larkcore.RequestOptionFunc) (*SubscriptionUserMailboxEventResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/event/subscription"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &SubscriptionUserMailboxEventResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Unsubscribe
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=unsubscribe&project=mail&resource=user_mailbox.event&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/unsubscribe_userMailboxEvent.go
+func (u *userMailboxEvent) Unsubscribe(ctx context.Context, req *UnsubscribeUserMailboxEventReq, options ...larkcore.RequestOptionFunc) (*UnsubscribeUserMailboxEventResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/event/unsubscribe"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &UnsubscribeUserMailboxEventResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Create
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=create&project=mail&resource=user_mailbox.folder&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/create_userMailboxFolder.go
+func (u *userMailboxFolder) Create(ctx context.Context, req *CreateUserMailboxFolderReq, options ...larkcore.RequestOptionFunc) (*CreateUserMailboxFolderResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/folders"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &CreateUserMailboxFolderResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Delete
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=delete&project=mail&resource=user_mailbox.folder&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/delete_userMailboxFolder.go
+func (u *userMailboxFolder) Delete(ctx context.Context, req *DeleteUserMailboxFolderReq, options ...larkcore.RequestOptionFunc) (*DeleteUserMailboxFolderResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/folders/:folder_id"
+	apiReq.HttpMethod = http.MethodDelete
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &DeleteUserMailboxFolderResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// List
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=list&project=mail&resource=user_mailbox.folder&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/list_userMailboxFolder.go
+func (u *userMailboxFolder) List(ctx context.Context, req *ListUserMailboxFolderReq, options ...larkcore.RequestOptionFunc) (*ListUserMailboxFolderResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/folders"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ListUserMailboxFolderResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Patch
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=patch&project=mail&resource=user_mailbox.folder&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/patch_userMailboxFolder.go
+func (u *userMailboxFolder) Patch(ctx context.Context, req *PatchUserMailboxFolderReq, options ...larkcore.RequestOptionFunc) (*PatchUserMailboxFolderResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/folders/:folder_id"
+	apiReq.HttpMethod = http.MethodPatch
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &PatchUserMailboxFolderResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Create
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=create&project=mail&resource=user_mailbox.mail_contact&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/create_userMailboxMailContact.go
+func (u *userMailboxMailContact) Create(ctx context.Context, req *CreateUserMailboxMailContactReq, options ...larkcore.RequestOptionFunc) (*CreateUserMailboxMailContactResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/mail_contacts"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &CreateUserMailboxMailContactResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Delete
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=delete&project=mail&resource=user_mailbox.mail_contact&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/delete_userMailboxMailContact.go
+func (u *userMailboxMailContact) Delete(ctx context.Context, req *DeleteUserMailboxMailContactReq, options ...larkcore.RequestOptionFunc) (*DeleteUserMailboxMailContactResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/mail_contacts/:mail_contact_id"
+	apiReq.HttpMethod = http.MethodDelete
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &DeleteUserMailboxMailContactResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// List
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=list&project=mail&resource=user_mailbox.mail_contact&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/list_userMailboxMailContact.go
+func (u *userMailboxMailContact) List(ctx context.Context, req *ListUserMailboxMailContactReq, options ...larkcore.RequestOptionFunc) (*ListUserMailboxMailContactResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/mail_contacts"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ListUserMailboxMailContactResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+func (u *userMailboxMailContact) ListByIterator(ctx context.Context, req *ListUserMailboxMailContactReq, options ...larkcore.RequestOptionFunc) (*ListUserMailboxMailContactIterator, error) {
+	return &ListUserMailboxMailContactIterator{
+		ctx:      ctx,
+		req:      req,
+		listFunc: u.List,
+		options:  options,
+		limit:    req.Limit}, nil
+}
+
+// Patch
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=patch&project=mail&resource=user_mailbox.mail_contact&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/patch_userMailboxMailContact.go
+func (u *userMailboxMailContact) Patch(ctx context.Context, req *PatchUserMailboxMailContactReq, options ...larkcore.RequestOptionFunc) (*PatchUserMailboxMailContactResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/mail_contacts/:mail_contact_id"
+	apiReq.HttpMethod = http.MethodPatch
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &PatchUserMailboxMailContactResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Get
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=get&project=mail&resource=user_mailbox.message&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/get_userMailboxMessage.go
+func (u *userMailboxMessage) Get(ctx context.Context, req *GetUserMailboxMessageReq, options ...larkcore.RequestOptionFunc) (*GetUserMailboxMessageResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/:message_id"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser, larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &GetUserMailboxMessageResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// GetByCard
+//
+// - 卡片ID获取邮件ID
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=get_by_card&project=mail&resource=user_mailbox.message&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/getByCard_userMailboxMessage.go
+func (u *userMailboxMessage) GetByCard(ctx context.Context, req *GetByCardUserMailboxMessageReq, options ...larkcore.RequestOptionFunc) (*GetByCardUserMailboxMessageResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/get_by_card"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser, larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &GetByCardUserMailboxMessageResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// List
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=list&project=mail&resource=user_mailbox.message&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/list_userMailboxMessage.go
+func (u *userMailboxMessage) List(ctx context.Context, req *ListUserMailboxMessageReq, options ...larkcore.RequestOptionFunc) (*ListUserMailboxMessageResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ListUserMailboxMessageResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+func (u *userMailboxMessage) ListByIterator(ctx context.Context, req *ListUserMailboxMessageReq, options ...larkcore.RequestOptionFunc) (*ListUserMailboxMessageIterator, error) {
+	return &ListUserMailboxMessageIterator{
+		ctx:      ctx,
+		req:      req,
+		listFunc: u.List,
+		options:  options,
+		limit:    req.Limit}, nil
+}
+
 // Send
 //
 // -
@@ -1314,6 +1745,162 @@ func (u *userMailboxMessage) Send(ctx context.Context, req *SendUserMailboxMessa
 	}
 	// 反序列响应结果
 	resp := &SendUserMailboxMessageResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// DownloadUrl
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=download_url&project=mail&resource=user_mailbox.message.attachment&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/downloadUrl_userMailboxMessageAttachment.go
+func (u *userMailboxMessageAttachment) DownloadUrl(ctx context.Context, req *DownloadUrlUserMailboxMessageAttachmentReq, options ...larkcore.RequestOptionFunc) (*DownloadUrlUserMailboxMessageAttachmentResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/:message_id/attachments/download_url"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &DownloadUrlUserMailboxMessageAttachmentResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Create
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=create&project=mail&resource=user_mailbox.rule&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/create_userMailboxRule.go
+func (u *userMailboxRule) Create(ctx context.Context, req *CreateUserMailboxRuleReq, options ...larkcore.RequestOptionFunc) (*CreateUserMailboxRuleResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/rules"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &CreateUserMailboxRuleResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Delete
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=delete&project=mail&resource=user_mailbox.rule&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/delete_userMailboxRule.go
+func (u *userMailboxRule) Delete(ctx context.Context, req *DeleteUserMailboxRuleReq, options ...larkcore.RequestOptionFunc) (*DeleteUserMailboxRuleResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/rules/:rule_id"
+	apiReq.HttpMethod = http.MethodDelete
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &DeleteUserMailboxRuleResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// List
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=list&project=mail&resource=user_mailbox.rule&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/list_userMailboxRule.go
+func (u *userMailboxRule) List(ctx context.Context, req *ListUserMailboxRuleReq, options ...larkcore.RequestOptionFunc) (*ListUserMailboxRuleResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/rules"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ListUserMailboxRuleResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Reorder
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=reorder&project=mail&resource=user_mailbox.rule&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/reorder_userMailboxRule.go
+func (u *userMailboxRule) Reorder(ctx context.Context, req *ReorderUserMailboxRuleReq, options ...larkcore.RequestOptionFunc) (*ReorderUserMailboxRuleResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/rules/reorder"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ReorderUserMailboxRuleResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, u.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Update
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=update&project=mail&resource=user_mailbox.rule&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/mailv1/update_userMailboxRule.go
+func (u *userMailboxRule) Update(ctx context.Context, req *UpdateUserMailboxRuleReq, options ...larkcore.RequestOptionFunc) (*UpdateUserMailboxRuleResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/rules/:rule_id"
+	apiReq.HttpMethod = http.MethodPut
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, u.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &UpdateUserMailboxRuleResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, u.config)
 	if err != nil {
 		return nil, err

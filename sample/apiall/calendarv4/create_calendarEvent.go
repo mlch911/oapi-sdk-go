@@ -46,6 +46,7 @@ func main() {
 			Recurrence("FREQ=DAILY;INTERVAL=1").
 			Schemas([]*larkcalendar.Schema{larkcalendar.NewSchemaBuilder().Build()}).
 			Attachments([]*larkcalendar.Attachment{larkcalendar.NewAttachmentBuilder().Build()}).
+			EventCheckIn(larkcalendar.NewEventCheckInBuilder().Build()).
 			Build()).
 		Build()
 	// 发起请求

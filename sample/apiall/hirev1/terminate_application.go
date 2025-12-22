@@ -32,6 +32,12 @@ func main() {
 			TerminationType(1).
 			TerminationReasonList([]string{}).
 			TerminationReasonNote("不符合期望").
+			NeedTerminateOffer(false).
+			TerminateOfferOperateType(1).
+			CancelOfferTerminationType(1).
+			CancelOfferTerminationReasonList([]string{}).
+			CandidateRejectOfferTerminationReasonList([]string{}).
+			NeedWithdrawOfferApproval(false).
 			Build()).
 		Build()
 	// 发起请求

@@ -46,6 +46,7 @@ func main() {
 			IsMilestone(false).
 			CustomFields([]*larktask.InputCustomFieldValue{larktask.NewInputCustomFieldValueBuilder().Build()}).
 			DocxSource(larktask.NewDocxSourceBuilder().Build()).
+			PositiveReminders([]*larktask.Reminder{larktask.NewReminderBuilder().Build()}).
 			Build()).
 		Build()
 	// 发起请求

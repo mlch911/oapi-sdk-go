@@ -46,6 +46,7 @@ func main() {
 			Title("@i18n@1").
 			TitleDisplayMethod(0).
 			NodeAutoApprovalList([]*larkapproval.NodeAutoApproval{larkapproval.NewNodeAutoApprovalBuilder().Build()}).
+			WithLink(false).
 			Build()).
 		Build()
 	// 发起请求

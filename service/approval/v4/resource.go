@@ -428,40 +428,6 @@ func (i *instance) Get(ctx context.Context, req *GetInstanceReq, options ...lark
 	return resp, err
 }
 
-// List 批量获取审批实例ID
-//
-// - 根据 approval_code 批量获取审批实例的 instance_code，用于拉取租户下某个审批定义的全部审批实例。默认以审批创建时间先后顺序排列
-//
-// - 官网API文档链接:https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/instance/list
-//
-// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/approvalv4/list_instance.go
-func (i *instance) List(ctx context.Context, req *ListInstanceReq, options ...larkcore.RequestOptionFunc) (*ListInstanceResp, error) {
-	// 发起请求
-	apiReq := req.apiReq
-	apiReq.ApiPath = "/open-apis/approval/v4/instances"
-	apiReq.HttpMethod = http.MethodGet
-	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
-	apiResp, err := larkcore.Request(ctx, apiReq, i.config, options...)
-	if err != nil {
-		return nil, err
-	}
-	// 反序列响应结果
-	resp := &ListInstanceResp{ApiResp: apiResp}
-	err = apiResp.JSONUnmarshalBody(resp, i.config)
-	if err != nil {
-		return nil, err
-	}
-	return resp, err
-}
-func (i *instance) ListByIterator(ctx context.Context, req *ListInstanceReq, options ...larkcore.RequestOptionFunc) (*ListInstanceIterator, error) {
-	return &ListInstanceIterator{
-		ctx:      ctx,
-		req:      req,
-		listFunc: i.List,
-		options:  options,
-		limit:    req.Limit}, nil
-}
-
 // Preview
 //
 // -

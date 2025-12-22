@@ -52,6 +52,8 @@ func NewDepartmentIdBuilder() *DepartmentIdBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *DepartmentIdBuilder {
 	builder.departmentId = departmentId
@@ -59,6 +61,8 @@ func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *Departmen
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) OpenDepartmentId(openDepartmentId string) *DepartmentIdBuilder {
 	builder.openDepartmentId = openDepartmentId
@@ -74,164 +78,6 @@ func (builder *DepartmentIdBuilder) Build() *DepartmentId {
 	}
 	if builder.openDepartmentIdFlag {
 		req.OpenDepartmentId = &builder.openDepartmentId
-
-	}
-	return req
-}
-
-type Meta struct {
-	DocToken *string `json:"doc_token,omitempty"` // 文档 Token
-
-	DocType *string `json:"doc_type,omitempty"` // 文档类型
-
-	Title *string `json:"title,omitempty"` // 标题
-
-	OwnerId *string `json:"owner_id,omitempty"` // 文档所有者
-
-	LatestModifyUser *string `json:"latest_modify_user,omitempty"` // 最后编辑者
-
-	LatestModifyTime *string `json:"latest_modify_time,omitempty"` // 最后编辑时间（Unix 时间戳）
-
-	Url *string `json:"url,omitempty"` // 文档链接
-
-	SecLabelName *string `json:"sec_label_name,omitempty"` // 文档密级标签名称
-}
-
-type MetaBuilder struct {
-	docToken     string // 文档 Token
-	docTokenFlag bool
-
-	docType     string // 文档类型
-	docTypeFlag bool
-
-	title     string // 标题
-	titleFlag bool
-
-	ownerId     string // 文档所有者
-	ownerIdFlag bool
-
-	latestModifyUser     string // 最后编辑者
-	latestModifyUserFlag bool
-
-	latestModifyTime     string // 最后编辑时间（Unix 时间戳）
-	latestModifyTimeFlag bool
-
-	url     string // 文档链接
-	urlFlag bool
-
-	secLabelName     string // 文档密级标签名称
-	secLabelNameFlag bool
-}
-
-func NewMetaBuilder() *MetaBuilder {
-	builder := &MetaBuilder{}
-	return builder
-}
-
-// 文档 Token
-//
-// 示例值：doccnfYZzTlvXqZIGTdAHKabcef
-func (builder *MetaBuilder) DocToken(docToken string) *MetaBuilder {
-	builder.docToken = docToken
-	builder.docTokenFlag = true
-	return builder
-}
-
-// 文档类型
-//
-// 示例值：docx
-func (builder *MetaBuilder) DocType(docType string) *MetaBuilder {
-	builder.docType = docType
-	builder.docTypeFlag = true
-	return builder
-}
-
-// 标题
-//
-// 示例值：sampletitle
-func (builder *MetaBuilder) Title(title string) *MetaBuilder {
-	builder.title = title
-	builder.titleFlag = true
-	return builder
-}
-
-// 文档所有者
-//
-// 示例值：ou_b13d41c02edc52ce66aaae67bf1abcef
-func (builder *MetaBuilder) OwnerId(ownerId string) *MetaBuilder {
-	builder.ownerId = ownerId
-	builder.ownerIdFlag = true
-	return builder
-}
-
-// 最后编辑者
-//
-// 示例值：ou_b13d41c02edc52ce66aaae67bf1abcef
-func (builder *MetaBuilder) LatestModifyUser(latestModifyUser string) *MetaBuilder {
-	builder.latestModifyUser = latestModifyUser
-	builder.latestModifyUserFlag = true
-	return builder
-}
-
-// 最后编辑时间（Unix 时间戳）
-//
-// 示例值：1652066345
-func (builder *MetaBuilder) LatestModifyTime(latestModifyTime string) *MetaBuilder {
-	builder.latestModifyTime = latestModifyTime
-	builder.latestModifyTimeFlag = true
-	return builder
-}
-
-// 文档链接
-//
-// 示例值：https://sample.feishu.cn/docs/doccnfYZzTlvXqZIGTdAHKabcef
-func (builder *MetaBuilder) Url(url string) *MetaBuilder {
-	builder.url = url
-	builder.urlFlag = true
-	return builder
-}
-
-// 文档密级标签名称
-//
-// 示例值：L2-内部
-func (builder *MetaBuilder) SecLabelName(secLabelName string) *MetaBuilder {
-	builder.secLabelName = secLabelName
-	builder.secLabelNameFlag = true
-	return builder
-}
-
-func (builder *MetaBuilder) Build() *Meta {
-	req := &Meta{}
-	if builder.docTokenFlag {
-		req.DocToken = &builder.docToken
-
-	}
-	if builder.docTypeFlag {
-		req.DocType = &builder.docType
-
-	}
-	if builder.titleFlag {
-		req.Title = &builder.title
-
-	}
-	if builder.ownerIdFlag {
-		req.OwnerId = &builder.ownerId
-
-	}
-	if builder.latestModifyUserFlag {
-		req.LatestModifyUser = &builder.latestModifyUser
-
-	}
-	if builder.latestModifyTimeFlag {
-		req.LatestModifyTime = &builder.latestModifyTime
-
-	}
-	if builder.urlFlag {
-		req.Url = &builder.url
-
-	}
-	if builder.secLabelNameFlag {
-		req.SecLabelName = &builder.secLabelName
 
 	}
 	return req

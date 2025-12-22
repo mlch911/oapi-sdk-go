@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
 
 	larkcore "github.com/larksuite/oapi-sdk-go/v3/core"
 	larkevent "github.com/larksuite/oapi-sdk-go/v3/event"
@@ -24,7 +25,7 @@ func main() {
 		})
 
 	// 创建Client
-	cli := larkws.NewClient("YOUR_APP_ID", "YOUR_APP_SECRET",
+	cli := larkws.NewClient(os.Getenv("APP_ID"), os.Getenv("APP_SECRET"),
 		larkws.WithEventHandler(eventHandler),
 		larkws.WithLogLevel(larkcore.LogLevelDebug),
 	)

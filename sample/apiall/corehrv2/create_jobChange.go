@@ -39,6 +39,8 @@ func main() {
 			TransferKey("transfer_3627531").
 			InitiatorId("ou_a294793e8fa21529f2a60e3e9de45520").
 			TransferReasonUniqueIdentifier("involuntary_transfer").
+			UpdateMethod("update_all").
+			UpdateMethodOffboarding("update_all").
 			Build()).
 		Build()
 	// 发起请求

@@ -40,6 +40,7 @@ func main() {
 			JobLevelIds([]string{}).
 			JobIds([]string{}).
 			CostCenterIds([]string{}).
+			IncludeMissingDimensionRows(false).
 			Build()).
 		Build()
 	// 发起请求

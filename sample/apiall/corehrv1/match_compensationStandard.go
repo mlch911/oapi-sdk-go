@@ -36,6 +36,7 @@ func main() {
 		WorkLocationId("7094869485965870636").
 		CompanyId("7091599096804394540").
 		JobFamilyId("7039313681989502508").
+		JobId("7342883436321097257").
 		JobLevelId("7086415175263258156").
 		EmployeeTypeId("7039310401359775276").
 		RecruitmentType("experienced_professionals").
@@ -43,6 +44,14 @@ func main() {
 		CpstPlanId("6967639606963471118").
 		CpstSalaryLevelId("6967639606963471119").
 		EffectiveTime("1660924800000").
+		PerformanceReviewPeriodId("7527790505990932012").
+		PerformanceIndicatorId("7382324314454492716").
+		PerformanceScoreGradeId("7382324475995670060").
+		CustomOrg1Ids("7530538330711508524").
+		CustomOrg2Ids("7530538330711508524").
+		CustomOrg3Ids("7530538330711508524").
+		CustomOrg4Ids("7530538330711508524").
+		CustomOrg5Ids("7530538330711508524").
 		Build()
 	// 发起请求
 	resp, err := client.Corehr.V1.CompensationStandard.Match(context.Background(), req)

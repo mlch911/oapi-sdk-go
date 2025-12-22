@@ -265,6 +265,8 @@ func NewDepartmentIdBuilder() *DepartmentIdBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *DepartmentIdBuilder {
 	builder.departmentId = departmentId
@@ -272,6 +274,8 @@ func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *Departmen
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) OpenDepartmentId(openDepartmentId string) *DepartmentIdBuilder {
 	builder.openDepartmentId = openDepartmentId
@@ -1198,6 +1202,8 @@ func NewUserIdBuilder() *UserIdBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *UserIdBuilder) UserId(userId string) *UserIdBuilder {
 	builder.userId = userId
@@ -1205,6 +1211,8 @@ func (builder *UserIdBuilder) UserId(userId string) *UserIdBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *UserIdBuilder) OpenId(openId string) *UserIdBuilder {
 	builder.openId = openId
@@ -1212,6 +1220,8 @@ func (builder *UserIdBuilder) OpenId(openId string) *UserIdBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *UserIdBuilder) UnionId(unionId string) *UserIdBuilder {
 	builder.unionId = unionId
@@ -1418,7 +1428,7 @@ func NewCreateRuleExternalReqBodyBuilder() *CreateRuleExternalReqBodyBuilder {
 
 // 权限组信息
 //
-// 示例值：
+//示例值：
 func (builder *CreateRuleExternalReqBodyBuilder) Rule(rule *Rule) *CreateRuleExternalReqBodyBuilder {
 	builder.rule = rule
 	builder.ruleFlag = true
@@ -1490,6 +1500,7 @@ func (builder *CreateRuleExternalReqBuilder) UserIdType(userIdType string) *Crea
 	return builder
 }
 
+//
 func (builder *CreateRuleExternalReqBuilder) Body(body *CreateRuleExternalReqBody) *CreateRuleExternalReqBuilder {
 	builder.body = body
 	return builder
@@ -1582,7 +1593,7 @@ func NewDeviceBindRuleExternalReqBodyBuilder() *DeviceBindRuleExternalReqBodyBui
 
 // 设备id
 //
-// 示例值：6939433228970082593
+//示例值：6939433228970082593
 func (builder *DeviceBindRuleExternalReqBodyBuilder) DeviceId(deviceId string) *DeviceBindRuleExternalReqBodyBuilder {
 	builder.deviceId = deviceId
 	builder.deviceIdFlag = true
@@ -1591,7 +1602,7 @@ func (builder *DeviceBindRuleExternalReqBodyBuilder) DeviceId(deviceId string) *
 
 // 权限组id列表
 //
-// 示例值：
+//示例值：
 func (builder *DeviceBindRuleExternalReqBodyBuilder) RuleIds(ruleIds []string) *DeviceBindRuleExternalReqBodyBuilder {
 	builder.ruleIds = ruleIds
 	builder.ruleIdsFlag = true
@@ -1664,6 +1675,7 @@ func NewDeviceBindRuleExternalReqBuilder() *DeviceBindRuleExternalReqBuilder {
 	return builder
 }
 
+//
 func (builder *DeviceBindRuleExternalReqBuilder) Body(body *DeviceBindRuleExternalReqBody) *DeviceBindRuleExternalReqBuilder {
 	builder.body = body
 	return builder
@@ -2084,7 +2096,7 @@ func NewCreateVisitorReqBodyBuilder() *CreateVisitorReqBodyBuilder {
 
 // 访客信息
 //
-// 示例值：
+//示例值：
 func (builder *CreateVisitorReqBodyBuilder) User(user *UserExternal) *CreateVisitorReqBodyBuilder {
 	builder.user = user
 	builder.userFlag = true
@@ -2148,6 +2160,7 @@ func (builder *CreateVisitorReqBuilder) UserIdType(userIdType string) *CreateVis
 	return builder
 }
 
+//
 func (builder *CreateVisitorReqBuilder) Body(body *CreateVisitorReqBody) *CreateVisitorReqBuilder {
 	builder.body = body
 	return builder

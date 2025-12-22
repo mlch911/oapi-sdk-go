@@ -684,6 +684,74 @@ func (builder *ChinesePassportEntityBuilder) Build() *ChinesePassportEntity {
 	return req
 }
 
+type CodeDetail struct {
+	Language *string `json:"language,omitempty"` // 语言ID
+
+	LanguageName *string `json:"language_name,omitempty"` // 语言名字
+
+	Content *string `json:"content,omitempty"` // 代码块内容
+}
+
+type CodeDetailBuilder struct {
+	language     string // 语言ID
+	languageFlag bool
+
+	languageName     string // 语言名字
+	languageNameFlag bool
+
+	content     string // 代码块内容
+	contentFlag bool
+}
+
+func NewCodeDetailBuilder() *CodeDetailBuilder {
+	builder := &CodeDetailBuilder{}
+	return builder
+}
+
+// 语言ID
+//
+// 示例值：22
+func (builder *CodeDetailBuilder) Language(language string) *CodeDetailBuilder {
+	builder.language = language
+	builder.languageFlag = true
+	return builder
+}
+
+// 语言名字
+//
+// 示例值：Go
+func (builder *CodeDetailBuilder) LanguageName(languageName string) *CodeDetailBuilder {
+	builder.languageName = languageName
+	builder.languageNameFlag = true
+	return builder
+}
+
+// 代码块内容
+//
+// 示例值：//引用中代码块\npackage main\n\nimport "fmt"\n\nfunc main() {\n	fmt.Println("Hello, World!")\n}\n
+func (builder *CodeDetailBuilder) Content(content string) *CodeDetailBuilder {
+	builder.content = content
+	builder.contentFlag = true
+	return builder
+}
+
+func (builder *CodeDetailBuilder) Build() *CodeDetail {
+	req := &CodeDetail{}
+	if builder.languageFlag {
+		req.Language = &builder.language
+
+	}
+	if builder.languageNameFlag {
+		req.LanguageName = &builder.languageName
+
+	}
+	if builder.contentFlag {
+		req.Content = &builder.content
+
+	}
+	return req
+}
+
 type Currency struct {
 	CurrencyName *string `json:"currency_name,omitempty"` // 币种名称
 
@@ -753,6 +821,8 @@ func NewDepartmentIdBuilder() *DepartmentIdBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *DepartmentIdBuilder {
 	builder.departmentId = departmentId
@@ -760,6 +830,8 @@ func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *Departmen
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) OpenDepartmentId(openDepartmentId string) *DepartmentIdBuilder {
 	builder.openDepartmentId = openDepartmentId
@@ -884,7 +956,15 @@ type DocChunkResult struct {
 
 	ImageDetail *ImageDetail `json:"image_detail,omitempty"` // 图片内容详细信息
 
-	SlideIndex *string `json:"slide_index,omitempty"` // pptx文件里面的页码
+	SlideIndex *int `json:"slide_index,omitempty"` // pptx文件里面的页码
+
+	MdText *string `json:"md_text,omitempty"` // 若to_md设置为true, md_collapsed设置为false, 各chunk转成markdown的结果；若chunk为表格，不管开启与否返回的都是表格的markdown结果
+
+	HtmlText *string `json:"html_text,omitempty"` // 当chunk为表格的情况下，返回html的结果
+
+	FileDetail *FileDetail `json:"file_detail,omitempty"` // 文件信息 在type为file时用来表示文件信息
+
+	CodeDetail *CodeDetail `json:"code_detail,omitempty"` // 飞书云文档返回的代码块信息
 }
 
 type DocChunkResultBuilder struct {
@@ -924,8 +1004,20 @@ type DocChunkResultBuilder struct {
 	imageDetail     *ImageDetail // 图片内容详细信息
 	imageDetailFlag bool
 
-	slideIndex     string // pptx文件里面的页码
+	slideIndex     int // pptx文件里面的页码
 	slideIndexFlag bool
+
+	mdText     string // 若to_md设置为true, md_collapsed设置为false, 各chunk转成markdown的结果；若chunk为表格，不管开启与否返回的都是表格的markdown结果
+	mdTextFlag bool
+
+	htmlText     string // 当chunk为表格的情况下，返回html的结果
+	htmlTextFlag bool
+
+	fileDetail     *FileDetail // 文件信息 在type为file时用来表示文件信息
+	fileDetailFlag bool
+
+	codeDetail     *CodeDetail // 飞书云文档返回的代码块信息
+	codeDetailFlag bool
 }
 
 func NewDocChunkResultBuilder() *DocChunkResultBuilder {
@@ -1043,10 +1135,46 @@ func (builder *DocChunkResultBuilder) ImageDetail(imageDetail *ImageDetail) *Doc
 
 // pptx文件里面的页码
 //
-// 示例值：1
-func (builder *DocChunkResultBuilder) SlideIndex(slideIndex string) *DocChunkResultBuilder {
+// 示例值：0
+func (builder *DocChunkResultBuilder) SlideIndex(slideIndex int) *DocChunkResultBuilder {
 	builder.slideIndex = slideIndex
 	builder.slideIndexFlag = true
+	return builder
+}
+
+// 若to_md设置为true, md_collapsed设置为false, 各chunk转成markdown的结果；若chunk为表格，不管开启与否返回的都是表格的markdown结果
+//
+// 示例值：本项目旨在提供一个简洁高效的视频处理服务，支持以下功能：  - 视频分段切片 - 精准帧抽取 - 帧图重命名与排序 - 多线程并发处理 - 抽帧结果打包上传
+func (builder *DocChunkResultBuilder) MdText(mdText string) *DocChunkResultBuilder {
+	builder.mdText = mdText
+	builder.mdTextFlag = true
+	return builder
+}
+
+// 当chunk为表格的情况下，返回html的结果
+//
+// 示例值：<table border="1">   <thead>	 <tr>	   <th>用户名</th>	   <th>年龄</th>	   <th>邮箱</th>	   <th>状态</th>	 </tr>   </thead>   <tbody>	 <tr>	   <td>Alice</td>	   <td>24</td>	   <td>alice@example.com</td>	   <td>启用</td>	 </tr>	 <tr>	   <td>Bob</td>	   <td>30</td>	   <td>bob@example.com</td>	   <td>禁用</td>	 </tr>	 <tr>	   <td>Charlie</td>	   <td>28</td>	   <td>charlie@example.com</td>	   <td>启用</td>	 </tr>   </tbody> </table>
+func (builder *DocChunkResultBuilder) HtmlText(htmlText string) *DocChunkResultBuilder {
+	builder.htmlText = htmlText
+	builder.htmlTextFlag = true
+	return builder
+}
+
+// 文件信息 在type为file时用来表示文件信息
+//
+// 示例值：
+func (builder *DocChunkResultBuilder) FileDetail(fileDetail *FileDetail) *DocChunkResultBuilder {
+	builder.fileDetail = fileDetail
+	builder.fileDetailFlag = true
+	return builder
+}
+
+// 飞书云文档返回的代码块信息
+//
+// 示例值：
+func (builder *DocChunkResultBuilder) CodeDetail(codeDetail *CodeDetail) *DocChunkResultBuilder {
+	builder.codeDetail = codeDetail
+	builder.codeDetailFlag = true
 	return builder
 }
 
@@ -1099,6 +1227,20 @@ func (builder *DocChunkResultBuilder) Build() *DocChunkResult {
 		req.SlideIndex = &builder.slideIndex
 
 	}
+	if builder.mdTextFlag {
+		req.MdText = &builder.mdText
+
+	}
+	if builder.htmlTextFlag {
+		req.HtmlText = &builder.htmlText
+
+	}
+	if builder.fileDetailFlag {
+		req.FileDetail = builder.fileDetail
+	}
+	if builder.codeDetailFlag {
+		req.CodeDetail = builder.codeDetail
+	}
 	return req
 }
 
@@ -1123,7 +1265,13 @@ type DocChunkTableCell struct {
 
 	ColSpan *int `json:"col_span,omitempty"` // 单元格占的列数
 
-	IsMergeCell *bool `json:"is_merge_cell,omitempty"` // 是否合并单元格
+	IsMergeCell *bool `json:"is_merge_cell,omitempty"` // 是否为合并单元格
+
+	Images []string `json:"images,omitempty"` // 单元格内部图片列表（base64 / 文件token）
+
+	Files []string `json:"files,omitempty"` // 单元格内部文件列表（临时链接 / 文件token）
+
+	IsHeader *bool `json:"is_header,omitempty"` // 是否是表头
 }
 
 type DocChunkTableCellBuilder struct {
@@ -1157,8 +1305,17 @@ type DocChunkTableCellBuilder struct {
 	colSpan     int // 单元格占的列数
 	colSpanFlag bool
 
-	isMergeCell     bool // 是否合并单元格
+	isMergeCell     bool // 是否为合并单元格
 	isMergeCellFlag bool
+
+	images     []string // 单元格内部图片列表（base64 / 文件token）
+	imagesFlag bool
+
+	files     []string // 单元格内部文件列表（临时链接 / 文件token）
+	filesFlag bool
+
+	isHeader     bool // 是否是表头
+	isHeaderFlag bool
 }
 
 func NewDocChunkTableCellBuilder() *DocChunkTableCellBuilder {
@@ -1256,12 +1413,39 @@ func (builder *DocChunkTableCellBuilder) ColSpan(colSpan int) *DocChunkTableCell
 	return builder
 }
 
-// 是否合并单元格
+// 是否为合并单元格
 //
-// 示例值：true
+// 示例值：
 func (builder *DocChunkTableCellBuilder) IsMergeCell(isMergeCell bool) *DocChunkTableCellBuilder {
 	builder.isMergeCell = isMergeCell
 	builder.isMergeCellFlag = true
+	return builder
+}
+
+// 单元格内部图片列表（base64 / 文件token）
+//
+// 示例值：
+func (builder *DocChunkTableCellBuilder) Images(images []string) *DocChunkTableCellBuilder {
+	builder.images = images
+	builder.imagesFlag = true
+	return builder
+}
+
+// 单元格内部文件列表（临时链接 / 文件token）
+//
+// 示例值：
+func (builder *DocChunkTableCellBuilder) Files(files []string) *DocChunkTableCellBuilder {
+	builder.files = files
+	builder.filesFlag = true
+	return builder
+}
+
+// 是否是表头
+//
+// 示例值：
+func (builder *DocChunkTableCellBuilder) IsHeader(isHeader bool) *DocChunkTableCellBuilder {
+	builder.isHeader = isHeader
+	builder.isHeaderFlag = true
 	return builder
 }
 
@@ -1311,6 +1495,16 @@ func (builder *DocChunkTableCellBuilder) Build() *DocChunkTableCell {
 		req.IsMergeCell = &builder.isMergeCell
 
 	}
+	if builder.imagesFlag {
+		req.Images = builder.images
+	}
+	if builder.filesFlag {
+		req.Files = builder.files
+	}
+	if builder.isHeaderFlag {
+		req.IsHeader = &builder.isHeader
+
+	}
 	return req
 }
 
@@ -1320,6 +1514,24 @@ type DocChunkTableDetail struct {
 	Text *string `json:"text,omitempty"` // 表格的所有文字内容，'\t\n'代表换行，'\t'代表新单元格
 
 	Cells []*DocChunkTableRow `json:"cells,omitempty"` // 表格中全部cell的数据
+
+	TableName *string `json:"table_name,omitempty"` // 表格名称
+
+	Caption *string `json:"caption,omitempty"` // 表格描述，当前为表格上下文
+
+	MdText *string `json:"md_text,omitempty"` // 表格的markdown结果
+
+	HtmlText *string `json:"html_text,omitempty"` // 表格的html结果
+
+	TableImg *TableImg `json:"table_img,omitempty"` // 整个表格区域直接转的图片
+
+	SubTableIdx *int `json:"sub_table_idx,omitempty"` // 识别表头后拆分的子表ID
+
+	TableRange *string `json:"table_range,omitempty"` // 子表的范围
+
+	HeaderRanges []string `json:"header_ranges,omitempty"` // 表头范围
+
+	DescRanges []string `json:"desc_ranges,omitempty"` // 表格描述行的范围
 }
 
 type DocChunkTableDetailBuilder struct {
@@ -1331,6 +1543,33 @@ type DocChunkTableDetailBuilder struct {
 
 	cells     []*DocChunkTableRow // 表格中全部cell的数据
 	cellsFlag bool
+
+	tableName     string // 表格名称
+	tableNameFlag bool
+
+	caption     string // 表格描述，当前为表格上下文
+	captionFlag bool
+
+	mdText     string // 表格的markdown结果
+	mdTextFlag bool
+
+	htmlText     string // 表格的html结果
+	htmlTextFlag bool
+
+	tableImg     *TableImg // 整个表格区域直接转的图片
+	tableImgFlag bool
+
+	subTableIdx     int // 识别表头后拆分的子表ID
+	subTableIdxFlag bool
+
+	tableRange     string // 子表的范围
+	tableRangeFlag bool
+
+	headerRanges     []string // 表头范围
+	headerRangesFlag bool
+
+	descRanges     []string // 表格描述行的范围
+	descRangesFlag bool
 }
 
 func NewDocChunkTableDetailBuilder() *DocChunkTableDetailBuilder {
@@ -1365,6 +1604,87 @@ func (builder *DocChunkTableDetailBuilder) Cells(cells []*DocChunkTableRow) *Doc
 	return builder
 }
 
+// 表格名称
+//
+// 示例值：表格1
+func (builder *DocChunkTableDetailBuilder) TableName(tableName string) *DocChunkTableDetailBuilder {
+	builder.tableName = tableName
+	builder.tableNameFlag = true
+	return builder
+}
+
+// 表格描述，当前为表格上下文
+//
+// 示例值：表格描述了xxx
+func (builder *DocChunkTableDetailBuilder) Caption(caption string) *DocChunkTableDetailBuilder {
+	builder.caption = caption
+	builder.captionFlag = true
+	return builder
+}
+
+// 表格的markdown结果
+//
+// 示例值：| 用户名   | 年龄 | 邮箱					| 状态   | |----------|------|-------------------------|--------| | Alice	| 24   | alice@example.com	   | 启用   | | Bob	  | 30   | bob@example.com		 | 禁用   | | Charlie  | 28   | charlie@example.com	 | 启用   |
+func (builder *DocChunkTableDetailBuilder) MdText(mdText string) *DocChunkTableDetailBuilder {
+	builder.mdText = mdText
+	builder.mdTextFlag = true
+	return builder
+}
+
+// 表格的html结果
+//
+// 示例值：<table border="1">   <thead>	 <tr>	   <th>用户名</th>	   <th>年龄</th>	   <th>邮箱</th>	   <th>状态</th>	 </tr>   </thead>   <tbody>	 <tr>	   <td>Alice</td>	   <td>24</td>	   <td>alice@example.com</td>	   <td>启用</td>	 </tr>	 <tr>	   <td>Bob</td>	   <td>30</td>	   <td>bob@example.com</td>	   <td>禁用</td>	 </tr>	 <tr>	   <td>Charlie</td>	   <td>28</td>	   <td>charlie@example.com</td>	   <td>启用</td>	 </tr>   </tbody> </table>
+func (builder *DocChunkTableDetailBuilder) HtmlText(htmlText string) *DocChunkTableDetailBuilder {
+	builder.htmlText = htmlText
+	builder.htmlTextFlag = true
+	return builder
+}
+
+// 整个表格区域直接转的图片
+//
+// 示例值：
+func (builder *DocChunkTableDetailBuilder) TableImg(tableImg *TableImg) *DocChunkTableDetailBuilder {
+	builder.tableImg = tableImg
+	builder.tableImgFlag = true
+	return builder
+}
+
+// 识别表头后拆分的子表ID
+//
+// 示例值：1
+func (builder *DocChunkTableDetailBuilder) SubTableIdx(subTableIdx int) *DocChunkTableDetailBuilder {
+	builder.subTableIdx = subTableIdx
+	builder.subTableIdxFlag = true
+	return builder
+}
+
+// 子表的范围
+//
+// 示例值：A1:B1
+func (builder *DocChunkTableDetailBuilder) TableRange(tableRange string) *DocChunkTableDetailBuilder {
+	builder.tableRange = tableRange
+	builder.tableRangeFlag = true
+	return builder
+}
+
+// 表头范围
+//
+// 示例值：
+func (builder *DocChunkTableDetailBuilder) HeaderRanges(headerRanges []string) *DocChunkTableDetailBuilder {
+	builder.headerRanges = headerRanges
+	builder.headerRangesFlag = true
+	return builder
+}
+
+// 表格描述行的范围
+//
+// 示例值：
+func (builder *DocChunkTableDetailBuilder) DescRanges(descRanges []string) *DocChunkTableDetailBuilder {
+	builder.descRanges = descRanges
+	builder.descRangesFlag = true
+	return builder
+}
+
 func (builder *DocChunkTableDetailBuilder) Build() *DocChunkTableDetail {
 	req := &DocChunkTableDetail{}
 	if builder.tableIdxFlag {
@@ -1377,6 +1697,39 @@ func (builder *DocChunkTableDetailBuilder) Build() *DocChunkTableDetail {
 	}
 	if builder.cellsFlag {
 		req.Cells = builder.cells
+	}
+	if builder.tableNameFlag {
+		req.TableName = &builder.tableName
+
+	}
+	if builder.captionFlag {
+		req.Caption = &builder.caption
+
+	}
+	if builder.mdTextFlag {
+		req.MdText = &builder.mdText
+
+	}
+	if builder.htmlTextFlag {
+		req.HtmlText = &builder.htmlText
+
+	}
+	if builder.tableImgFlag {
+		req.TableImg = builder.tableImg
+	}
+	if builder.subTableIdxFlag {
+		req.SubTableIdx = &builder.subTableIdx
+
+	}
+	if builder.tableRangeFlag {
+		req.TableRange = &builder.tableRange
+
+	}
+	if builder.headerRangesFlag {
+		req.HeaderRanges = builder.headerRanges
+	}
+	if builder.descRangesFlag {
+		req.DescRanges = builder.descRanges
 	}
 	return req
 }
@@ -1904,6 +2257,73 @@ func (builder *ExtractTimeBuilder) Build() *ExtractTime {
 	return req
 }
 
+type FileDetail struct {
+	Token *string `json:"token,omitempty"` // 飞书云文档内部对文件的标记
+
+	Name *string `json:"name,omitempty"` // 文件名
+
+	Links []string `json:"links,omitempty"` // 临时下载链接 （24小时内部链接）
+}
+
+type FileDetailBuilder struct {
+	token     string // 飞书云文档内部对文件的标记
+	tokenFlag bool
+
+	name     string // 文件名
+	nameFlag bool
+
+	links     []string // 临时下载链接 （24小时内部链接）
+	linksFlag bool
+}
+
+func NewFileDetailBuilder() *FileDetailBuilder {
+	builder := &FileDetailBuilder{}
+	return builder
+}
+
+// 飞书云文档内部对文件的标记
+//
+// 示例值：xxx
+func (builder *FileDetailBuilder) Token(token string) *FileDetailBuilder {
+	builder.token = token
+	builder.tokenFlag = true
+	return builder
+}
+
+// 文件名
+//
+// 示例值：文件
+func (builder *FileDetailBuilder) Name(name string) *FileDetailBuilder {
+	builder.name = name
+	builder.nameFlag = true
+	return builder
+}
+
+// 临时下载链接 （24小时内部链接）
+//
+// 示例值：
+func (builder *FileDetailBuilder) Links(links []string) *FileDetailBuilder {
+	builder.links = links
+	builder.linksFlag = true
+	return builder
+}
+
+func (builder *FileDetailBuilder) Build() *FileDetail {
+	req := &FileDetail{}
+	if builder.tokenFlag {
+		req.Token = &builder.token
+
+	}
+	if builder.nameFlag {
+		req.Name = &builder.name
+
+	}
+	if builder.linksFlag {
+		req.Links = builder.links
+	}
+	return req
+}
+
 type FoodManageEntity struct {
 	Type *string `json:"type,omitempty"` // 识别的字段种类
 
@@ -2367,6 +2787,8 @@ type ImageDetail struct {
 	Caption *string `json:"caption,omitempty"` // 图片描述，目前为当前图片的前一段和后一段\n拼接
 
 	Links []string `json:"links,omitempty"` // 图片url
+
+	Token *string `json:"token,omitempty"` // 飞书云文档内部对图片的标记
 }
 
 type ImageDetailBuilder struct {
@@ -2378,6 +2800,9 @@ type ImageDetailBuilder struct {
 
 	links     []string // 图片url
 	linksFlag bool
+
+	token     string // 飞书云文档内部对图片的标记
+	tokenFlag bool
 }
 
 func NewImageDetailBuilder() *ImageDetailBuilder {
@@ -2412,6 +2837,15 @@ func (builder *ImageDetailBuilder) Links(links []string) *ImageDetailBuilder {
 	return builder
 }
 
+// 飞书云文档内部对图片的标记
+//
+// 示例值：DkHObJB33orSVixjfEab3ZMDcre
+func (builder *ImageDetailBuilder) Token(token string) *ImageDetailBuilder {
+	builder.token = token
+	builder.tokenFlag = true
+	return builder
+}
+
 func (builder *ImageDetailBuilder) Build() *ImageDetail {
 	req := &ImageDetail{}
 	if builder.base64Flag {
@@ -2424,6 +2858,10 @@ func (builder *ImageDetailBuilder) Build() *ImageDetail {
 	}
 	if builder.linksFlag {
 		req.Links = builder.links
+	}
+	if builder.tokenFlag {
+		req.Token = &builder.token
+
 	}
 	return req
 }
@@ -4176,6 +4614,74 @@ func (builder *ResumeProjectBuilder) Build() *ResumeProject {
 	return req
 }
 
+type TableImg struct {
+	Type *string `json:"type,omitempty"` // 图片返回的结果是base64还是url
+
+	Base64 *string `json:"base64,omitempty"` // 图片的base64
+
+	Url *string `json:"url,omitempty"` // 图片链接
+}
+
+type TableImgBuilder struct {
+	type_    string // 图片返回的结果是base64还是url
+	typeFlag bool
+
+	base64     string // 图片的base64
+	base64Flag bool
+
+	url     string // 图片链接
+	urlFlag bool
+}
+
+func NewTableImgBuilder() *TableImgBuilder {
+	builder := &TableImgBuilder{}
+	return builder
+}
+
+// 图片返回的结果是base64还是url
+//
+// 示例值：base64
+func (builder *TableImgBuilder) Type(type_ string) *TableImgBuilder {
+	builder.type_ = type_
+	builder.typeFlag = true
+	return builder
+}
+
+// 图片的base64
+//
+// 示例值：data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=
+func (builder *TableImgBuilder) Base64(base64 string) *TableImgBuilder {
+	builder.base64 = base64
+	builder.base64Flag = true
+	return builder
+}
+
+// 图片链接
+//
+// 示例值：https://picsum.photos/400/300
+func (builder *TableImgBuilder) Url(url string) *TableImgBuilder {
+	builder.url = url
+	builder.urlFlag = true
+	return builder
+}
+
+func (builder *TableImgBuilder) Build() *TableImg {
+	req := &TableImg{}
+	if builder.typeFlag {
+		req.Type = &builder.type_
+
+	}
+	if builder.base64Flag {
+		req.Base64 = &builder.base64
+
+	}
+	if builder.urlFlag {
+		req.Url = &builder.url
+
+	}
+	return req
+}
+
 type TaxiEnitity struct {
 	Type *string `json:"type,omitempty"` // 识别的字段种类
 
@@ -4741,7 +5247,7 @@ func NewRecognizeBankCardReqBodyBuilder() *RecognizeBankCardReqBodyBuilder {
 
 // 识别的银行卡源文件
 //
-// 示例值：
+//示例值：
 func (builder *RecognizeBankCardReqBodyBuilder) File(file io.Reader) *RecognizeBankCardReqBodyBuilder {
 	builder.file = file
 	builder.fileFlag = true
@@ -4801,6 +5307,7 @@ func NewRecognizeBankCardReqBuilder() *RecognizeBankCardReqBuilder {
 	return builder
 }
 
+//
 func (builder *RecognizeBankCardReqBuilder) Body(body *RecognizeBankCardReqBody) *RecognizeBankCardReqBuilder {
 	builder.body = body
 	return builder
@@ -4848,7 +5355,7 @@ func NewRecognizeBusinessCardReqBodyBuilder() *RecognizeBusinessCardReqBodyBuild
 
 // 识别名片的源文件（支持 JPG / PNG / PDF）
 //
-// 示例值：
+//示例值：
 func (builder *RecognizeBusinessCardReqBodyBuilder) File(file io.Reader) *RecognizeBusinessCardReqBodyBuilder {
 	builder.file = file
 	builder.fileFlag = true
@@ -4908,6 +5415,7 @@ func NewRecognizeBusinessCardReqBuilder() *RecognizeBusinessCardReqBuilder {
 	return builder
 }
 
+//
 func (builder *RecognizeBusinessCardReqBuilder) Body(body *RecognizeBusinessCardReqBody) *RecognizeBusinessCardReqBuilder {
 	builder.body = body
 	return builder
@@ -4955,7 +5463,7 @@ func NewRecognizeBusinessLicenseReqBodyBuilder() *RecognizeBusinessLicenseReqBod
 
 // 识别的营业执照源文件
 //
-// 示例值：
+//示例值：
 func (builder *RecognizeBusinessLicenseReqBodyBuilder) File(file io.Reader) *RecognizeBusinessLicenseReqBodyBuilder {
 	builder.file = file
 	builder.fileFlag = true
@@ -5015,6 +5523,7 @@ func NewRecognizeBusinessLicenseReqBuilder() *RecognizeBusinessLicenseReqBuilder
 	return builder
 }
 
+//
 func (builder *RecognizeBusinessLicenseReqBuilder) Body(body *RecognizeBusinessLicenseReqBody) *RecognizeBusinessLicenseReqBuilder {
 	builder.body = body
 	return builder
@@ -5062,7 +5571,7 @@ func NewRecognizeChinesePassportReqBodyBuilder() *RecognizeChinesePassportReqBod
 
 // 识别的中国护照源文件
 //
-// 示例值：
+//示例值：
 func (builder *RecognizeChinesePassportReqBodyBuilder) File(file io.Reader) *RecognizeChinesePassportReqBodyBuilder {
 	builder.file = file
 	builder.fileFlag = true
@@ -5122,6 +5631,7 @@ func NewRecognizeChinesePassportReqBuilder() *RecognizeChinesePassportReqBuilder
 	return builder
 }
 
+//
 func (builder *RecognizeChinesePassportReqBuilder) Body(body *RecognizeChinesePassportReqBody) *RecognizeChinesePassportReqBuilder {
 	builder.body = body
 	return builder
@@ -5175,7 +5685,7 @@ func NewFieldExtractionContractReqBodyBuilder() *FieldExtractionContractReqBodyB
 
 // 合同字段解析的源文件，当前只支持pdf, doc, docx三种类型的文件
 //
-// 示例值：
+//示例值：
 func (builder *FieldExtractionContractReqBodyBuilder) File(file io.Reader) *FieldExtractionContractReqBodyBuilder {
 	builder.file = file
 	builder.fileFlag = true
@@ -5184,7 +5694,7 @@ func (builder *FieldExtractionContractReqBodyBuilder) File(file io.Reader) *Fiel
 
 // pdf页数限制，太长会导致latency增加，最大允许100页
 //
-// 示例值：15
+//示例值：15
 func (builder *FieldExtractionContractReqBodyBuilder) PdfPageLimit(pdfPageLimit int) *FieldExtractionContractReqBodyBuilder {
 	builder.pdfPageLimit = pdfPageLimit
 	builder.pdfPageLimitFlag = true
@@ -5193,7 +5703,7 @@ func (builder *FieldExtractionContractReqBodyBuilder) PdfPageLimit(pdfPageLimit 
 
 // ocr 参数，当前支持force, pdf, unused三种格式
 //
-// 示例值：auto
+//示例值：auto
 func (builder *FieldExtractionContractReqBodyBuilder) OcrMode(ocrMode string) *FieldExtractionContractReqBodyBuilder {
 	builder.ocrMode = ocrMode
 	builder.ocrModeFlag = true
@@ -5287,6 +5797,7 @@ func NewFieldExtractionContractReqBuilder() *FieldExtractionContractReqBuilder {
 	return builder
 }
 
+//
 func (builder *FieldExtractionContractReqBuilder) Body(body *FieldExtractionContractReqBody) *FieldExtractionContractReqBuilder {
 	builder.body = body
 	return builder
@@ -5352,7 +5863,7 @@ func NewRecognizeDrivingLicenseReqBodyBuilder() *RecognizeDrivingLicenseReqBodyB
 
 // 识别的驾驶证源文件
 //
-// 示例值：
+//示例值：
 func (builder *RecognizeDrivingLicenseReqBodyBuilder) File(file io.Reader) *RecognizeDrivingLicenseReqBodyBuilder {
 	builder.file = file
 	builder.fileFlag = true
@@ -5412,6 +5923,7 @@ func NewRecognizeDrivingLicenseReqBuilder() *RecognizeDrivingLicenseReqBuilder {
 	return builder
 }
 
+//
 func (builder *RecognizeDrivingLicenseReqBuilder) Body(body *RecognizeDrivingLicenseReqBody) *RecognizeDrivingLicenseReqBuilder {
 	builder.body = body
 	return builder
@@ -5459,7 +5971,7 @@ func NewRecognizeFoodManageLicenseReqBodyBuilder() *RecognizeFoodManageLicenseRe
 
 // 识别的食品经营许可证源文件
 //
-// 示例值：
+//示例值：
 func (builder *RecognizeFoodManageLicenseReqBodyBuilder) File(file io.Reader) *RecognizeFoodManageLicenseReqBodyBuilder {
 	builder.file = file
 	builder.fileFlag = true
@@ -5519,6 +6031,7 @@ func NewRecognizeFoodManageLicenseReqBuilder() *RecognizeFoodManageLicenseReqBui
 	return builder
 }
 
+//
 func (builder *RecognizeFoodManageLicenseReqBuilder) Body(body *RecognizeFoodManageLicenseReqBody) *RecognizeFoodManageLicenseReqBuilder {
 	builder.body = body
 	return builder
@@ -5566,7 +6079,7 @@ func NewRecognizeFoodProduceLicenseReqBodyBuilder() *RecognizeFoodProduceLicense
 
 // 识别的食品生产许可证源文件
 //
-// 示例值：
+//示例值：
 func (builder *RecognizeFoodProduceLicenseReqBodyBuilder) File(file io.Reader) *RecognizeFoodProduceLicenseReqBodyBuilder {
 	builder.file = file
 	builder.fileFlag = true
@@ -5626,6 +6139,7 @@ func NewRecognizeFoodProduceLicenseReqBuilder() *RecognizeFoodProduceLicenseReqB
 	return builder
 }
 
+//
 func (builder *RecognizeFoodProduceLicenseReqBuilder) Body(body *RecognizeFoodProduceLicenseReqBody) *RecognizeFoodProduceLicenseReqBuilder {
 	builder.body = body
 	return builder
@@ -5673,7 +6187,7 @@ func NewRecognizeHealthCertificateReqBodyBuilder() *RecognizeHealthCertificateRe
 
 // 识别的健康证源文件
 //
-// 示例值：
+//示例值：
 func (builder *RecognizeHealthCertificateReqBodyBuilder) File(file io.Reader) *RecognizeHealthCertificateReqBodyBuilder {
 	builder.file = file
 	builder.fileFlag = true
@@ -5733,6 +6247,7 @@ func NewRecognizeHealthCertificateReqBuilder() *RecognizeHealthCertificateReqBui
 	return builder
 }
 
+//
 func (builder *RecognizeHealthCertificateReqBuilder) Body(body *RecognizeHealthCertificateReqBody) *RecognizeHealthCertificateReqBuilder {
 	builder.body = body
 	return builder
@@ -5780,7 +6295,7 @@ func NewRecognizeHkmMainlandTravelPermitReqBodyBuilder() *RecognizeHkmMainlandTr
 
 // 识别的港澳居民来往内地通行证源文件
 //
-// 示例值：
+//示例值：
 func (builder *RecognizeHkmMainlandTravelPermitReqBodyBuilder) File(file io.Reader) *RecognizeHkmMainlandTravelPermitReqBodyBuilder {
 	builder.file = file
 	builder.fileFlag = true
@@ -5840,6 +6355,7 @@ func NewRecognizeHkmMainlandTravelPermitReqBuilder() *RecognizeHkmMainlandTravel
 	return builder
 }
 
+//
 func (builder *RecognizeHkmMainlandTravelPermitReqBuilder) Body(body *RecognizeHkmMainlandTravelPermitReqBody) *RecognizeHkmMainlandTravelPermitReqBuilder {
 	builder.body = body
 	return builder
@@ -5887,7 +6403,7 @@ func NewRecognizeIdCardReqBodyBuilder() *RecognizeIdCardReqBodyBuilder {
 
 // 识别身份证的源文件
 //
-// 示例值：
+//示例值：
 func (builder *RecognizeIdCardReqBodyBuilder) File(file io.Reader) *RecognizeIdCardReqBodyBuilder {
 	builder.file = file
 	builder.fileFlag = true
@@ -5947,6 +6463,7 @@ func NewRecognizeIdCardReqBuilder() *RecognizeIdCardReqBuilder {
 	return builder
 }
 
+//
 func (builder *RecognizeIdCardReqBuilder) Body(body *RecognizeIdCardReqBody) *RecognizeIdCardReqBuilder {
 	builder.body = body
 	return builder
@@ -5994,7 +6511,7 @@ func NewParseResumeReqBodyBuilder() *ParseResumeReqBodyBuilder {
 
 // 简历文件，支持 PDF / DOCX / PNG / JPG
 //
-// 示例值：
+//示例值：
 func (builder *ParseResumeReqBodyBuilder) File(file io.Reader) *ParseResumeReqBodyBuilder {
 	builder.file = file
 	builder.fileFlag = true
@@ -6054,6 +6571,7 @@ func NewParseResumeReqBuilder() *ParseResumeReqBuilder {
 	return builder
 }
 
+//
 func (builder *ParseResumeReqBuilder) Body(body *ParseResumeReqBody) *ParseResumeReqBuilder {
 	builder.body = body
 	return builder
@@ -6101,7 +6619,7 @@ func NewRecognizeTaxiInvoiceReqBodyBuilder() *RecognizeTaxiInvoiceReqBodyBuilder
 
 // 识别的出租车票源文件
 //
-// 示例值：
+//示例值：
 func (builder *RecognizeTaxiInvoiceReqBodyBuilder) File(file io.Reader) *RecognizeTaxiInvoiceReqBodyBuilder {
 	builder.file = file
 	builder.fileFlag = true
@@ -6161,6 +6679,7 @@ func NewRecognizeTaxiInvoiceReqBuilder() *RecognizeTaxiInvoiceReqBuilder {
 	return builder
 }
 
+//
 func (builder *RecognizeTaxiInvoiceReqBuilder) Body(body *RecognizeTaxiInvoiceReqBody) *RecognizeTaxiInvoiceReqBuilder {
 	builder.body = body
 	return builder
@@ -6208,7 +6727,7 @@ func NewRecognizeTrainInvoiceReqBodyBuilder() *RecognizeTrainInvoiceReqBodyBuild
 
 // 识别的火车票源文件
 //
-// 示例值：
+//示例值：
 func (builder *RecognizeTrainInvoiceReqBodyBuilder) File(file io.Reader) *RecognizeTrainInvoiceReqBodyBuilder {
 	builder.file = file
 	builder.fileFlag = true
@@ -6268,6 +6787,7 @@ func NewRecognizeTrainInvoiceReqBuilder() *RecognizeTrainInvoiceReqBuilder {
 	return builder
 }
 
+//
 func (builder *RecognizeTrainInvoiceReqBuilder) Body(body *RecognizeTrainInvoiceReqBody) *RecognizeTrainInvoiceReqBuilder {
 	builder.body = body
 	return builder
@@ -6315,7 +6835,7 @@ func NewRecognizeTwMainlandTravelPermitReqBodyBuilder() *RecognizeTwMainlandTrav
 
 // 识别的台湾居民来往大陆通行证源文件
 //
-// 示例值：
+//示例值：
 func (builder *RecognizeTwMainlandTravelPermitReqBodyBuilder) File(file io.Reader) *RecognizeTwMainlandTravelPermitReqBodyBuilder {
 	builder.file = file
 	builder.fileFlag = true
@@ -6375,6 +6895,7 @@ func NewRecognizeTwMainlandTravelPermitReqBuilder() *RecognizeTwMainlandTravelPe
 	return builder
 }
 
+//
 func (builder *RecognizeTwMainlandTravelPermitReqBuilder) Body(body *RecognizeTwMainlandTravelPermitReqBody) *RecognizeTwMainlandTravelPermitReqBuilder {
 	builder.body = body
 	return builder
@@ -6422,7 +6943,7 @@ func NewRecognizeVatInvoiceReqBodyBuilder() *RecognizeVatInvoiceReqBodyBuilder {
 
 // 识别的增值税发票文件
 //
-// 示例值：
+//示例值：
 func (builder *RecognizeVatInvoiceReqBodyBuilder) File(file io.Reader) *RecognizeVatInvoiceReqBodyBuilder {
 	builder.file = file
 	builder.fileFlag = true
@@ -6482,6 +7003,7 @@ func NewRecognizeVatInvoiceReqBuilder() *RecognizeVatInvoiceReqBuilder {
 	return builder
 }
 
+//
 func (builder *RecognizeVatInvoiceReqBuilder) Body(body *RecognizeVatInvoiceReqBody) *RecognizeVatInvoiceReqBuilder {
 	builder.body = body
 	return builder
@@ -6529,7 +7051,7 @@ func NewRecognizeVehicleInvoiceReqBodyBuilder() *RecognizeVehicleInvoiceReqBodyB
 
 // 识别的机动车发票源文件
 //
-// 示例值：
+//示例值：
 func (builder *RecognizeVehicleInvoiceReqBodyBuilder) File(file io.Reader) *RecognizeVehicleInvoiceReqBodyBuilder {
 	builder.file = file
 	builder.fileFlag = true
@@ -6589,6 +7111,7 @@ func NewRecognizeVehicleInvoiceReqBuilder() *RecognizeVehicleInvoiceReqBuilder {
 	return builder
 }
 
+//
 func (builder *RecognizeVehicleInvoiceReqBuilder) Body(body *RecognizeVehicleInvoiceReqBody) *RecognizeVehicleInvoiceReqBuilder {
 	builder.body = body
 	return builder
@@ -6636,7 +7159,7 @@ func NewRecognizeVehicleLicenseReqBodyBuilder() *RecognizeVehicleLicenseReqBodyB
 
 // 识别的行驶证源文件
 //
-// 示例值：
+//示例值：
 func (builder *RecognizeVehicleLicenseReqBodyBuilder) File(file io.Reader) *RecognizeVehicleLicenseReqBodyBuilder {
 	builder.file = file
 	builder.fileFlag = true
@@ -6696,6 +7219,7 @@ func NewRecognizeVehicleLicenseReqBuilder() *RecognizeVehicleLicenseReqBuilder {
 	return builder
 }
 
+//
 func (builder *RecognizeVehicleLicenseReqBuilder) Body(body *RecognizeVehicleLicenseReqBody) *RecognizeVehicleLicenseReqBuilder {
 	builder.body = body
 	return builder

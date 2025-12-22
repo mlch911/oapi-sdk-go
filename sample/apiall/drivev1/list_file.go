@@ -32,6 +32,7 @@ func main() {
 		FolderToken("fldbcO1UuPz8VwnpPx5a9abcef").
 		OrderBy("EditedTime").
 		Direction("DESC").
+		Option("get_all_children_unsort").
 		UserIdType("user_id").
 		Build()
 	// 发起请求

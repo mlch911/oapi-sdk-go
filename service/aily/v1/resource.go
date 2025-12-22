@@ -354,6 +354,84 @@ func (a *ailySessionRun) ListByIterator(ctx context.Context, req *ListAilySessio
 		limit:    req.Limit}, nil
 }
 
+// Create
+//
+// - 创建数据知识
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=create&project=aily&resource=app.data_asset&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/ailyv1/create_appDataAsset.go
+func (a *appDataAsset) Create(ctx context.Context, req *CreateAppDataAssetReq, options ...larkcore.RequestOptionFunc) (*CreateAppDataAssetResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/aily/v1/apps/:app_id/data_assets"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser, larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &CreateAppDataAssetResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, a.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Delete
+//
+// - 删除数据知识
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=delete&project=aily&resource=app.data_asset&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/ailyv1/delete_appDataAsset.go
+func (a *appDataAsset) Delete(ctx context.Context, req *DeleteAppDataAssetReq, options ...larkcore.RequestOptionFunc) (*DeleteAppDataAssetResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/aily/v1/apps/:app_id/data_assets/:data_asset_id"
+	apiReq.HttpMethod = http.MethodDelete
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser, larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &DeleteAppDataAssetResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, a.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Get
+//
+// - 获取数据知识
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=get&project=aily&resource=app.data_asset&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/ailyv1/get_appDataAsset.go
+func (a *appDataAsset) Get(ctx context.Context, req *GetAppDataAssetReq, options ...larkcore.RequestOptionFunc) (*GetAppDataAssetResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/aily/v1/apps/:app_id/data_assets/:data_asset_id"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser, larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &GetAppDataAssetResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, a.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
 // List
 //
 // - 获取数据与知识列表
@@ -386,6 +464,33 @@ func (a *appDataAsset) ListByIterator(ctx context.Context, req *ListAppDataAsset
 		listFunc: a.List,
 		options:  options,
 		limit:    req.Limit}, nil
+}
+
+// UploadFile
+//
+// - 上传数据知识文件
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=upload_file&project=aily&resource=app.data_asset&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/ailyv1/uploadFile_appDataAsset.go
+func (a *appDataAsset) UploadFile(ctx context.Context, req *UploadFileAppDataAssetReq, options ...larkcore.RequestOptionFunc) (*UploadFileAppDataAssetResp, error) {
+	options = append(options, larkcore.WithFileUpload())
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/aily/v1/apps/:app_id/data_assets/upload_file"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser, larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &UploadFileAppDataAssetResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, a.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // List

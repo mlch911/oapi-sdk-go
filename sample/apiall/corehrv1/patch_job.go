@@ -35,6 +35,7 @@ func main() {
 			Description([]*larkcorehr.I18n{larkcorehr.NewI18nBuilder().Build()}).
 			Active(true).
 			JobTitle([]*larkcorehr.I18n{larkcorehr.NewI18nBuilder().Build()}).
+			PathwayId("4719519211875096301").
 			JobFamilyIdList([]string{}).
 			JobLevelIdList([]string{}).
 			WorkingHoursTypeId("6890452208593372679").

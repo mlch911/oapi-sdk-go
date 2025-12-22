@@ -58,25 +58,6 @@ const (
 )
 
 const (
-	ShowLanguageListSpaceLangZH   = "zh"    // 简体中文
-	ShowLanguageListSpaceLangID   = "id"    // 印尼语
-	ShowLanguageListSpaceLangDE   = "de"    // 德语
-	ShowLanguageListSpaceLangEN   = "en"    // 英语
-	ShowLanguageListSpaceLangES   = "es"    // 西班牙语
-	ShowLanguageListSpaceLangFR   = "fr"    // 法语
-	ShowLanguageListSpaceLangIT   = "it"    // 意大利语
-	ShowLanguageListSpaceLangPT   = "pt"    // 葡萄牙语
-	ShowLanguageListSpaceLangVI   = "vi"    // 越南语
-	ShowLanguageListSpaceLangRU   = "ru"    // 俄语
-	ShowLanguageListSpaceLangHI   = "hi"    // 印地语
-	ShowLanguageListSpaceLangTH   = "th"    // 泰语
-	ShowLanguageListSpaceLangKO   = "ko"    // 韩语
-	ShowLanguageListSpaceLangJA   = "ja"    // 日语
-	ShowLanguageListSpaceLangZHHK = "zh-HK" // 繁体中文（中国香港）
-	ShowLanguageListSpaceLangZHTW = "zh-TW" // 繁体中文（中国台湾）
-)
-
-const (
 	TypeUser       = "user"       // 用户
 	TypeChat       = "chat"       // 群组
 	TypeDepartment = "department" // 组织架构
@@ -130,6 +111,8 @@ func NewDepartmentIdBuilder() *DepartmentIdBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *DepartmentIdBuilder {
 	builder.departmentId = departmentId
@@ -137,6 +120,8 @@ func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *Departmen
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) OpenDepartmentId(openDepartmentId string) *DepartmentIdBuilder {
 	builder.openDepartmentId = openDepartmentId
@@ -1254,14 +1239,6 @@ func (builder *ListSpaceReqBuilder) PageToken(pageToken string) *ListSpaceReqBui
 	return builder
 }
 
-// 当查询个人文档库时，指定返回的文档库名称展示语言。可选值有：zh, id, de, en, es, fr, it, pt, vi, ru, hi, th, ko, ja, zh-HK, zh-TW。
-//
-// 示例值：zh
-func (builder *ListSpaceReqBuilder) Lang(lang string) *ListSpaceReqBuilder {
-	builder.apiReq.QueryParams.Set("lang", fmt.Sprint(lang))
-	return builder
-}
-
 func (builder *ListSpaceReqBuilder) Build() *ListSpaceReq {
 	req := &ListSpaceReq{}
 	req.apiReq = &larkcore.ApiReq{}
@@ -1506,7 +1483,7 @@ func NewCopySpaceNodeReqBodyBuilder() *CopySpaceNodeReqBodyBuilder {
 
 // 目标父节点token
 //
-// 示例值：wikcnKQ1k3p******8Vabce
+//示例值：wikcnKQ1k3p******8Vabce
 func (builder *CopySpaceNodeReqBodyBuilder) TargetParentToken(targetParentToken string) *CopySpaceNodeReqBodyBuilder {
 	builder.targetParentToken = targetParentToken
 	builder.targetParentTokenFlag = true
@@ -1515,7 +1492,7 @@ func (builder *CopySpaceNodeReqBodyBuilder) TargetParentToken(targetParentToken 
 
 // 目标知识空间id
 //
-// 示例值：6946843325487912356
+//示例值：6946843325487912356
 func (builder *CopySpaceNodeReqBodyBuilder) TargetSpaceId(targetSpaceId string) *CopySpaceNodeReqBodyBuilder {
 	builder.targetSpaceId = targetSpaceId
 	builder.targetSpaceIdFlag = true
@@ -1524,7 +1501,7 @@ func (builder *CopySpaceNodeReqBodyBuilder) TargetSpaceId(targetSpaceId string) 
 
 // 复制后的新标题。如果填空，则新标题为空。如果不填，则使用原节点标题。
 //
-// 示例值：新标题。
+//示例值：新标题。
 func (builder *CopySpaceNodeReqBodyBuilder) Title(title string) *CopySpaceNodeReqBodyBuilder {
 	builder.title = title
 	builder.titleFlag = true
@@ -1826,7 +1803,7 @@ func NewMoveSpaceNodeReqBodyBuilder() *MoveSpaceNodeReqBodyBuilder {
 
 // 移动到的父节点token
 //
-// 示例值：wikbcd6ydSUyOEzbdlt1BfpA5Yc
+//示例值：wikbcd6ydSUyOEzbdlt1BfpA5Yc
 func (builder *MoveSpaceNodeReqBodyBuilder) TargetParentToken(targetParentToken string) *MoveSpaceNodeReqBodyBuilder {
 	builder.targetParentToken = targetParentToken
 	builder.targetParentTokenFlag = true
@@ -1835,7 +1812,7 @@ func (builder *MoveSpaceNodeReqBodyBuilder) TargetParentToken(targetParentToken 
 
 // 移动到的知识空间ID
 //
-// 示例值：7008061636015512345
+//示例值：7008061636015512345
 func (builder *MoveSpaceNodeReqBodyBuilder) TargetSpaceId(targetSpaceId string) *MoveSpaceNodeReqBodyBuilder {
 	builder.targetSpaceId = targetSpaceId
 	builder.targetSpaceIdFlag = true
@@ -1984,7 +1961,7 @@ func NewMoveDocsToWikiSpaceNodeReqBodyBuilder() *MoveDocsToWikiSpaceNodeReqBodyB
 
 // 节点的父亲token。;;传空或不传时将移动为知识空间一级节点。
 //
-// 示例值：wikcnKQ1k3p******8Vabce
+//示例值：wikcnKQ1k3p******8Vabce
 func (builder *MoveDocsToWikiSpaceNodeReqBodyBuilder) ParentWikiToken(parentWikiToken string) *MoveDocsToWikiSpaceNodeReqBodyBuilder {
 	builder.parentWikiToken = parentWikiToken
 	builder.parentWikiTokenFlag = true
@@ -1993,7 +1970,7 @@ func (builder *MoveDocsToWikiSpaceNodeReqBodyBuilder) ParentWikiToken(parentWiki
 
 // 文档类型
 //
-// 示例值：doc
+//示例值：doc
 func (builder *MoveDocsToWikiSpaceNodeReqBodyBuilder) ObjType(objType string) *MoveDocsToWikiSpaceNodeReqBodyBuilder {
 	builder.objType = objType
 	builder.objTypeFlag = true
@@ -2002,7 +1979,7 @@ func (builder *MoveDocsToWikiSpaceNodeReqBodyBuilder) ObjType(objType string) *M
 
 // 文档token
 //
-// 示例值：doccnzAaOD******Wabcdef
+//示例值：doccnzAaOD******Wabcdef
 func (builder *MoveDocsToWikiSpaceNodeReqBodyBuilder) ObjToken(objToken string) *MoveDocsToWikiSpaceNodeReqBodyBuilder {
 	builder.objToken = objToken
 	builder.objTokenFlag = true
@@ -2011,7 +1988,7 @@ func (builder *MoveDocsToWikiSpaceNodeReqBodyBuilder) ObjToken(objToken string) 
 
 // 没有权限时，是否申请移动文档。;;如果申请移动，文档将在处理人同意时自动移动至指定位置。
 //
-// 示例值：true
+//示例值：true
 func (builder *MoveDocsToWikiSpaceNodeReqBodyBuilder) Apply(apply bool) *MoveDocsToWikiSpaceNodeReqBodyBuilder {
 	builder.apply = apply
 	builder.applyFlag = true
@@ -2185,7 +2162,7 @@ func NewUpdateTitleSpaceNodeReqBodyBuilder() *UpdateTitleSpaceNodeReqBodyBuilder
 
 // 节点新标题
 //
-// 示例值：新标题
+//示例值：新标题
 func (builder *UpdateTitleSpaceNodeReqBodyBuilder) Title(title string) *UpdateTitleSpaceNodeReqBodyBuilder {
 	builder.title = title
 	builder.titleFlag = true

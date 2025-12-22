@@ -29,7 +29,6 @@ func main() {
 	req := larkcorehr.NewCreateCostCenterReqBuilder().
 		UserIdType("people_corehr_id").
 		CostCenter(larkcorehr.NewCostCenterBuilder().
-			CostCenterVersionId("6969828847121885087").
 			Name([]*larkcorehr.I18n{larkcorehr.NewI18nBuilder().Build()}).
 			Code("MDPD00000023").
 			ParentCostCenterId("6862995757234914824").

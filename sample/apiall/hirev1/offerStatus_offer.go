@@ -33,6 +33,7 @@ func main() {
 			ExpirationDate("2023-01-01").
 			TerminationReasonIdList([]string{}).
 			TerminationReasonNote("不符合期望").
+			CancelOfferTerminationType(1).
 			Build()).
 		Build()
 	// 发起请求

@@ -32,6 +32,7 @@ func main() {
 		UserIdType("open_id").
 		ResourceType("tasklist").
 		ResourceId("5ffbe0ca-6600-41e0-a634-2b38cbcf13b8").
+		UpdateMsec("1").
 		Build()
 	// 发起请求
 	resp, err := client.Task.V2.CustomField.List(context.Background(), req)

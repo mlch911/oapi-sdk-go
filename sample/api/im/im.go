@@ -23,7 +23,6 @@ import (
 	lark "github.com/larksuite/oapi-sdk-go/v3"
 	larkcard "github.com/larksuite/oapi-sdk-go/v3/card"
 	larkcore "github.com/larksuite/oapi-sdk-go/v3/core"
-	larkgray_test_open_sg "github.com/larksuite/oapi-sdk-go/v3/service/gray_test_open_sg/v1"
 	larkim "github.com/larksuite/oapi-sdk-go/v3/service/im/v1"
 )
 
@@ -787,7 +786,7 @@ func sendPostMsgUseBuilder(client *lark.Client) {
 		ReceiveIdType(larkim.ReceiveIdTypeOpenId).
 		Body(larkim.NewCreateMessageReqBodyBuilder().
 			MsgType(larkim.MsgTypePost).
-			ReceiveId("ou_e8daec8c7bd6269852c84239ac85db3e").
+			ReceiveId("ou_e3f3fca5204cdf7552531c84a32f60d1").
 			Content(postText).
 			Build()).
 		Build())
@@ -804,40 +803,6 @@ func sendPostMsgUseBuilder(client *lark.Client) {
 		fmt.Println(resp.RequestId(), resp.Msg, resp.Code)
 	}
 
-}
-
-func testCreate(client *lark.Client) {
-	resp, err := client.GrayTestOpenSg.Moto.Create(context.Background(), larkgray_test_open_sg.
-		NewCreateMotoReqBuilder().
-		Level(larkgray_test_open_sg.
-			NewLevelBuilder().
-			Body("ss").
-			Level("level").
-			Type("ss").
-			Build()).
-		Build())
-	if err != nil {
-		switch er := err.(type) {
-		case *larkcore.IllegalParamError:
-			fmt.Println(er.Error()) // 处理错误
-		case *larkcore.ClientTimeoutError:
-			fmt.Println(er.Error()) // 处理错误
-		case *larkcore.ServerTimeoutError:
-			fmt.Println(er.Error()) // 处理错误
-		case *larkcore.DialFailedError:
-			fmt.Println(er.Error()) // 处理错误
-		default:
-			//其他处理
-			fmt.Println(err)
-		}
-		return
-	}
-
-	if resp.Success() {
-		fmt.Println(larkcore.Prettify(resp))
-	} else {
-		fmt.Println(resp.RequestId(), resp.Msg, resp.Code)
-	}
 }
 
 func sendRawReq(cli *lark.Client) {

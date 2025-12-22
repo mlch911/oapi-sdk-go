@@ -958,7 +958,7 @@ func (n *notification) Get(ctx context.Context, req *GetNotificationReq, options
 	apiReq := req.apiReq
 	apiReq.ApiPath = "/open-apis/helpdesk/v1/notifications/:notification_id"
 	apiReq.HttpMethod = http.MethodGet
-	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser}
 	apiResp, err := larkcore.Request(ctx, apiReq, n.config, options...)
 	if err != nil {
 		return nil, err

@@ -1792,6 +1792,8 @@ func NewAdministratorBuilder() *AdministratorBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *AdministratorBuilder) UserId(userId string) *AdministratorBuilder {
 	builder.userId = userId
@@ -3966,11 +3968,31 @@ func (builder *AuditPcContextBuilder) Build() *AuditPcContext {
 
 type AuditRecipientDetail struct {
 	PermissionActionType *string `json:"permission_action_type,omitempty"` // 修改权限协作者
+
+	ChatId *string `json:"chat_id,omitempty"` // 会话 id
+
+	ChatName *string `json:"chat_name,omitempty"` // 会话名称
+
+	ChatType *int `json:"chat_type,omitempty"` // 聊天类型，1 单聊，2 群聊，3 话题群
+
+	ExternalFlag *bool `json:"external_flag,omitempty"` // 外部用户标识，false 内部、true 外部
 }
 
 type AuditRecipientDetailBuilder struct {
 	permissionActionType     string // 修改权限协作者
 	permissionActionTypeFlag bool
+
+	chatId     string // 会话 id
+	chatIdFlag bool
+
+	chatName     string // 会话名称
+	chatNameFlag bool
+
+	chatType     int // 聊天类型，1 单聊，2 群聊，3 话题群
+	chatTypeFlag bool
+
+	externalFlag     bool // 外部用户标识，false 内部、true 外部
+	externalFlagFlag bool
 }
 
 func NewAuditRecipientDetailBuilder() *AuditRecipientDetailBuilder {
@@ -3980,10 +4002,46 @@ func NewAuditRecipientDetailBuilder() *AuditRecipientDetailBuilder {
 
 // 修改权限协作者
 //
-// 示例值：
+// 示例值：1
 func (builder *AuditRecipientDetailBuilder) PermissionActionType(permissionActionType string) *AuditRecipientDetailBuilder {
 	builder.permissionActionType = permissionActionType
 	builder.permissionActionTypeFlag = true
+	return builder
+}
+
+// 会话 id
+//
+// 示例值：oc_xxxx
+func (builder *AuditRecipientDetailBuilder) ChatId(chatId string) *AuditRecipientDetailBuilder {
+	builder.chatId = chatId
+	builder.chatIdFlag = true
+	return builder
+}
+
+// 会话名称
+//
+// 示例值：test
+func (builder *AuditRecipientDetailBuilder) ChatName(chatName string) *AuditRecipientDetailBuilder {
+	builder.chatName = chatName
+	builder.chatNameFlag = true
+	return builder
+}
+
+// 聊天类型，1 单聊，2 群聊，3 话题群
+//
+// 示例值：1
+func (builder *AuditRecipientDetailBuilder) ChatType(chatType int) *AuditRecipientDetailBuilder {
+	builder.chatType = chatType
+	builder.chatTypeFlag = true
+	return builder
+}
+
+// 外部用户标识，false 内部、true 外部
+//
+// 示例值：false
+func (builder *AuditRecipientDetailBuilder) ExternalFlag(externalFlag bool) *AuditRecipientDetailBuilder {
+	builder.externalFlag = externalFlag
+	builder.externalFlagFlag = true
 	return builder
 }
 
@@ -3991,6 +4049,22 @@ func (builder *AuditRecipientDetailBuilder) Build() *AuditRecipientDetail {
 	req := &AuditRecipientDetail{}
 	if builder.permissionActionTypeFlag {
 		req.PermissionActionType = &builder.permissionActionType
+
+	}
+	if builder.chatIdFlag {
+		req.ChatId = &builder.chatId
+
+	}
+	if builder.chatNameFlag {
+		req.ChatName = &builder.chatName
+
+	}
+	if builder.chatTypeFlag {
+		req.ChatType = &builder.chatType
+
+	}
+	if builder.externalFlagFlag {
+		req.ExternalFlag = &builder.externalFlag
 
 	}
 	return req
@@ -4270,6 +4344,8 @@ func NewDepartmentIdBuilder() *DepartmentIdBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *DepartmentIdBuilder {
 	builder.departmentId = departmentId
@@ -4277,6 +4353,8 @@ func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *Departmen
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) OpenDepartmentId(openDepartmentId string) *DepartmentIdBuilder {
 	builder.openDepartmentId = openDepartmentId
@@ -9188,7 +9266,7 @@ func NewCreateBadgeImageReqBodyBuilder() *CreateBadgeImageReqBodyBuilder {
 
 // 勋章图片的文件，仅支持 PNG 格式，320 x 320 像素，大小不超过 1024 KB。
 //
-// 示例值：file binary
+//示例值：file binary
 func (builder *CreateBadgeImageReqBodyBuilder) ImageFile(imageFile io.Reader) *CreateBadgeImageReqBodyBuilder {
 	builder.imageFile = imageFile
 	builder.imageFileFlag = true
@@ -9197,7 +9275,7 @@ func (builder *CreateBadgeImageReqBodyBuilder) ImageFile(imageFile io.Reader) *C
 
 // 图片的类型
 //
-// 示例值：1
+//示例值：1
 func (builder *CreateBadgeImageReqBodyBuilder) ImageType(imageType int) *CreateBadgeImageReqBodyBuilder {
 	builder.imageType = imageType
 	builder.imageTypeFlag = true
@@ -9327,7 +9405,7 @@ func NewResetPasswordReqBodyBuilder() *ResetPasswordReqBodyBuilder {
 
 // 需要重置的密码参数，不少于8个字符，字母、数字和符号，至少三选二
 //
-// 示例值：1234abcd
+//示例值：1234abcd
 func (builder *ResetPasswordReqBodyBuilder) Password(password *Password) *ResetPasswordReqBodyBuilder {
 	builder.password = password
 	builder.passwordFlag = true
@@ -9336,7 +9414,7 @@ func (builder *ResetPasswordReqBodyBuilder) Password(password *Password) *ResetP
 
 // 待修改密码的用户ID，只针对邮箱登录凭证与企业邮箱(包括别名)相等的用户生效
 //
-// 示例值：abc123
+//示例值：abc123
 func (builder *ResetPasswordReqBodyBuilder) UserId(userId string) *ResetPasswordReqBodyBuilder {
 	builder.userId = userId
 	builder.userIdFlag = true

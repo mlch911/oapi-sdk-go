@@ -28,16 +28,16 @@ func main() {
 	// 创建请求对象
 	req := larkhelpdesk.NewCreateTicketCustomizedFieldReqBuilder().
 		TicketCustomizedField(larkhelpdesk.NewTicketCustomizedFieldBuilder().
-			HelpdeskId("").
+			HelpdeskId("7836004780707807251").
 			KeyName("").
 			DisplayName("").
 			Position("").
 			FieldType("").
 			Description("").
-			Visible(false).
-			Editable(false).
-			Required(false).
-			DropdownAllowMultiple(false).
+			Visible(true).
+			Editable(true).
+			Required(true).
+			DropdownAllowMultiple(true).
 			Build()).
 		Build()
 	// 发起请求

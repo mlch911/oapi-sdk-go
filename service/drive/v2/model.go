@@ -29,9 +29,9 @@ const (
 )
 
 const (
-	UserIdTypeUserId  = "user_id"  // 以user_id来识别用户
-	UserIdTypeUnionId = "union_id" // 以union_id来识别用户
-	UserIdTypeOpenId  = "open_id"  // 以open_id来识别用户
+	OpenAPIListFileLikesUserIDTypeUserId  = "user_id"  // 以user_id来识别用户
+	OpenAPIListFileLikesUserIDTypeUnionId = "union_id" // 以union_id来识别用户
+	OpenAPIListFileLikesUserIDTypeOpenId  = "open_id"  // 以open_id来识别用户
 )
 
 const (
@@ -47,47 +47,47 @@ const (
 )
 
 const (
-	ExternalAccessEntityOpen                    = "open"                       // 打开
-	ExternalAccessEntityClosed                  = "closed"                     // 关闭
-	ExternalAccessEntityAllowSharePartnerTenant = "allow_share_partner_tenant" // 允许分享给关联组织
+	PermissionPublicExternalAccessEntityOpen                    = "open"                       // 打开
+	PermissionPublicExternalAccessEntityClosed                  = "closed"                     // 关闭
+	PermissionPublicExternalAccessEntityAllowSharePartnerTenant = "allow_share_partner_tenant" // 允许分享给关联组织
 )
 
 const (
-	SecurityEntityAnyoneCanView  = "anyone_can_view"  // 拥有可阅读权限的用户
-	SecurityEntityAnyoneCanEdit  = "anyone_can_edit"  // 拥有可编辑权限的用户
-	SecurityEntityOnlyFullAccess = "only_full_access" // 拥有可管理权限（包括我）的用户
+	PermissionPublicSecurityEntityAnyoneCanView  = "anyone_can_view"  // 拥有可阅读权限的用户
+	PermissionPublicSecurityEntityAnyoneCanEdit  = "anyone_can_edit"  // 拥有可编辑权限的用户
+	PermissionPublicSecurityEntityOnlyFullAccess = "only_full_access" // 拥有可管理权限（包括我）的用户
 )
 
 const (
-	CommentEntityAnyoneCanView = "anyone_can_view" // 拥有可阅读权限的用户
-	CommentEntityAnyoneCanEdit = "anyone_can_edit" // 拥有可编辑权限的用户
+	PermissionPublicCommentEntityAnyoneCanView = "anyone_can_view" // 拥有可阅读权限的用户
+	PermissionPublicCommentEntityAnyoneCanEdit = "anyone_can_edit" // 拥有可编辑权限的用户
 )
 
 const (
-	ShareEntityAnyone     = "anyone"      // 所有可阅读或编辑此文档的用户
-	ShareEntitySameTenant = "same_tenant" // 组织内所有可阅读或编辑此文档的用户
+	PermissionPublicShareEntityAnyone     = "anyone"      // 所有可阅读或编辑此文档的用户
+	PermissionPublicShareEntitySameTenant = "same_tenant" // 组织内所有可阅读或编辑此文档的用户
 )
 
 const (
-	ManageCollaboratorEntityCollaboratorCanView    = "collaborator_can_view"    // 拥有可阅读权限的协作者
-	ManageCollaboratorEntityCollaboratorCanEdit    = "collaborator_can_edit"    // 拥有可编辑权限的协作者
-	ManageCollaboratorEntityCollaboratorFullAccess = "collaborator_full_access" // 拥有可管理权限（包括我）的协作者
+	PermissionPublicManageCollaboratorEntityCollaboratorCanView    = "collaborator_can_view"    // 拥有可阅读权限的协作者
+	PermissionPublicManageCollaboratorEntityCollaboratorCanEdit    = "collaborator_can_edit"    // 拥有可编辑权限的协作者
+	PermissionPublicManageCollaboratorEntityCollaboratorFullAccess = "collaborator_full_access" // 拥有可管理权限（包括我）的协作者
 )
 
 const (
-	LinkShareEntityTenantReadable        = "tenant_readable"         // 组织内获得链接的人可阅读
-	LinkShareEntityTenantEditable        = "tenant_editable"         // 组织内获得链接的人可编辑
-	LinkShareEntityPartnerTenantReadable = "partner_tenant_readable" // 关联组织的人可阅读
-	LinkShareEntityPartnerTenantEditable = "partner_tenant_editable" // 关联组织的人可编辑
-	LinkShareEntityAnyoneReadable        = "anyone_readable"         // 互联网上获得链接的任何人可阅读（仅external_access=“true”时有效）
-	LinkShareEntityAnyoneEditable        = "anyone_editable"         // 互联网上获得链接的任何人可编辑（仅external_access=“true”时有效）
-	LinkShareEntityClosed                = "closed"                  // 关闭链接分享
+	PermissionPublicLinkShareEntityTenantReadable        = "tenant_readable"         // 组织内获得链接的人可阅读
+	PermissionPublicLinkShareEntityTenantEditable        = "tenant_editable"         // 组织内获得链接的人可编辑
+	PermissionPublicLinkShareEntityPartnerTenantReadable = "partner_tenant_readable" // 关联组织的人可阅读
+	PermissionPublicLinkShareEntityPartnerTenantEditable = "partner_tenant_editable" // 关联组织的人可编辑
+	PermissionPublicLinkShareEntityAnyoneReadable        = "anyone_readable"         // 互联网上获得链接的任何人可阅读（仅external_access=“true”时有效）
+	PermissionPublicLinkShareEntityAnyoneEditable        = "anyone_editable"         // 互联网上获得链接的任何人可编辑（仅external_access=“true”时有效）
+	PermissionPublicLinkShareEntityClosed                = "closed"                  // 关闭链接分享
 )
 
 const (
-	CopyEntityAnyoneCanView  = "anyone_can_view"  // 拥有可阅读权限的用户
-	CopyEntityAnyoneCanEdit  = "anyone_can_edit"  // 拥有可编辑权限的用户
-	CopyEntityOnlyFullAccess = "only_full_access" // 拥有可管理权限（包括我）的协作者
+	PermissionPublicCopyEntityAnyoneCanView  = "anyone_can_view"  // 拥有可阅读权限的用户
+	PermissionPublicCopyEntityAnyoneCanEdit  = "anyone_can_edit"  // 拥有可编辑权限的用户
+	PermissionPublicCopyEntityOnlyFullAccess = "only_full_access" // 拥有可管理权限（包括我）的协作者
 )
 
 const (
@@ -101,6 +101,159 @@ const (
 	TokenTypePatchPermissionPublicMinutes  = "minutes"  // 妙记
 	TokenTypePatchPermissionPublicSlides   = "slides"   // 幻灯片
 )
+
+type BizInfo struct {
+	Name *string `json:"name,omitempty"` // 业务名称，ccm代表云文档容量，vc代表视频会议，mail代表邮箱，im代表聊天文件
+
+	Used *string `json:"used,omitempty"` // 业务已经使用的容量，单位byte，最大可能为int64，需要自己转换为数字
+
+	Quota *string `json:"quota,omitempty"` // 额度，单位byte，最大可能为int64，需要自己转换为数字
+
+	Unlimited *bool `json:"unlimited,omitempty"` // 是否没设置容量限制
+}
+
+type BizInfoBuilder struct {
+	name     string // 业务名称，ccm代表云文档容量，vc代表视频会议，mail代表邮箱，im代表聊天文件
+	nameFlag bool
+
+	used     string // 业务已经使用的容量，单位byte，最大可能为int64，需要自己转换为数字
+	usedFlag bool
+
+	quota     string // 额度，单位byte，最大可能为int64，需要自己转换为数字
+	quotaFlag bool
+
+	unlimited     bool // 是否没设置容量限制
+	unlimitedFlag bool
+}
+
+func NewBizInfoBuilder() *BizInfoBuilder {
+	builder := &BizInfoBuilder{}
+	return builder
+}
+
+// 业务名称，ccm代表云文档容量，vc代表视频会议，mail代表邮箱，im代表聊天文件
+//
+// 示例值：ccm
+func (builder *BizInfoBuilder) Name(name string) *BizInfoBuilder {
+	builder.name = name
+	builder.nameFlag = true
+	return builder
+}
+
+// 业务已经使用的容量，单位byte，最大可能为int64，需要自己转换为数字
+//
+// 示例值：345567888
+func (builder *BizInfoBuilder) Used(used string) *BizInfoBuilder {
+	builder.used = used
+	builder.usedFlag = true
+	return builder
+}
+
+// 额度，单位byte，最大可能为int64，需要自己转换为数字
+//
+// 示例值：23455666
+func (builder *BizInfoBuilder) Quota(quota string) *BizInfoBuilder {
+	builder.quota = quota
+	builder.quotaFlag = true
+	return builder
+}
+
+// 是否没设置容量限制
+//
+// 示例值：true
+func (builder *BizInfoBuilder) Unlimited(unlimited bool) *BizInfoBuilder {
+	builder.unlimited = unlimited
+	builder.unlimitedFlag = true
+	return builder
+}
+
+func (builder *BizInfoBuilder) Build() *BizInfo {
+	req := &BizInfo{}
+	if builder.nameFlag {
+		req.Name = &builder.name
+
+	}
+	if builder.usedFlag {
+		req.Used = &builder.used
+
+	}
+	if builder.quotaFlag {
+		req.Quota = &builder.quota
+
+	}
+	if builder.unlimitedFlag {
+		req.Unlimited = &builder.unlimited
+
+	}
+	return req
+}
+
+type Condition struct {
+	Range *int `json:"range,omitempty"` // 条件类型
+
+	Operator *string `json:"operator,omitempty"` // 操作符
+
+	Params []string `json:"params,omitempty"` // 参数，具体取值与range有关，见range描述
+}
+
+type ConditionBuilder struct {
+	range_    int // 条件类型
+	rangeFlag bool
+
+	operator     string // 操作符
+	operatorFlag bool
+
+	params     []string // 参数，具体取值与range有关，见range描述
+	paramsFlag bool
+}
+
+func NewConditionBuilder() *ConditionBuilder {
+	builder := &ConditionBuilder{}
+	return builder
+}
+
+// 条件类型
+//
+// 示例值：范围
+func (builder *ConditionBuilder) Range(range_ int) *ConditionBuilder {
+	builder.range_ = range_
+	builder.rangeFlag = true
+	return builder
+}
+
+// 操作符
+//
+// 示例值：resign
+func (builder *ConditionBuilder) Operator(operator string) *ConditionBuilder {
+	builder.operator = operator
+	builder.operatorFlag = true
+	return builder
+}
+
+// 参数，具体取值与range有关，见range描述
+//
+// 示例值：
+func (builder *ConditionBuilder) Params(params []string) *ConditionBuilder {
+	builder.params = params
+	builder.paramsFlag = true
+	return builder
+}
+
+func (builder *ConditionBuilder) Build() *Condition {
+	req := &Condition{}
+	if builder.rangeFlag {
+		req.Range = &builder.range_
+
+	}
+	if builder.operatorFlag {
+		req.Operator = &builder.operator
+
+	}
+	if builder.paramsFlag {
+		req.Params = builder.params
+	}
+	return req
+}
 
 type DepartmentId struct {
 	DepartmentId *string `json:"department_id,omitempty"` //
@@ -121,6 +274,8 @@ func NewDepartmentIdBuilder() *DepartmentIdBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *DepartmentIdBuilder {
 	builder.departmentId = departmentId
@@ -128,6 +283,8 @@ func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *Departmen
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) OpenDepartmentId(openDepartmentId string) *DepartmentIdBuilder {
 	builder.openDepartmentId = openDepartmentId
@@ -143,6 +300,74 @@ func (builder *DepartmentIdBuilder) Build() *DepartmentId {
 	}
 	if builder.openDepartmentIdFlag {
 		req.OpenDepartmentId = &builder.openDepartmentId
+
+	}
+	return req
+}
+
+type DepartmentInfo struct {
+	DepartmentName *string `json:"department_name,omitempty"` // 部门名称
+
+	DepartmentFullPath *string `json:"department_full_path,omitempty"` // 部门全路径
+
+	CustomId *string `json:"custom_id,omitempty"` // 部门id
+}
+
+type DepartmentInfoBuilder struct {
+	departmentName     string // 部门名称
+	departmentNameFlag bool
+
+	departmentFullPath     string // 部门全路径
+	departmentFullPathFlag bool
+
+	customId     string // 部门id
+	customIdFlag bool
+}
+
+func NewDepartmentInfoBuilder() *DepartmentInfoBuilder {
+	builder := &DepartmentInfoBuilder{}
+	return builder
+}
+
+// 部门名称
+//
+// 示例值：部门
+func (builder *DepartmentInfoBuilder) DepartmentName(departmentName string) *DepartmentInfoBuilder {
+	builder.departmentName = departmentName
+	builder.departmentNameFlag = true
+	return builder
+}
+
+// 部门全路径
+//
+// 示例值：根部门/次级部门/叶子部门
+func (builder *DepartmentInfoBuilder) DepartmentFullPath(departmentFullPath string) *DepartmentInfoBuilder {
+	builder.departmentFullPath = departmentFullPath
+	builder.departmentFullPathFlag = true
+	return builder
+}
+
+// 部门id
+//
+// 示例值：dg25d5662fdd639g
+func (builder *DepartmentInfoBuilder) CustomId(customId string) *DepartmentInfoBuilder {
+	builder.customId = customId
+	builder.customIdFlag = true
+	return builder
+}
+
+func (builder *DepartmentInfoBuilder) Build() *DepartmentInfo {
+	req := &DepartmentInfo{}
+	if builder.departmentNameFlag {
+		req.DepartmentName = &builder.departmentName
+
+	}
+	if builder.departmentFullPathFlag {
+		req.DepartmentFullPath = &builder.departmentFullPath
+
+	}
+	if builder.customIdFlag {
+		req.CustomId = &builder.customId
 
 	}
 	return req
@@ -915,6 +1140,71 @@ func (builder *PermissionPublicBuilder) Build() *PermissionPublic {
 	return req
 }
 
+type QuotaDetail struct {
+	UserInfo *UserInfo `json:"user_info,omitempty"` // 用户信息
+
+	DepartmentInfo []*DepartmentInfo `json:"department_info,omitempty"` // 部门
+
+	BizLists []*BizInfo `json:"biz_lists,omitempty"` // 每个业务的使用量列表
+}
+
+type QuotaDetailBuilder struct {
+	userInfo     *UserInfo // 用户信息
+	userInfoFlag bool
+
+	departmentInfo     []*DepartmentInfo // 部门
+	departmentInfoFlag bool
+
+	bizLists     []*BizInfo // 每个业务的使用量列表
+	bizListsFlag bool
+}
+
+func NewQuotaDetailBuilder() *QuotaDetailBuilder {
+	builder := &QuotaDetailBuilder{}
+	return builder
+}
+
+// 用户信息
+//
+// 示例值：
+func (builder *QuotaDetailBuilder) UserInfo(userInfo *UserInfo) *QuotaDetailBuilder {
+	builder.userInfo = userInfo
+	builder.userInfoFlag = true
+	return builder
+}
+
+// 部门
+//
+// 示例值：
+func (builder *QuotaDetailBuilder) DepartmentInfo(departmentInfo []*DepartmentInfo) *QuotaDetailBuilder {
+	builder.departmentInfo = departmentInfo
+	builder.departmentInfoFlag = true
+	return builder
+}
+
+// 每个业务的使用量列表
+//
+// 示例值：
+func (builder *QuotaDetailBuilder) BizLists(bizLists []*BizInfo) *QuotaDetailBuilder {
+	builder.bizLists = bizLists
+	builder.bizListsFlag = true
+	return builder
+}
+
+func (builder *QuotaDetailBuilder) Build() *QuotaDetail {
+	req := &QuotaDetail{}
+	if builder.userInfoFlag {
+		req.UserInfo = builder.userInfo
+	}
+	if builder.departmentInfoFlag {
+		req.DepartmentInfo = builder.departmentInfo
+	}
+	if builder.bizListsFlag {
+		req.BizLists = builder.bizLists
+	}
+	return req
+}
+
 type SecureLabel struct {
 	Id *string `json:"id,omitempty"` // 密级标签 ID
 
@@ -960,6 +1250,225 @@ func (builder *SecureLabelBuilder) Build() *SecureLabel {
 	}
 	if builder.nameFlag {
 		req.Name = &builder.name
+
+	}
+	return req
+}
+
+type StorageTask struct {
+	PolicyId *int `json:"policy_id,omitempty"` // 策略ID，固定1100
+
+	TaskName *string `json:"task_name,omitempty"` // 清理任务名称
+
+	Config *TaskConfig `json:"config,omitempty"` // 任务条件
+
+	TrashRemainDays *int `json:"trash_remain_days,omitempty"` // 回收站保留时间
+}
+
+type StorageTaskBuilder struct {
+	policyId     int // 策略ID，固定1100
+	policyIdFlag bool
+
+	taskName     string // 清理任务名称
+	taskNameFlag bool
+
+	config     *TaskConfig // 任务条件
+	configFlag bool
+
+	trashRemainDays     int // 回收站保留时间
+	trashRemainDaysFlag bool
+}
+
+func NewStorageTaskBuilder() *StorageTaskBuilder {
+	builder := &StorageTaskBuilder{}
+	return builder
+}
+
+// 策略ID，固定1100
+//
+// 示例值：1100
+func (builder *StorageTaskBuilder) PolicyId(policyId int) *StorageTaskBuilder {
+	builder.policyId = policyId
+	builder.policyIdFlag = true
+	return builder
+}
+
+// 清理任务名称
+//
+// 示例值：清理任务1
+func (builder *StorageTaskBuilder) TaskName(taskName string) *StorageTaskBuilder {
+	builder.taskName = taskName
+	builder.taskNameFlag = true
+	return builder
+}
+
+// 任务条件
+//
+// 示例值：
+func (builder *StorageTaskBuilder) Config(config *TaskConfig) *StorageTaskBuilder {
+	builder.config = config
+	builder.configFlag = true
+	return builder
+}
+
+// 回收站保留时间
+//
+// 示例值：30
+func (builder *StorageTaskBuilder) TrashRemainDays(trashRemainDays int) *StorageTaskBuilder {
+	builder.trashRemainDays = trashRemainDays
+	builder.trashRemainDaysFlag = true
+	return builder
+}
+
+func (builder *StorageTaskBuilder) Build() *StorageTask {
+	req := &StorageTask{}
+	if builder.policyIdFlag {
+		req.PolicyId = &builder.policyId
+
+	}
+	if builder.taskNameFlag {
+		req.TaskName = &builder.taskName
+
+	}
+	if builder.configFlag {
+		req.Config = builder.config
+	}
+	if builder.trashRemainDaysFlag {
+		req.TrashRemainDays = &builder.trashRemainDays
+
+	}
+	return req
+}
+
+type TaskConfig struct {
+	Includes []*Condition `json:"includes,omitempty"` // 被圈选的用户范围
+
+	Excludes []*Condition `json:"excludes,omitempty"` // 白名单，即被剔除的用户范围
+}
+
+type TaskConfigBuilder struct {
+	includes     []*Condition // 被圈选的用户范围
+	includesFlag bool
+
+	excludes     []*Condition // 白名单，即被剔除的用户范围
+	excludesFlag bool
+}
+
+func NewTaskConfigBuilder() *TaskConfigBuilder {
+	builder := &TaskConfigBuilder{}
+	return builder
+}
+
+// 被圈选的用户范围
+//
+// 示例值：
+func (builder *TaskConfigBuilder) Includes(includes []*Condition) *TaskConfigBuilder {
+	builder.includes = includes
+	builder.includesFlag = true
+	return builder
+}
+
+// 白名单，即被剔除的用户范围
+//
+// 示例值：
+func (builder *TaskConfigBuilder) Excludes(excludes []*Condition) *TaskConfigBuilder {
+	builder.excludes = excludes
+	builder.excludesFlag = true
+	return builder
+}
+
+func (builder *TaskConfigBuilder) Build() *TaskConfig {
+	req := &TaskConfig{}
+	if builder.includesFlag {
+		req.Includes = builder.includes
+	}
+	if builder.excludesFlag {
+		req.Excludes = builder.excludes
+	}
+	return req
+}
+
+type UserInfo struct {
+	UserName *string `json:"user_name,omitempty"` // 用户姓名
+
+	AvatarUrl *string `json:"avatar_url,omitempty"` // 头像url
+
+	Status *int `json:"status,omitempty"` // 用户状态，用二进制的位表示，总共6bit（如111111），从左到右，每个标识位分别代表：未加入，主动退出，设置自定义头像，未激活 ，离职，冻结。如返回satus=2，其二进制为000010，表示该员工已离职
+
+	EmployeeId *string `json:"employee_id,omitempty"` // 雇员id
+}
+
+type UserInfoBuilder struct {
+	userName     string // 用户姓名
+	userNameFlag bool
+
+	avatarUrl     string // 头像url
+	avatarUrlFlag bool
+
+	status     int // 用户状态，用二进制的位表示，总共6bit（如111111），从左到右，每个标识位分别代表：未加入，主动退出，设置自定义头像，未激活 ，离职，冻结。如返回satus=2，其二进制为000010，表示该员工已离职
+	statusFlag bool
+
+	employeeId     string // 雇员id
+	employeeIdFlag bool
+}
+
+func NewUserInfoBuilder() *UserInfoBuilder {
+	builder := &UserInfoBuilder{}
+	return builder
+}
+
+// 用户姓名
+//
+// 示例值：张三
+func (builder *UserInfoBuilder) UserName(userName string) *UserInfoBuilder {
+	builder.userName = userName
+	builder.userNameFlag = true
+	return builder
+}
+
+// 头像url
+//
+// 示例值：https://xxx.feishu.cn/static-resource/v1/xxx
+func (builder *UserInfoBuilder) AvatarUrl(avatarUrl string) *UserInfoBuilder {
+	builder.avatarUrl = avatarUrl
+	builder.avatarUrlFlag = true
+	return builder
+}
+
+// 用户状态，用二进制的位表示，总共6bit（如111111），从左到右，每个标识位分别代表：未加入，主动退出，设置自定义头像，未激活 ，离职，冻结。如返回satus=2，其二进制为000010，表示该员工已离职
+//
+// 示例值：1
+func (builder *UserInfoBuilder) Status(status int) *UserInfoBuilder {
+	builder.status = status
+	builder.statusFlag = true
+	return builder
+}
+
+// 雇员id
+//
+// 示例值：153dfegf
+func (builder *UserInfoBuilder) EmployeeId(employeeId string) *UserInfoBuilder {
+	builder.employeeId = employeeId
+	builder.employeeIdFlag = true
+	return builder
+}
+
+func (builder *UserInfoBuilder) Build() *UserInfo {
+	req := &UserInfo{}
+	if builder.userNameFlag {
+		req.UserName = &builder.userName
+
+	}
+	if builder.avatarUrlFlag {
+		req.AvatarUrl = &builder.avatarUrl
+
+	}
+	if builder.statusFlag {
+		req.Status = &builder.status
+
+	}
+	if builder.employeeIdFlag {
+		req.EmployeeId = &builder.employeeId
 
 	}
 	return req
@@ -1143,6 +1652,7 @@ func (builder *PatchPermissionPublicReqBuilder) Type(type_ string) *PatchPermiss
 	return builder
 }
 
+//
 func (builder *PatchPermissionPublicReqBuilder) PermissionPublic(permissionPublic *PermissionPublic) *PatchPermissionPublicReqBuilder {
 	builder.permissionPublic = permissionPublic
 	return builder

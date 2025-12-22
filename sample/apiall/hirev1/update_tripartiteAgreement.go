@@ -27,7 +27,7 @@ func main() {
 	client := lark.NewClient("appID", "appSecret")
 	// 创建请求对象
 	req := larkhire.NewUpdateTripartiteAgreementReqBuilder().
-		TripartiteAgreementId("").
+		TripartiteAgreementId("7084008015948283905").
 		TripartiteAgreementInfo(larkhire.NewTripartiteAgreementInfoBuilder().
 			State(1).
 			ModifyTime("1698292282661").

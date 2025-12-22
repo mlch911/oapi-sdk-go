@@ -28,17 +28,17 @@ func main() {
 	// 创建请求对象
 	req := larkmail.NewSendUserMailboxMessageReqBuilder().
 		UserMailboxId("user@xxx.xx 或 me").
-		Message(larkmail.NewMessageBuilder().
-			Raw("Q29udGVudC1UeXBlOiB0ZXh0L3BsYWluOyBjaGFyc2V0PSJ1cy1hc2NpaSIKTUlNRS1WZXJzaW9uOiAxLjAKQ29udGVudC1UcmFuc2Zlci1FbmNvZGluZzogN2JpdAp0bzogdG9AeHh4Lnh4CmZyb206IHNlbmRlckB4eHgueHgKc3ViamVjdDogdGhpcyBpcyBhIHN1YmplY3QKCnRoaXMgaXMgdGhlIG1lc3NhZ2UgYm9keS4=").
+		Body(larkmail.NewSendUserMailboxMessageReqBodyBuilder().
 			Subject("邮件标题").
 			To([]*larkmail.MailAddress{larkmail.NewMailAddressBuilder().Build()}).
+			Raw("U3ViamVjdDogSGVsbG8hCkZyb206ICJtaWtlIiA8bWlrZUBtaWtlLmNvbT4KTWltZS1WZXJzaW9uOiAxLjAKQ29udGVudC1UeXBlOiBtdWx0aXBhcnQvYWx0ZXJuYXRpdmU7CiBib3VuZGFyeT1iMjhmYTIyNGExZWU2ZDY3ZjE3OTViNGUxZDEwM2Q3MTBlNzM5ZWVmYjFmZjlmOWQ4NWI4M2NlOTRmMTEKRGF0ZTogV2VkLCAyMyBKdWwgMjAyNSAxNTo0NDoxOCArMDgwMApNZXNzYWdlLUlkOiA8bW9ja3V1aWRtZXNzYWdlX2lkQGxhcmsuY29tPgpUbzogImphY2siIDxqYWNrQGphY2suY29tPgoKLS1iMjhmYTIyNGExZWU2ZDY3ZjE3OTViNGUxZDEwM2Q3MTBlNzM5ZWVmYjFmZjlmOWQ4NWI4M2NlOTRmMTEKQ29udGVudC1UcmFuc2Zlci1FbmNvZGluZzogN2JpdApDb250ZW50LVR5cGU6IHRleHQvcGxhaW47IGNoYXJzZXQ9VVRGLTgKCldlbGNvbWUgdG8gTGFyayBtYWlsIQotLWIyOGZhMjI0YTFlZTZkNjdmMTc5NWI0ZTFkMTAzZDcxMGU3MzllZWZiMWZmOWY5ZDg1YjgzY2U5NGYxMQo=").
 			Cc([]*larkmail.MailAddress{larkmail.NewMailAddressBuilder().Build()}).
 			Bcc([]*larkmail.MailAddress{larkmail.NewMailAddressBuilder().Build()}).
-			HeadFrom(larkmail.NewMailAddressBuilder().Build()).
 			BodyHtml("xxxx").
-			BodyPlainText("xxxxx").
+			BodyPlainText("xxxx").
 			Attachments([]*larkmail.Attachment{larkmail.NewAttachmentBuilder().Build()}).
-			ThreadId("tfuh9N4WnzU6jdDw=").
+			DedupeKey("abc-ddd-eee-fff-ggg").
+			HeadFrom(larkmail.NewMailAddressBuilder().Build()).
 			Build()).
 		Build()
 	// 发起请求

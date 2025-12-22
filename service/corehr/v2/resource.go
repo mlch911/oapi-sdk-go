@@ -3,114 +3,139 @@
 package larkcorehr
 
 import (
+	"bytes"
 	"context"
 	"github.com/larksuite/oapi-sdk-go/v3/core"
 	"net/http"
 )
 
 type V2 struct {
-	ApprovalGroups                    *approvalGroups                    // approval_groups
-	Approver                          *approver                          // approver
-	BasicInfoBank                     *basicInfoBank                     // basic_info.bank
-	BasicInfoBankBranch               *basicInfoBankBranch               // basic_info.bank_branch
-	BasicInfoCity                     *basicInfoCity                     // basic_info.city
-	BasicInfoCountryRegion            *basicInfoCountryRegion            // basic_info.country_region
-	BasicInfoCountryRegionSubdivision *basicInfoCountryRegionSubdivision // basic_info.country_region_subdivision
-	BasicInfoCurrency                 *basicInfoCurrency                 // basic_info.currency
-	BasicInfoDistrict                 *basicInfoDistrict                 // basic_info.district
-	BasicInfoLanguage                 *basicInfoLanguage                 // basic_info.language
-	BasicInfoNationality              *basicInfoNationality              // basic_info.nationality
-	BasicInfoTimeZone                 *basicInfoTimeZone                 // basic_info.time_zone
-	Bp                                *bp                                // bp
-	Company                           *company                           // company
-	Contract                          *contract                          // contract
-	CostCenter                        *costCenter                        // cost_center
-	CostCenterVersion                 *costCenterVersion                 // cost_center.version
-	Department                        *department                        // department
-	Employee                          *employee                          // employee
-	EmployeesAdditionalJob            *employeesAdditionalJob            // employees.additional_job
-	EmployeesBp                       *employeesBp                       // employees.bp
-	EmployeesJobData                  *employeesJobData                  // employees.job_data
-	Enum                              *enum                              // enum
-	Job                               *job                               // job
-	JobChange                         *jobChange                         // job_change
-	JobFamily                         *jobFamily                         // job_family
-	JobGrade                          *jobGrade                          // job_grade
-	JobLevel                          *jobLevel                          // job_level
-	Location                          *location                          // location
-	LocationAddress                   *locationAddress                   // location.address
-	Offboarding                       *offboarding                       // offboarding
-	Person                            *person                            // person
-	PreHire                           *preHire                           // 待入职
-	Probation                         *probation                         // probation
-	ProbationAssessment               *probationAssessment               // probation.assessment
-	Process                           *process                           // process
-	ProcessApprover                   *processApprover                   // process.approver
-	ProcessCc                         *processCc                         // process.cc
-	ProcessExtra                      *processExtra                      // process.extra
-	ProcessFormVariableData           *processFormVariableData           // process.form_variable_data
-	ProcessNode                       *processNode                       // process.node
-	ProcessStatus                     *processStatus                     // process.status
-	ProcessTransfer                   *processTransfer                   // process.transfer
-	ProcessRevoke                     *processRevoke                     // process_revoke
-	ProcessWithdraw                   *processWithdraw                   // process_withdraw
-	ReportDetailRow                   *reportDetailRow                   // report_detail_row
-	WorkforcePlan                     *workforcePlan                     // workforce_plan
-	WorkforcePlanDetail               *workforcePlanDetail               // workforce_plan_detail
-	WorkforcePlanDetailRow            *workforcePlanDetailRow            // workforce_plan_detail_row
+	ApprovalGroups                     *approvalGroups                     // approval_groups
+	Approver                           *approver                           // approver
+	BasicInfoBank                      *basicInfoBank                      // basic_info.bank
+	BasicInfoBankBranch                *basicInfoBankBranch                // basic_info.bank_branch
+	BasicInfoCity                      *basicInfoCity                      // basic_info.city
+	BasicInfoCountryRegion             *basicInfoCountryRegion             // basic_info.country_region
+	BasicInfoCountryRegionSubdivision  *basicInfoCountryRegionSubdivision  // basic_info.country_region_subdivision
+	BasicInfoCurrency                  *basicInfoCurrency                  // basic_info.currency
+	BasicInfoDistrict                  *basicInfoDistrict                  // basic_info.district
+	BasicInfoLanguage                  *basicInfoLanguage                  // basic_info.language
+	BasicInfoNationality               *basicInfoNationality               // basic_info.nationality
+	BasicInfoTimeZone                  *basicInfoTimeZone                  // basic_info.time_zone
+	Bp                                 *bp                                 // bp
+	Company                            *company                            // company
+	Contract                           *contract                           // contract
+	CostAllocation                     *costAllocation                     // cost_allocation
+	CostCenter                         *costCenter                         // cost_center
+	CostCenterVersion                  *costCenterVersion                  // cost_center.version
+	CustomOrg                          *customOrg                          // custom_org
+	DefaultCostCenter                  *defaultCostCenter                  // default_cost_center
+	Department                         *department                         // department
+	Draft                              *draft                              // draft
+	Employee                           *employee                           // employee
+	EmployeesAdditionalJob             *employeesAdditionalJob             // employees.additional_job
+	EmployeesBp                        *employeesBp                        // employees.bp
+	EmployeesInternationalAssignment   *employeesInternationalAssignment   // employees.international_assignment
+	EmployeesJobData                   *employeesJobData                   // employees.job_data
+	Enum                               *enum                               // enum
+	Job                                *job                                // job
+	JobChange                          *jobChange                          // job_change
+	JobFamily                          *jobFamily                          // job_family
+	JobGrade                           *jobGrade                           // job_grade
+	JobLevel                           *jobLevel                           // job_level
+	Location                           *location                           // location
+	LocationAddress                    *locationAddress                    // location.address
+	Offboarding                        *offboarding                        // offboarding
+	Pathway                            *pathway                            // pathway
+	Person                             *person                             // person
+	Position                           *position                           // position
+	PreHire                            *preHire                            // 待入职
+	Probation                          *probation                          // probation
+	ProbationAssessment                *probationAssessment                // probation.assessment
+	Process                            *process                            // process
+	ProcessApprover                    *processApprover                    // process.approver
+	ProcessCc                          *processCc                          // process.cc
+	ProcessExtra                       *processExtra                       // process.extra
+	ProcessFormVariableData            *processFormVariableData            // process.form_variable_data
+	ProcessNode                        *processNode                        // process.node
+	ProcessStatus                      *processStatus                      // process.status
+	ProcessTransfer                    *processTransfer                    // process.transfer
+	ProcessCommentInfo                 *processCommentInfo                 // process_comment_info
+	ProcessRevoke                      *processRevoke                      // process_revoke
+	ProcessWithdraw                    *processWithdraw                    // process_withdraw
+	ReportDetailRow                    *reportDetailRow                    // report_detail_row
+	SignatureFile                      *signatureFile                      // signature_file
+	SignatureNode                      *signatureNode                      // signature_node
+	SignatureTemplate                  *signatureTemplate                  // signature_template
+	SignatureTemplateInfoWithThumbnail *signatureTemplateInfoWithThumbnail // signature_template_info_with_thumbnail
+	WorkforcePlan                      *workforcePlan                      // workforce_plan
+	WorkforcePlanDetail                *workforcePlanDetail                // workforce_plan_detail
+	WorkforcePlanDetailRow             *workforcePlanDetailRow             // workforce_plan_detail_row
 }
 
 func New(config *larkcore.Config) *V2 {
 	return &V2{
-		ApprovalGroups:                    &approvalGroups{config: config},
-		Approver:                          &approver{config: config},
-		BasicInfoBank:                     &basicInfoBank{config: config},
-		BasicInfoBankBranch:               &basicInfoBankBranch{config: config},
-		BasicInfoCity:                     &basicInfoCity{config: config},
-		BasicInfoCountryRegion:            &basicInfoCountryRegion{config: config},
-		BasicInfoCountryRegionSubdivision: &basicInfoCountryRegionSubdivision{config: config},
-		BasicInfoCurrency:                 &basicInfoCurrency{config: config},
-		BasicInfoDistrict:                 &basicInfoDistrict{config: config},
-		BasicInfoLanguage:                 &basicInfoLanguage{config: config},
-		BasicInfoNationality:              &basicInfoNationality{config: config},
-		BasicInfoTimeZone:                 &basicInfoTimeZone{config: config},
-		Bp:                                &bp{config: config},
-		Company:                           &company{config: config},
-		Contract:                          &contract{config: config},
-		CostCenter:                        &costCenter{config: config},
-		CostCenterVersion:                 &costCenterVersion{config: config},
-		Department:                        &department{config: config},
-		Employee:                          &employee{config: config},
-		EmployeesAdditionalJob:            &employeesAdditionalJob{config: config},
-		EmployeesBp:                       &employeesBp{config: config},
-		EmployeesJobData:                  &employeesJobData{config: config},
-		Enum:                              &enum{config: config},
-		Job:                               &job{config: config},
-		JobChange:                         &jobChange{config: config},
-		JobFamily:                         &jobFamily{config: config},
-		JobGrade:                          &jobGrade{config: config},
-		JobLevel:                          &jobLevel{config: config},
-		Location:                          &location{config: config},
-		LocationAddress:                   &locationAddress{config: config},
-		Offboarding:                       &offboarding{config: config},
-		Person:                            &person{config: config},
-		PreHire:                           &preHire{config: config},
-		Probation:                         &probation{config: config},
-		ProbationAssessment:               &probationAssessment{config: config},
-		Process:                           &process{config: config},
-		ProcessApprover:                   &processApprover{config: config},
-		ProcessCc:                         &processCc{config: config},
-		ProcessExtra:                      &processExtra{config: config},
-		ProcessFormVariableData:           &processFormVariableData{config: config},
-		ProcessNode:                       &processNode{config: config},
-		ProcessStatus:                     &processStatus{config: config},
-		ProcessTransfer:                   &processTransfer{config: config},
-		ProcessRevoke:                     &processRevoke{config: config},
-		ProcessWithdraw:                   &processWithdraw{config: config},
-		ReportDetailRow:                   &reportDetailRow{config: config},
-		WorkforcePlan:                     &workforcePlan{config: config},
-		WorkforcePlanDetail:               &workforcePlanDetail{config: config},
-		WorkforcePlanDetailRow:            &workforcePlanDetailRow{config: config},
+		ApprovalGroups:                     &approvalGroups{config: config},
+		Approver:                           &approver{config: config},
+		BasicInfoBank:                      &basicInfoBank{config: config},
+		BasicInfoBankBranch:                &basicInfoBankBranch{config: config},
+		BasicInfoCity:                      &basicInfoCity{config: config},
+		BasicInfoCountryRegion:             &basicInfoCountryRegion{config: config},
+		BasicInfoCountryRegionSubdivision:  &basicInfoCountryRegionSubdivision{config: config},
+		BasicInfoCurrency:                  &basicInfoCurrency{config: config},
+		BasicInfoDistrict:                  &basicInfoDistrict{config: config},
+		BasicInfoLanguage:                  &basicInfoLanguage{config: config},
+		BasicInfoNationality:               &basicInfoNationality{config: config},
+		BasicInfoTimeZone:                  &basicInfoTimeZone{config: config},
+		Bp:                                 &bp{config: config},
+		Company:                            &company{config: config},
+		Contract:                           &contract{config: config},
+		CostAllocation:                     &costAllocation{config: config},
+		CostCenter:                         &costCenter{config: config},
+		CostCenterVersion:                  &costCenterVersion{config: config},
+		CustomOrg:                          &customOrg{config: config},
+		DefaultCostCenter:                  &defaultCostCenter{config: config},
+		Department:                         &department{config: config},
+		Draft:                              &draft{config: config},
+		Employee:                           &employee{config: config},
+		EmployeesAdditionalJob:             &employeesAdditionalJob{config: config},
+		EmployeesBp:                        &employeesBp{config: config},
+		EmployeesInternationalAssignment:   &employeesInternationalAssignment{config: config},
+		EmployeesJobData:                   &employeesJobData{config: config},
+		Enum:                               &enum{config: config},
+		Job:                                &job{config: config},
+		JobChange:                          &jobChange{config: config},
+		JobFamily:                          &jobFamily{config: config},
+		JobGrade:                           &jobGrade{config: config},
+		JobLevel:                           &jobLevel{config: config},
+		Location:                           &location{config: config},
+		LocationAddress:                    &locationAddress{config: config},
+		Offboarding:                        &offboarding{config: config},
+		Pathway:                            &pathway{config: config},
+		Person:                             &person{config: config},
+		Position:                           &position{config: config},
+		PreHire:                            &preHire{config: config},
+		Probation:                          &probation{config: config},
+		ProbationAssessment:                &probationAssessment{config: config},
+		Process:                            &process{config: config},
+		ProcessApprover:                    &processApprover{config: config},
+		ProcessCc:                          &processCc{config: config},
+		ProcessExtra:                       &processExtra{config: config},
+		ProcessFormVariableData:            &processFormVariableData{config: config},
+		ProcessNode:                        &processNode{config: config},
+		ProcessStatus:                      &processStatus{config: config},
+		ProcessTransfer:                    &processTransfer{config: config},
+		ProcessCommentInfo:                 &processCommentInfo{config: config},
+		ProcessRevoke:                      &processRevoke{config: config},
+		ProcessWithdraw:                    &processWithdraw{config: config},
+		ReportDetailRow:                    &reportDetailRow{config: config},
+		SignatureFile:                      &signatureFile{config: config},
+		SignatureNode:                      &signatureNode{config: config},
+		SignatureTemplate:                  &signatureTemplate{config: config},
+		SignatureTemplateInfoWithThumbnail: &signatureTemplateInfoWithThumbnail{config: config},
+		WorkforcePlan:                      &workforcePlan{config: config},
+		WorkforcePlanDetail:                &workforcePlanDetail{config: config},
+		WorkforcePlanDetailRow:             &workforcePlanDetailRow{config: config},
 	}
 }
 
@@ -159,13 +184,25 @@ type company struct {
 type contract struct {
 	config *larkcore.Config
 }
+type costAllocation struct {
+	config *larkcore.Config
+}
 type costCenter struct {
 	config *larkcore.Config
 }
 type costCenterVersion struct {
 	config *larkcore.Config
 }
+type customOrg struct {
+	config *larkcore.Config
+}
+type defaultCostCenter struct {
+	config *larkcore.Config
+}
 type department struct {
+	config *larkcore.Config
+}
+type draft struct {
 	config *larkcore.Config
 }
 type employee struct {
@@ -175,6 +212,9 @@ type employeesAdditionalJob struct {
 	config *larkcore.Config
 }
 type employeesBp struct {
+	config *larkcore.Config
+}
+type employeesInternationalAssignment struct {
 	config *larkcore.Config
 }
 type employeesJobData struct {
@@ -207,7 +247,13 @@ type locationAddress struct {
 type offboarding struct {
 	config *larkcore.Config
 }
+type pathway struct {
+	config *larkcore.Config
+}
 type person struct {
+	config *larkcore.Config
+}
+type position struct {
 	config *larkcore.Config
 }
 type preHire struct {
@@ -243,6 +289,9 @@ type processStatus struct {
 type processTransfer struct {
 	config *larkcore.Config
 }
+type processCommentInfo struct {
+	config *larkcore.Config
+}
 type processRevoke struct {
 	config *larkcore.Config
 }
@@ -250,6 +299,18 @@ type processWithdraw struct {
 	config *larkcore.Config
 }
 type reportDetailRow struct {
+	config *larkcore.Config
+}
+type signatureFile struct {
+	config *larkcore.Config
+}
+type signatureNode struct {
+	config *larkcore.Config
+}
+type signatureTemplate struct {
+	config *larkcore.Config
+}
+type signatureTemplateInfoWithThumbnail struct {
 	config *larkcore.Config
 }
 type workforcePlan struct {
@@ -333,6 +394,32 @@ func (a *approvalGroups) OpenQueryJobChangeListByIds(ctx context.Context, req *O
 	}
 	// 反序列响应结果
 	resp := &OpenQueryJobChangeListByIdsApprovalGroupsResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, a.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// OpenQueryPositionChangeListByIds
+//
+// - 获取岗位调整信息详情
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=open_query_position_change_list_by_ids&project=corehr&resource=approval_groups&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/openQueryPositionChangeListByIds_approvalGroups.go
+func (a *approvalGroups) OpenQueryPositionChangeListByIds(ctx context.Context, req *OpenQueryPositionChangeListByIdsApprovalGroupsReq, options ...larkcore.RequestOptionFunc) (*OpenQueryPositionChangeListByIdsApprovalGroupsResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/approval_groups/open_query_position_change_list_by_ids"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &OpenQueryPositionChangeListByIdsApprovalGroupsResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, a.config)
 	if err != nil {
 		return nil, err
@@ -886,6 +973,110 @@ func (c *contract) SearchByIterator(ctx context.Context, req *SearchContractReq,
 		limit:    req.Limit}, nil
 }
 
+// BatchQuery
+//
+// - 通过员工ID批量获取通道信息
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=batch_query&project=corehr&resource=cost_allocation&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/batchQuery_costAllocation.go
+func (c *costAllocation) BatchQuery(ctx context.Context, req *BatchQueryCostAllocationReq, options ...larkcore.RequestOptionFunc) (*BatchQueryCostAllocationResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/cost_allocations/batch_query"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, c.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &BatchQueryCostAllocationResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, c.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// CreateVersion
+//
+// - 创建成本分摊
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=create_version&project=corehr&resource=cost_allocation&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/createVersion_costAllocation.go
+func (c *costAllocation) CreateVersion(ctx context.Context, req *CreateVersionCostAllocationReq, options ...larkcore.RequestOptionFunc) (*CreateVersionCostAllocationResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/cost_allocations/create_version"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, c.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &CreateVersionCostAllocationResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, c.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// RemoveVersion
+//
+// - 删除成本分摊
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=remove_version&project=corehr&resource=cost_allocation&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/removeVersion_costAllocation.go
+func (c *costAllocation) RemoveVersion(ctx context.Context, req *RemoveVersionCostAllocationReq, options ...larkcore.RequestOptionFunc) (*RemoveVersionCostAllocationResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/cost_allocations/remove_version"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, c.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &RemoveVersionCostAllocationResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, c.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// UpdateVersion
+//
+// - 更新成本分摊
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=update_version&project=corehr&resource=cost_allocation&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/updateVersion_costAllocation.go
+func (c *costAllocation) UpdateVersion(ctx context.Context, req *UpdateVersionCostAllocationReq, options ...larkcore.RequestOptionFunc) (*UpdateVersionCostAllocationResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/cost_allocations/update_version"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, c.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &UpdateVersionCostAllocationResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, c.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
 // Create
 //
 // - 创建成本中心
@@ -1088,6 +1279,292 @@ func (c *costCenterVersion) Patch(ctx context.Context, req *PatchCostCenterVersi
 	// 反序列响应结果
 	resp := &PatchCostCenterVersionResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, c.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Active
+//
+// - 启/停用自定义组织
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=active&project=corehr&resource=custom_org&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/active_customOrg.go
+func (c *customOrg) Active(ctx context.Context, req *ActiveCustomOrgReq, options ...larkcore.RequestOptionFunc) (*ActiveCustomOrgResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/custom_orgs/active"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, c.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ActiveCustomOrgResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, c.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Create
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=create&project=corehr&resource=custom_org&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/create_customOrg.go
+func (c *customOrg) Create(ctx context.Context, req *CreateCustomOrgReq, options ...larkcore.RequestOptionFunc) (*CreateCustomOrgResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/custom_orgs"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, c.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &CreateCustomOrgResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, c.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// DeleteOrg
+//
+// - 删除自定义组织
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=delete_org&project=corehr&resource=custom_org&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/deleteOrg_customOrg.go
+func (c *customOrg) DeleteOrg(ctx context.Context, req *DeleteOrgCustomOrgReq, options ...larkcore.RequestOptionFunc) (*DeleteOrgCustomOrgResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/custom_orgs/delete_org"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, c.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &DeleteOrgCustomOrgResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, c.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Patch
+//
+// - 更新自定义组织
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=patch&project=corehr&resource=custom_org&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/patch_customOrg.go
+func (c *customOrg) Patch(ctx context.Context, req *PatchCustomOrgReq, options ...larkcore.RequestOptionFunc) (*PatchCustomOrgResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/custom_orgs/:org_id"
+	apiReq.HttpMethod = http.MethodPatch
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, c.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &PatchCustomOrgResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, c.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Query
+//
+// - 查询自定义组织信息
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=query&project=corehr&resource=custom_org&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/query_customOrg.go
+func (c *customOrg) Query(ctx context.Context, req *QueryCustomOrgReq, options ...larkcore.RequestOptionFunc) (*QueryCustomOrgResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/custom_orgs/query"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, c.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &QueryCustomOrgResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, c.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// QueryRecentChange
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=query_recent_change&project=corehr&resource=custom_org&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/queryRecentChange_customOrg.go
+func (c *customOrg) QueryRecentChange(ctx context.Context, req *QueryRecentChangeCustomOrgReq, options ...larkcore.RequestOptionFunc) (*QueryRecentChangeCustomOrgResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/custom_orgs/query_recent_change"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, c.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &QueryRecentChangeCustomOrgResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, c.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// UpdateRule
+//
+// - 更新匹配规则
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=update_rule&project=corehr&resource=custom_org&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/updateRule_customOrg.go
+func (c *customOrg) UpdateRule(ctx context.Context, req *UpdateRuleCustomOrgReq, options ...larkcore.RequestOptionFunc) (*UpdateRuleCustomOrgResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/custom_orgs/update_rule"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, c.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &UpdateRuleCustomOrgResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, c.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// BatchQuery
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=batch_query&project=corehr&resource=default_cost_center&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/batchQuery_defaultCostCenter.go
+func (d *defaultCostCenter) BatchQuery(ctx context.Context, req *BatchQueryDefaultCostCenterReq, options ...larkcore.RequestOptionFunc) (*BatchQueryDefaultCostCenterResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/default_cost_centers/batch_query"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, d.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &BatchQueryDefaultCostCenterResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, d.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// CreateVersion
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=create_version&project=corehr&resource=default_cost_center&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/createVersion_defaultCostCenter.go
+func (d *defaultCostCenter) CreateVersion(ctx context.Context, req *CreateVersionDefaultCostCenterReq, options ...larkcore.RequestOptionFunc) (*CreateVersionDefaultCostCenterResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/default_cost_centers/create_version"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, d.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &CreateVersionDefaultCostCenterResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, d.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// RemoveVersion
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=remove_version&project=corehr&resource=default_cost_center&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/removeVersion_defaultCostCenter.go
+func (d *defaultCostCenter) RemoveVersion(ctx context.Context, req *RemoveVersionDefaultCostCenterReq, options ...larkcore.RequestOptionFunc) (*RemoveVersionDefaultCostCenterResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/default_cost_centers/remove_version"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, d.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &RemoveVersionDefaultCostCenterResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, d.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// UpdateVersion
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=update_version&project=corehr&resource=default_cost_center&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/updateVersion_defaultCostCenter.go
+func (d *defaultCostCenter) UpdateVersion(ctx context.Context, req *UpdateVersionDefaultCostCenterReq, options ...larkcore.RequestOptionFunc) (*UpdateVersionDefaultCostCenterResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/default_cost_centers/update_version"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, d.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &UpdateVersionDefaultCostCenterResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, d.config)
 	if err != nil {
 		return nil, err
 	}
@@ -1362,6 +1839,32 @@ func (d *department) Tree(ctx context.Context, req *TreeDepartmentReq, options .
 	return resp, err
 }
 
+// Get
+//
+// - 根据组织架构调整 ID 查询调整流程信息
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=get&project=corehr&resource=draft&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/get_draft.go
+func (d *draft) Get(ctx context.Context, req *GetDraftReq, options ...larkcore.RequestOptionFunc) (*GetDraftResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/drafts/:draft_id"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, d.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &GetDraftResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, d.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
 // BatchGet
 //
 // - 通过员工 ID 批量获取员工信息
@@ -1400,7 +1903,7 @@ func (e *employee) Create(ctx context.Context, req *CreateEmployeeReq, options .
 	apiReq := req.apiReq
 	apiReq.ApiPath = "/open-apis/corehr/v2/employees"
 	apiReq.HttpMethod = http.MethodPost
-	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
 	apiResp, err := larkcore.Request(ctx, apiReq, e.config, options...)
 	if err != nil {
 		return nil, err
@@ -1586,6 +2089,110 @@ func (e *employeesBp) BatchGet(ctx context.Context, req *BatchGetEmployeesBpReq,
 	return resp, err
 }
 
+// Create
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=create&project=corehr&resource=employees.international_assignment&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/create_employeesInternationalAssignment.go
+func (e *employeesInternationalAssignment) Create(ctx context.Context, req *CreateEmployeesInternationalAssignmentReq, options ...larkcore.RequestOptionFunc) (*CreateEmployeesInternationalAssignmentResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/employees/international_assignments"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, e.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &CreateEmployeesInternationalAssignmentResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, e.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Delete
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=delete&project=corehr&resource=employees.international_assignment&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/delete_employeesInternationalAssignment.go
+func (e *employeesInternationalAssignment) Delete(ctx context.Context, req *DeleteEmployeesInternationalAssignmentReq, options ...larkcore.RequestOptionFunc) (*DeleteEmployeesInternationalAssignmentResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/employees/international_assignments/:international_assignment_id"
+	apiReq.HttpMethod = http.MethodDelete
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, e.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &DeleteEmployeesInternationalAssignmentResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, e.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// List
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=list&project=corehr&resource=employees.international_assignment&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/list_employeesInternationalAssignment.go
+func (e *employeesInternationalAssignment) List(ctx context.Context, req *ListEmployeesInternationalAssignmentReq, options ...larkcore.RequestOptionFunc) (*ListEmployeesInternationalAssignmentResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/employees/international_assignments"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, e.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ListEmployeesInternationalAssignmentResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, e.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Patch
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=patch&project=corehr&resource=employees.international_assignment&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/patch_employeesInternationalAssignment.go
+func (e *employeesInternationalAssignment) Patch(ctx context.Context, req *PatchEmployeesInternationalAssignmentReq, options ...larkcore.RequestOptionFunc) (*PatchEmployeesInternationalAssignmentResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/employees/international_assignments/:international_assignment_id"
+	apiReq.HttpMethod = http.MethodPatch
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, e.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &PatchEmployeesInternationalAssignmentResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, e.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
 // BatchGet
 //
 // -
@@ -1664,6 +2271,32 @@ func (e *enum) Search(ctx context.Context, req *SearchEnumReq, options ...larkco
 	return resp, err
 }
 
+// BatchGet
+//
+// - 批量获取职务信息
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=batch_get&project=corehr&resource=job&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/batchGet_job.go
+func (j *job) BatchGet(ctx context.Context, req *BatchGetJobReq, options ...larkcore.RequestOptionFunc) (*BatchGetJobResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/jobs/batch_get"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, j.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &BatchGetJobResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, j.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
 // Get
 //
 // - 根据 ID 查询单个职务。
@@ -1709,6 +2342,58 @@ func (j *job) List(ctx context.Context, req *ListJobReq, options ...larkcore.Req
 	}
 	// 反序列响应结果
 	resp := &ListJobResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, j.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// QueryMultiTimeline
+//
+// - 查询生效时间在指定时间范围的职务
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=query_multi_timeline&project=corehr&resource=job&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/queryMultiTimeline_job.go
+func (j *job) QueryMultiTimeline(ctx context.Context, req *QueryMultiTimelineJobReq, options ...larkcore.RequestOptionFunc) (*QueryMultiTimelineJobResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/jobs/query_multi_timeline"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, j.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &QueryMultiTimelineJobResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, j.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// QueryRecentChange
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=query_recent_change&project=corehr&resource=job&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/queryRecentChange_job.go
+func (j *job) QueryRecentChange(ctx context.Context, req *QueryRecentChangeJobReq, options ...larkcore.RequestOptionFunc) (*QueryRecentChangeJobResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/jobs/query_recent_change"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, j.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &QueryRecentChangeJobResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, j.config)
 	if err != nil {
 		return nil, err
@@ -1804,7 +2489,7 @@ func (j *jobChange) SearchByIterator(ctx context.Context, req *SearchJobChangeRe
 
 // BatchGet
 //
-// - 通过序列 ID 批量获取序列信息
+// - 批量获取序列信息
 //
 // - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=batch_get&project=corehr&resource=job_family&version=v2
 //
@@ -1821,6 +2506,32 @@ func (j *jobFamily) BatchGet(ctx context.Context, req *BatchGetJobFamilyReq, opt
 	}
 	// 反序列响应结果
 	resp := &BatchGetJobFamilyResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, j.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// QueryMultiTimeline
+//
+// - 查询生效时间在指定时间范围的序列
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=query_multi_timeline&project=corehr&resource=job_family&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/queryMultiTimeline_jobFamily.go
+func (j *jobFamily) QueryMultiTimeline(ctx context.Context, req *QueryMultiTimelineJobFamilyReq, options ...larkcore.RequestOptionFunc) (*QueryMultiTimelineJobFamilyResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/job_families/query_multi_timeline"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, j.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &QueryMultiTimelineJobFamilyResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, j.config)
 	if err != nil {
 		return nil, err
@@ -1986,7 +2697,7 @@ func (j *jobGrade) QueryRecentChange(ctx context.Context, req *QueryRecentChange
 
 // BatchGet
 //
-// - 通过职级 ID 批量获取职级信息
+// - 批量获取职级信息
 //
 // - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=batch_get&project=corehr&resource=job_level&version=v2
 //
@@ -2296,6 +3007,136 @@ func (o *offboarding) SubmitV2(ctx context.Context, req *SubmitV2OffboardingReq,
 	return resp, err
 }
 
+// Active
+//
+// - 启/停用通道
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=active&project=corehr&resource=pathway&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/active_pathway.go
+func (p *pathway) Active(ctx context.Context, req *ActivePathwayReq, options ...larkcore.RequestOptionFunc) (*ActivePathwayResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/pathways/active"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ActivePathwayResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// BatchGet
+//
+// - 通过通道 ID 批量获取通道信息
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=batch_get&project=corehr&resource=pathway&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/batchGet_pathway.go
+func (p *pathway) BatchGet(ctx context.Context, req *BatchGetPathwayReq, options ...larkcore.RequestOptionFunc) (*BatchGetPathwayResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/pathways/batch_get"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &BatchGetPathwayResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Create
+//
+// - 创建通道
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=create&project=corehr&resource=pathway&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/create_pathway.go
+func (p *pathway) Create(ctx context.Context, req *CreatePathwayReq, options ...larkcore.RequestOptionFunc) (*CreatePathwayResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/pathways"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &CreatePathwayResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Delete
+//
+// - 删除通道
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=delete&project=corehr&resource=pathway&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/delete_pathway.go
+func (p *pathway) Delete(ctx context.Context, req *DeletePathwayReq, options ...larkcore.RequestOptionFunc) (*DeletePathwayResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/pathways/:pathway_id"
+	apiReq.HttpMethod = http.MethodDelete
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &DeletePathwayResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Patch
+//
+// - 更新通道信息
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=patch&project=corehr&resource=pathway&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/patch_pathway.go
+func (p *pathway) Patch(ctx context.Context, req *PatchPathwayReq, options ...larkcore.RequestOptionFunc) (*PatchPathwayResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/pathways/:pathway_id"
+	apiReq.HttpMethod = http.MethodPatch
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &PatchPathwayResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
 // Create
 //
 // - 创建个人信息数据
@@ -2341,6 +3182,162 @@ func (p *person) Patch(ctx context.Context, req *PatchPersonReq, options ...lark
 	}
 	// 反序列响应结果
 	resp := &PatchPersonResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Active
+//
+// - 启/停用岗位
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=active&project=corehr&resource=position&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/active_position.go
+func (p *position) Active(ctx context.Context, req *ActivePositionReq, options ...larkcore.RequestOptionFunc) (*ActivePositionResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/positions/active"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ActivePositionResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Create
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=create&project=corehr&resource=position&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/create_position.go
+func (p *position) Create(ctx context.Context, req *CreatePositionReq, options ...larkcore.RequestOptionFunc) (*CreatePositionResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/positions"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &CreatePositionResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// DelPosition
+//
+// - 删除岗位
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=del_position&project=corehr&resource=position&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/delPosition_position.go
+func (p *position) DelPosition(ctx context.Context, req *DelPositionPositionReq, options ...larkcore.RequestOptionFunc) (*DelPositionPositionResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/positions/del_position"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &DelPositionPositionResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Patch
+//
+// - 更新岗位
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=patch&project=corehr&resource=position&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/patch_position.go
+func (p *position) Patch(ctx context.Context, req *PatchPositionReq, options ...larkcore.RequestOptionFunc) (*PatchPositionResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/positions/:position_id"
+	apiReq.HttpMethod = http.MethodPatch
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &PatchPositionResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Query
+//
+// - 查询岗位信息
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=query&project=corehr&resource=position&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/query_position.go
+func (p *position) Query(ctx context.Context, req *QueryPositionReq, options ...larkcore.RequestOptionFunc) (*QueryPositionResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/positions/query"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &QueryPositionResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// QueryRecentChange
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=query_recent_change&project=corehr&resource=position&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/queryRecentChange_position.go
+func (p *position) QueryRecentChange(ctx context.Context, req *QueryRecentChangePositionReq, options ...larkcore.RequestOptionFunc) (*QueryRecentChangePositionResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/positions/query_recent_change"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &QueryRecentChangePositionResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, p.config)
 	if err != nil {
 		return nil, err
@@ -2544,6 +3541,32 @@ func (p *preHire) SearchByIterator(ctx context.Context, req *SearchPreHireReq, o
 		listFunc: p.Search,
 		options:  options,
 		limit:    req.Limit}, nil
+}
+
+// TransformOnboardingTask
+//
+// - 入职常规任务的流转，支持手动开启任务，提交任务以及审批任务
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=transform_onboarding_task&project=corehr&resource=pre_hire&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/transformOnboardingTask_preHire.go
+func (p *preHire) TransformOnboardingTask(ctx context.Context, req *TransformOnboardingTaskPreHireReq, options ...larkcore.RequestOptionFunc) (*TransformOnboardingTaskPreHireResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/pre_hires/transform_onboarding_task"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &TransformOnboardingTaskPreHireResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // TransitTask
@@ -2781,6 +3804,32 @@ func (p *probationAssessment) Patch(ctx context.Context, req *PatchProbationAsse
 	}
 	// 反序列响应结果
 	resp := &PatchProbationAssessmentResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// FlowVariableData
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=flow_variable_data&project=corehr&resource=process&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/flowVariableData_process.go
+func (p *process) FlowVariableData(ctx context.Context, req *FlowVariableDataProcessReq, options ...larkcore.RequestOptionFunc) (*FlowVariableDataProcessResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/processes/:process_id/flow_variable_data"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &FlowVariableDataProcessResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, p.config)
 	if err != nil {
 		return nil, err
@@ -3056,6 +4105,244 @@ func (r *reportDetailRow) BatchSave(ctx context.Context, req *BatchSaveReportDet
 	return resp, err
 }
 
+// Download
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=download&project=corehr&resource=signature_file&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/download_signatureFile.go
+func (s *signatureFile) Download(ctx context.Context, req *DownloadSignatureFileReq, options ...larkcore.RequestOptionFunc) (*DownloadSignatureFileResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/signature_files/:signature_file_id/download"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, s.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &DownloadSignatureFileResp{ApiResp: apiResp}
+	// 如果是下载，则设置响应结果
+	if apiResp.StatusCode == http.StatusOK {
+		resp.File = bytes.NewBuffer(apiResp.RawBody)
+		resp.FileName = larkcore.FileNameByHeader(apiResp.Header)
+		return resp, err
+	}
+	err = apiResp.JSONUnmarshalBody(resp, s.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// List
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=list&project=corehr&resource=signature_file&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/list_signatureFile.go
+func (s *signatureFile) List(ctx context.Context, req *ListSignatureFileReq, options ...larkcore.RequestOptionFunc) (*ListSignatureFileResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/signature_files"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, s.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ListSignatureFileResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, s.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+func (s *signatureFile) ListByIterator(ctx context.Context, req *ListSignatureFileReq, options ...larkcore.RequestOptionFunc) (*ListSignatureFileIterator, error) {
+	return &ListSignatureFileIterator{
+		ctx:      ctx,
+		req:      req,
+		listFunc: s.List,
+		options:  options,
+		limit:    req.Limit}, nil
+}
+
+// ListByBizId
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=list_by_biz_id&project=corehr&resource=signature_file&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/listByBizId_signatureFile.go
+func (s *signatureFile) ListByBizId(ctx context.Context, req *ListByBizIdSignatureFileReq, options ...larkcore.RequestOptionFunc) (*ListByBizIdSignatureFileResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/signature_files/list_by_biz_id"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, s.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ListByBizIdSignatureFileResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, s.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Query
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=query&project=corehr&resource=signature_file&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/query_signatureFile.go
+func (s *signatureFile) Query(ctx context.Context, req *QuerySignatureFileReq, options ...larkcore.RequestOptionFunc) (*QuerySignatureFileResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/signature_files/query"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, s.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &QuerySignatureFileResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, s.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+func (s *signatureFile) QueryByIterator(ctx context.Context, req *QuerySignatureFileReq, options ...larkcore.RequestOptionFunc) (*QuerySignatureFileIterator, error) {
+	return &QuerySignatureFileIterator{
+		ctx:      ctx,
+		req:      req,
+		listFunc: s.Query,
+		options:  options,
+		limit:    req.Limit}, nil
+}
+
+// Terminate
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=terminate&project=corehr&resource=signature_file&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/terminate_signatureFile.go
+func (s *signatureFile) Terminate(ctx context.Context, req *TerminateSignatureFileReq, options ...larkcore.RequestOptionFunc) (*TerminateSignatureFileResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/signature_files/terminate"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, s.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &TerminateSignatureFileResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, s.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// ListByFileId
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=list_by_file_id&project=corehr&resource=signature_node&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/listByFileId_signatureNode.go
+func (s *signatureNode) ListByFileId(ctx context.Context, req *ListByFileIdSignatureNodeReq, options ...larkcore.RequestOptionFunc) (*ListByFileIdSignatureNodeResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/signature_nodes/list_by_file_id"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, s.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ListByFileIdSignatureNodeResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, s.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Search
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=search&project=corehr&resource=signature_template&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/search_signatureTemplate.go
+func (s *signatureTemplate) Search(ctx context.Context, req *SearchSignatureTemplateReq, options ...larkcore.RequestOptionFunc) (*SearchSignatureTemplateResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/signature_templates/search"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, s.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &SearchSignatureTemplateResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, s.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// List
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=list&project=corehr&resource=signature_template_info_with_thumbnail&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/list_signatureTemplateInfoWithThumbnail.go
+func (s *signatureTemplateInfoWithThumbnail) List(ctx context.Context, req *ListSignatureTemplateInfoWithThumbnailReq, options ...larkcore.RequestOptionFunc) (*ListSignatureTemplateInfoWithThumbnailResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/signature_template_info_with_thumbnails"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, s.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ListSignatureTemplateInfoWithThumbnailResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, s.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+func (s *signatureTemplateInfoWithThumbnail) ListByIterator(ctx context.Context, req *ListSignatureTemplateInfoWithThumbnailReq, options ...larkcore.RequestOptionFunc) (*ListSignatureTemplateInfoWithThumbnailIterator, error) {
+	return &ListSignatureTemplateInfoWithThumbnailIterator{
+		ctx:      ctx,
+		req:      req,
+		listFunc: s.List,
+		options:  options,
+		limit:    req.Limit}, nil
+}
+
 // List
 //
 // -
@@ -3109,6 +4396,32 @@ func (w *workforcePlanDetail) Batch(ctx context.Context, req *BatchWorkforcePlan
 	}
 	// 反序列响应结果
 	resp := &BatchWorkforcePlanDetailResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, w.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// BatchV2
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=batch_v2&project=corehr&resource=workforce_plan_detail&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/batchV2_workforcePlanDetail.go
+func (w *workforcePlanDetail) BatchV2(ctx context.Context, req *BatchV2WorkforcePlanDetailReq, options ...larkcore.RequestOptionFunc) (*BatchV2WorkforcePlanDetailResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/workforce_plan_details/batch_v2"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, w.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &BatchV2WorkforcePlanDetailResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, w.config)
 	if err != nil {
 		return nil, err

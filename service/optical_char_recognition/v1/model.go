@@ -36,6 +36,8 @@ func NewDepartmentIdBuilder() *DepartmentIdBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *DepartmentIdBuilder {
 	builder.departmentId = departmentId
@@ -43,6 +45,8 @@ func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *Departmen
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) OpenDepartmentId(openDepartmentId string) *DepartmentIdBuilder {
 	builder.openDepartmentId = openDepartmentId
@@ -66,6 +70,19 @@ func (builder *DepartmentIdBuilder) Build() *DepartmentId {
 type Image struct {
 }
 
+type ImageBuilder struct {
+}
+
+func NewImageBuilder() *ImageBuilder {
+	builder := &ImageBuilder{}
+	return builder
+}
+
+func (builder *ImageBuilder) Build() *Image {
+	req := &Image{}
+	return req
+}
+
 type BasicRecognizeImageReqBodyBuilder struct {
 	image     string // base64 后的图片数据
 	imageFlag bool
@@ -78,7 +95,7 @@ func NewBasicRecognizeImageReqBodyBuilder() *BasicRecognizeImageReqBodyBuilder {
 
 // base64 后的图片数据
 //
-// 示例值：base64后的图片二进制数据
+//示例值：base64后的图片二进制数据
 func (builder *BasicRecognizeImageReqBodyBuilder) Image(image string) *BasicRecognizeImageReqBodyBuilder {
 	builder.image = image
 	builder.imageFlag = true

@@ -23,14 +23,14 @@ import (
 )
 
 const (
-	UserIdTypeUserId  = "user_id"  // 以 user_id 来识别用户
-	UserIdTypeUnionId = "union_id" // 以 union_id 来识别用户
-	UserIdTypeOpenId  = "open_id"  // 以 open_id 来识别用户
+	SearchAppUserIDTypeUserId  = "user_id"  // 以 user_id 来识别用户
+	SearchAppUserIDTypeUnionId = "union_id" // 以 union_id 来识别用户
+	SearchAppUserIDTypeOpenId  = "open_id"  // 以 open_id 来识别用户
 )
 
 const (
-	StateOnline  = 0 // 已上线
-	StateOffline = 1 // 未上线
+	DataSourceStateOnline  = 0 // 已上线
+	DataSourceStateOffline = 1 // 未上线
 
 )
 
@@ -41,37 +41,37 @@ const (
 )
 
 const (
-	ViewFULL  = 0 // 全量数据
-	ViewBASIC = 1 // 摘要数据
+	ListDataSourceViewFULL  = 0 // 全量数据
+	ListDataSourceViewBASIC = 1 // 摘要数据
 
 )
 
 const (
-	StatePatchDataSourceOnline  = 0 // 已上线
-	StatePatchDataSourceOffline = 1 // 未上线
+	PatchDataSourceStateOnline  = 0 // 已上线
+	PatchDataSourceStateOffline = 1 // 未上线
 
 )
 
 const (
-	MessageTypeFile  = "file"  // 文件
-	MessageTypeImage = "image" // 图片
-	MessageTypeMedia = "media" // 视频
+	SearchMessageMessageTypeFile  = "file"  // 文件
+	SearchMessageMessageTypeImage = "image" // 图片
+	SearchMessageMessageTypeMedia = "media" // 视频
 )
 
 const (
-	FromTypeBot  = "bot"  // 机器人
-	FromTypeUser = "user" // 用户
+	SearchMessageFromTypeBot  = "bot"  // 机器人
+	SearchMessageFromTypeUser = "user" // 用户
 )
 
 const (
-	ChatTypeGroupChat = "group_chat" // 群聊
-	ChatTypeP2pChat   = "p2p_chat"   // 单聊
+	SearchMessageChatTypeGroupChat = "group_chat" // 群聊
+	SearchMessageChatTypeP2pChat   = "p2p_chat"   // 单聊
 )
 
 const (
-	UserIdTypeCreateMessageUserId  = "user_id"  // 以 user_id 来识别用户
-	UserIdTypeCreateMessageUnionId = "union_id" // 以 union_id 来识别用户
-	UserIdTypeCreateMessageOpenId  = "open_id"  // 以 open_id 来识别用户
+	SearchMessageUserIDTypeUserId  = "user_id"  // 以 user_id 来识别用户
+	SearchMessageUserIDTypeUnionId = "union_id" // 以 union_id 来识别用户
+	SearchMessageUserIDTypeOpenId  = "open_id"  // 以 open_id 来识别用户
 )
 
 type Acl struct {
@@ -1479,6 +1479,8 @@ func NewDepartmentIdBuilder() *DepartmentIdBuilder {
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *DepartmentIdBuilder {
 	builder.departmentId = departmentId
@@ -1486,6 +1488,8 @@ func (builder *DepartmentIdBuilder) DepartmentId(departmentId string) *Departmen
 	return builder
 }
 
+//
+//
 // 示例值：
 func (builder *DepartmentIdBuilder) OpenDepartmentId(openDepartmentId string) *DepartmentIdBuilder {
 	builder.openDepartmentId = openDepartmentId
@@ -1877,6 +1881,549 @@ func (builder *DocPassageParamBuilder) Build() *DocPassageParam {
 	if builder.onlySearchPublicFlag {
 		req.OnlySearchPublic = &builder.onlySearchPublic
 
+	}
+	return req
+}
+
+type EnterpriseKnowledgeSourceCommentParam struct {
+	WikiSearchable *bool `json:"wiki_searchable,omitempty"` // 是否搜索知识库文档的评论。默认为 `false`。
+
+	SpaceSearchable *bool `json:"space_searchable,omitempty"` // 是否搜索云空间文档的评论。默认为 `false`。
+}
+
+type EnterpriseKnowledgeSourceCommentParamBuilder struct {
+	wikiSearchable     bool // 是否搜索知识库文档的评论。默认为 `false`。
+	wikiSearchableFlag bool
+
+	spaceSearchable     bool // 是否搜索云空间文档的评论。默认为 `false`。
+	spaceSearchableFlag bool
+}
+
+func NewEnterpriseKnowledgeSourceCommentParamBuilder() *EnterpriseKnowledgeSourceCommentParamBuilder {
+	builder := &EnterpriseKnowledgeSourceCommentParamBuilder{}
+	return builder
+}
+
+// 是否搜索知识库文档的评论。默认为 `false`。
+//
+// 示例值：true
+func (builder *EnterpriseKnowledgeSourceCommentParamBuilder) WikiSearchable(wikiSearchable bool) *EnterpriseKnowledgeSourceCommentParamBuilder {
+	builder.wikiSearchable = wikiSearchable
+	builder.wikiSearchableFlag = true
+	return builder
+}
+
+// 是否搜索云空间文档的评论。默认为 `false`。
+//
+// 示例值：true
+func (builder *EnterpriseKnowledgeSourceCommentParamBuilder) SpaceSearchable(spaceSearchable bool) *EnterpriseKnowledgeSourceCommentParamBuilder {
+	builder.spaceSearchable = spaceSearchable
+	builder.spaceSearchableFlag = true
+	return builder
+}
+
+func (builder *EnterpriseKnowledgeSourceCommentParamBuilder) Build() *EnterpriseKnowledgeSourceCommentParam {
+	req := &EnterpriseKnowledgeSourceCommentParam{}
+	if builder.wikiSearchableFlag {
+		req.WikiSearchable = &builder.wikiSearchable
+
+	}
+	if builder.spaceSearchableFlag {
+		req.SpaceSearchable = &builder.spaceSearchable
+
+	}
+	return req
+}
+
+type EnterpriseKnowledgeSourceHelpdeskParam struct {
+	Searchable *bool `json:"searchable,omitempty"` // searchable
+
+	Filter *KnowledgeSourceHelpdeskFilter `json:"filter,omitempty"` // filter
+}
+
+type EnterpriseKnowledgeSourceHelpdeskParamBuilder struct {
+	searchable     bool // searchable
+	searchableFlag bool
+
+	filter     *KnowledgeSourceHelpdeskFilter // filter
+	filterFlag bool
+}
+
+func NewEnterpriseKnowledgeSourceHelpdeskParamBuilder() *EnterpriseKnowledgeSourceHelpdeskParamBuilder {
+	builder := &EnterpriseKnowledgeSourceHelpdeskParamBuilder{}
+	return builder
+}
+
+// searchable
+//
+// 示例值：false
+func (builder *EnterpriseKnowledgeSourceHelpdeskParamBuilder) Searchable(searchable bool) *EnterpriseKnowledgeSourceHelpdeskParamBuilder {
+	builder.searchable = searchable
+	builder.searchableFlag = true
+	return builder
+}
+
+// filter
+//
+// 示例值：
+func (builder *EnterpriseKnowledgeSourceHelpdeskParamBuilder) Filter(filter *KnowledgeSourceHelpdeskFilter) *EnterpriseKnowledgeSourceHelpdeskParamBuilder {
+	builder.filter = filter
+	builder.filterFlag = true
+	return builder
+}
+
+func (builder *EnterpriseKnowledgeSourceHelpdeskParamBuilder) Build() *EnterpriseKnowledgeSourceHelpdeskParam {
+	req := &EnterpriseKnowledgeSourceHelpdeskParam{}
+	if builder.searchableFlag {
+		req.Searchable = &builder.searchable
+
+	}
+	if builder.filterFlag {
+		req.Filter = builder.filter
+	}
+	return req
+}
+
+type EnterpriseKnowledgeSourceLingoParam struct {
+	Searchable *bool `json:"searchable,omitempty"` // searchable
+}
+
+type EnterpriseKnowledgeSourceLingoParamBuilder struct {
+	searchable     bool // searchable
+	searchableFlag bool
+}
+
+func NewEnterpriseKnowledgeSourceLingoParamBuilder() *EnterpriseKnowledgeSourceLingoParamBuilder {
+	builder := &EnterpriseKnowledgeSourceLingoParamBuilder{}
+	return builder
+}
+
+// searchable
+//
+// 示例值：false
+func (builder *EnterpriseKnowledgeSourceLingoParamBuilder) Searchable(searchable bool) *EnterpriseKnowledgeSourceLingoParamBuilder {
+	builder.searchable = searchable
+	builder.searchableFlag = true
+	return builder
+}
+
+func (builder *EnterpriseKnowledgeSourceLingoParamBuilder) Build() *EnterpriseKnowledgeSourceLingoParam {
+	req := &EnterpriseKnowledgeSourceLingoParam{}
+	if builder.searchableFlag {
+		req.Searchable = &builder.searchable
+
+	}
+	return req
+}
+
+type EnterpriseKnowledgeSourceMailParam struct {
+	Searchable *bool `json:"searchable,omitempty"` // 是否搜索邮件。默认为 `false`。
+}
+
+type EnterpriseKnowledgeSourceMailParamBuilder struct {
+	searchable     bool // 是否搜索邮件。默认为 `false`。
+	searchableFlag bool
+}
+
+func NewEnterpriseKnowledgeSourceMailParamBuilder() *EnterpriseKnowledgeSourceMailParamBuilder {
+	builder := &EnterpriseKnowledgeSourceMailParamBuilder{}
+	return builder
+}
+
+// 是否搜索邮件。默认为 `false`。
+//
+// 示例值：true
+func (builder *EnterpriseKnowledgeSourceMailParamBuilder) Searchable(searchable bool) *EnterpriseKnowledgeSourceMailParamBuilder {
+	builder.searchable = searchable
+	builder.searchableFlag = true
+	return builder
+}
+
+func (builder *EnterpriseKnowledgeSourceMailParamBuilder) Build() *EnterpriseKnowledgeSourceMailParam {
+	req := &EnterpriseKnowledgeSourceMailParam{}
+	if builder.searchableFlag {
+		req.Searchable = &builder.searchable
+
+	}
+	return req
+}
+
+type EnterpriseKnowledgeSourceMessageParam struct {
+	Searchable *bool `json:"searchable,omitempty"` // searchable
+
+	Filter *KnowledgeSourceMessageFilter `json:"filter,omitempty"` // filter
+
+	Reject *KnowledgeSourceMessageReject `json:"reject,omitempty"` // reject
+}
+
+type EnterpriseKnowledgeSourceMessageParamBuilder struct {
+	searchable     bool // searchable
+	searchableFlag bool
+
+	filter     *KnowledgeSourceMessageFilter // filter
+	filterFlag bool
+
+	reject     *KnowledgeSourceMessageReject // reject
+	rejectFlag bool
+}
+
+func NewEnterpriseKnowledgeSourceMessageParamBuilder() *EnterpriseKnowledgeSourceMessageParamBuilder {
+	builder := &EnterpriseKnowledgeSourceMessageParamBuilder{}
+	return builder
+}
+
+// searchable
+//
+// 示例值：false
+func (builder *EnterpriseKnowledgeSourceMessageParamBuilder) Searchable(searchable bool) *EnterpriseKnowledgeSourceMessageParamBuilder {
+	builder.searchable = searchable
+	builder.searchableFlag = true
+	return builder
+}
+
+// filter
+//
+// 示例值：
+func (builder *EnterpriseKnowledgeSourceMessageParamBuilder) Filter(filter *KnowledgeSourceMessageFilter) *EnterpriseKnowledgeSourceMessageParamBuilder {
+	builder.filter = filter
+	builder.filterFlag = true
+	return builder
+}
+
+// reject
+//
+// 示例值：
+func (builder *EnterpriseKnowledgeSourceMessageParamBuilder) Reject(reject *KnowledgeSourceMessageReject) *EnterpriseKnowledgeSourceMessageParamBuilder {
+	builder.reject = reject
+	builder.rejectFlag = true
+	return builder
+}
+
+func (builder *EnterpriseKnowledgeSourceMessageParamBuilder) Build() *EnterpriseKnowledgeSourceMessageParam {
+	req := &EnterpriseKnowledgeSourceMessageParam{}
+	if builder.searchableFlag {
+		req.Searchable = &builder.searchable
+
+	}
+	if builder.filterFlag {
+		req.Filter = builder.filter
+	}
+	if builder.rejectFlag {
+		req.Reject = builder.reject
+	}
+	return req
+}
+
+type EnterpriseKnowledgeSourceMinutesParam struct {
+	Searchable *bool `json:"searchable,omitempty"` // 是否搜索飞书妙记。默认为 `false`。
+}
+
+type EnterpriseKnowledgeSourceMinutesParamBuilder struct {
+	searchable     bool // 是否搜索飞书妙记。默认为 `false`。
+	searchableFlag bool
+}
+
+func NewEnterpriseKnowledgeSourceMinutesParamBuilder() *EnterpriseKnowledgeSourceMinutesParamBuilder {
+	builder := &EnterpriseKnowledgeSourceMinutesParamBuilder{}
+	return builder
+}
+
+// 是否搜索飞书妙记。默认为 `false`。
+//
+// 示例值：true
+func (builder *EnterpriseKnowledgeSourceMinutesParamBuilder) Searchable(searchable bool) *EnterpriseKnowledgeSourceMinutesParamBuilder {
+	builder.searchable = searchable
+	builder.searchableFlag = true
+	return builder
+}
+
+func (builder *EnterpriseKnowledgeSourceMinutesParamBuilder) Build() *EnterpriseKnowledgeSourceMinutesParam {
+	req := &EnterpriseKnowledgeSourceMinutesParam{}
+	if builder.searchableFlag {
+		req.Searchable = &builder.searchable
+
+	}
+	return req
+}
+
+type EnterpriseKnowledgeSourceParam struct {
+	Space *EnterpriseKnowledgeSourceSpaceParam `json:"space,omitempty"` // 云空间文档
+
+	Wiki *EnterpriseKnowledgeSourceWikiParam `json:"wiki,omitempty"` // 知识库文档
+
+	Message *EnterpriseKnowledgeSourceMessageParam `json:"message,omitempty"` // 消息
+
+	HelpdeskFaq *EnterpriseKnowledgeSourceHelpdeskParam `json:"helpdesk_faq,omitempty"` // 服务台 FAQ
+
+	Lingo *EnterpriseKnowledgeSourceLingoParam `json:"lingo,omitempty"` // Lingo企业词典
+
+	Comment *EnterpriseKnowledgeSourceCommentParam `json:"comment,omitempty"` // 文档评论
+
+	Minutes *EnterpriseKnowledgeSourceMinutesParam `json:"minutes,omitempty"` // 飞书妙记
+
+	Mail *EnterpriseKnowledgeSourceMailParam `json:"mail,omitempty"` // 邮件
+}
+
+type EnterpriseKnowledgeSourceParamBuilder struct {
+	space     *EnterpriseKnowledgeSourceSpaceParam // 云空间文档
+	spaceFlag bool
+
+	wiki     *EnterpriseKnowledgeSourceWikiParam // 知识库文档
+	wikiFlag bool
+
+	message     *EnterpriseKnowledgeSourceMessageParam // 消息
+	messageFlag bool
+
+	helpdeskFaq     *EnterpriseKnowledgeSourceHelpdeskParam // 服务台 FAQ
+	helpdeskFaqFlag bool
+
+	lingo     *EnterpriseKnowledgeSourceLingoParam // Lingo企业词典
+	lingoFlag bool
+
+	comment     *EnterpriseKnowledgeSourceCommentParam // 文档评论
+	commentFlag bool
+
+	minutes     *EnterpriseKnowledgeSourceMinutesParam // 飞书妙记
+	minutesFlag bool
+
+	mail     *EnterpriseKnowledgeSourceMailParam // 邮件
+	mailFlag bool
+}
+
+func NewEnterpriseKnowledgeSourceParamBuilder() *EnterpriseKnowledgeSourceParamBuilder {
+	builder := &EnterpriseKnowledgeSourceParamBuilder{}
+	return builder
+}
+
+// 云空间文档
+//
+// 示例值：
+func (builder *EnterpriseKnowledgeSourceParamBuilder) Space(space *EnterpriseKnowledgeSourceSpaceParam) *EnterpriseKnowledgeSourceParamBuilder {
+	builder.space = space
+	builder.spaceFlag = true
+	return builder
+}
+
+// 知识库文档
+//
+// 示例值：
+func (builder *EnterpriseKnowledgeSourceParamBuilder) Wiki(wiki *EnterpriseKnowledgeSourceWikiParam) *EnterpriseKnowledgeSourceParamBuilder {
+	builder.wiki = wiki
+	builder.wikiFlag = true
+	return builder
+}
+
+// 消息
+//
+// 示例值：
+func (builder *EnterpriseKnowledgeSourceParamBuilder) Message(message *EnterpriseKnowledgeSourceMessageParam) *EnterpriseKnowledgeSourceParamBuilder {
+	builder.message = message
+	builder.messageFlag = true
+	return builder
+}
+
+// 服务台 FAQ
+//
+// 示例值：
+func (builder *EnterpriseKnowledgeSourceParamBuilder) HelpdeskFaq(helpdeskFaq *EnterpriseKnowledgeSourceHelpdeskParam) *EnterpriseKnowledgeSourceParamBuilder {
+	builder.helpdeskFaq = helpdeskFaq
+	builder.helpdeskFaqFlag = true
+	return builder
+}
+
+// Lingo企业词典
+//
+// 示例值：
+func (builder *EnterpriseKnowledgeSourceParamBuilder) Lingo(lingo *EnterpriseKnowledgeSourceLingoParam) *EnterpriseKnowledgeSourceParamBuilder {
+	builder.lingo = lingo
+	builder.lingoFlag = true
+	return builder
+}
+
+// 文档评论
+//
+// 示例值：
+func (builder *EnterpriseKnowledgeSourceParamBuilder) Comment(comment *EnterpriseKnowledgeSourceCommentParam) *EnterpriseKnowledgeSourceParamBuilder {
+	builder.comment = comment
+	builder.commentFlag = true
+	return builder
+}
+
+// 飞书妙记
+//
+// 示例值：
+func (builder *EnterpriseKnowledgeSourceParamBuilder) Minutes(minutes *EnterpriseKnowledgeSourceMinutesParam) *EnterpriseKnowledgeSourceParamBuilder {
+	builder.minutes = minutes
+	builder.minutesFlag = true
+	return builder
+}
+
+// 邮件
+//
+// 示例值：
+func (builder *EnterpriseKnowledgeSourceParamBuilder) Mail(mail *EnterpriseKnowledgeSourceMailParam) *EnterpriseKnowledgeSourceParamBuilder {
+	builder.mail = mail
+	builder.mailFlag = true
+	return builder
+}
+
+func (builder *EnterpriseKnowledgeSourceParamBuilder) Build() *EnterpriseKnowledgeSourceParam {
+	req := &EnterpriseKnowledgeSourceParam{}
+	if builder.spaceFlag {
+		req.Space = builder.space
+	}
+	if builder.wikiFlag {
+		req.Wiki = builder.wiki
+	}
+	if builder.messageFlag {
+		req.Message = builder.message
+	}
+	if builder.helpdeskFaqFlag {
+		req.HelpdeskFaq = builder.helpdeskFaq
+	}
+	if builder.lingoFlag {
+		req.Lingo = builder.lingo
+	}
+	if builder.commentFlag {
+		req.Comment = builder.comment
+	}
+	if builder.minutesFlag {
+		req.Minutes = builder.minutes
+	}
+	if builder.mailFlag {
+		req.Mail = builder.mail
+	}
+	return req
+}
+
+type EnterpriseKnowledgeSourceSpaceParam struct {
+	Searchable *bool `json:"searchable,omitempty"` // searchable
+
+	Filter *KnowledgeSourceSpaceFilter `json:"filter,omitempty"` // filter
+
+	Reject *KnowledgeSourceSpaceReject `json:"reject,omitempty"` // reject
+}
+
+type EnterpriseKnowledgeSourceSpaceParamBuilder struct {
+	searchable     bool // searchable
+	searchableFlag bool
+
+	filter     *KnowledgeSourceSpaceFilter // filter
+	filterFlag bool
+
+	reject     *KnowledgeSourceSpaceReject // reject
+	rejectFlag bool
+}
+
+func NewEnterpriseKnowledgeSourceSpaceParamBuilder() *EnterpriseKnowledgeSourceSpaceParamBuilder {
+	builder := &EnterpriseKnowledgeSourceSpaceParamBuilder{}
+	return builder
+}
+
+// searchable
+//
+// 示例值：false
+func (builder *EnterpriseKnowledgeSourceSpaceParamBuilder) Searchable(searchable bool) *EnterpriseKnowledgeSourceSpaceParamBuilder {
+	builder.searchable = searchable
+	builder.searchableFlag = true
+	return builder
+}
+
+// filter
+//
+// 示例值：
+func (builder *EnterpriseKnowledgeSourceSpaceParamBuilder) Filter(filter *KnowledgeSourceSpaceFilter) *EnterpriseKnowledgeSourceSpaceParamBuilder {
+	builder.filter = filter
+	builder.filterFlag = true
+	return builder
+}
+
+// reject
+//
+// 示例值：
+func (builder *EnterpriseKnowledgeSourceSpaceParamBuilder) Reject(reject *KnowledgeSourceSpaceReject) *EnterpriseKnowledgeSourceSpaceParamBuilder {
+	builder.reject = reject
+	builder.rejectFlag = true
+	return builder
+}
+
+func (builder *EnterpriseKnowledgeSourceSpaceParamBuilder) Build() *EnterpriseKnowledgeSourceSpaceParam {
+	req := &EnterpriseKnowledgeSourceSpaceParam{}
+	if builder.searchableFlag {
+		req.Searchable = &builder.searchable
+
+	}
+	if builder.filterFlag {
+		req.Filter = builder.filter
+	}
+	if builder.rejectFlag {
+		req.Reject = builder.reject
+	}
+	return req
+}
+
+type EnterpriseKnowledgeSourceWikiParam struct {
+	Searchable *bool `json:"searchable,omitempty"` // searchable
+
+	Filter *KnowledgeSourceWikiFilter `json:"filter,omitempty"` // filter
+
+	Reject *KnowledgeSourceWikiReject `json:"reject,omitempty"` // reject
+}
+
+type EnterpriseKnowledgeSourceWikiParamBuilder struct {
+	searchable     bool // searchable
+	searchableFlag bool
+
+	filter     *KnowledgeSourceWikiFilter // filter
+	filterFlag bool
+
+	reject     *KnowledgeSourceWikiReject // reject
+	rejectFlag bool
+}
+
+func NewEnterpriseKnowledgeSourceWikiParamBuilder() *EnterpriseKnowledgeSourceWikiParamBuilder {
+	builder := &EnterpriseKnowledgeSourceWikiParamBuilder{}
+	return builder
+}
+
+// searchable
+//
+// 示例值：false
+func (builder *EnterpriseKnowledgeSourceWikiParamBuilder) Searchable(searchable bool) *EnterpriseKnowledgeSourceWikiParamBuilder {
+	builder.searchable = searchable
+	builder.searchableFlag = true
+	return builder
+}
+
+// filter
+//
+// 示例值：
+func (builder *EnterpriseKnowledgeSourceWikiParamBuilder) Filter(filter *KnowledgeSourceWikiFilter) *EnterpriseKnowledgeSourceWikiParamBuilder {
+	builder.filter = filter
+	builder.filterFlag = true
+	return builder
+}
+
+// reject
+//
+// 示例值：
+func (builder *EnterpriseKnowledgeSourceWikiParamBuilder) Reject(reject *KnowledgeSourceWikiReject) *EnterpriseKnowledgeSourceWikiParamBuilder {
+	builder.reject = reject
+	builder.rejectFlag = true
+	return builder
+}
+
+func (builder *EnterpriseKnowledgeSourceWikiParamBuilder) Build() *EnterpriseKnowledgeSourceWikiParam {
+	req := &EnterpriseKnowledgeSourceWikiParam{}
+	if builder.searchableFlag {
+		req.Searchable = &builder.searchable
+
+	}
+	if builder.filterFlag {
+		req.Filter = builder.filter
+	}
+	if builder.rejectFlag {
+		req.Reject = builder.reject
 	}
 	return req
 }
@@ -2439,6 +2986,1023 @@ func (builder *ItemRecordBuilder) Build() *ItemRecord {
 	if builder.updatedAtFlag {
 		req.UpdatedAt = &builder.updatedAt
 
+	}
+	return req
+}
+
+type KnowledgeQaAnswerRequest struct {
+	Query *string `json:"query,omitempty"` // 用户问题
+
+	EnableImage *bool `json:"enable_image,omitempty"` // 启用图片理解与展示
+
+	KnowledgeScope *string `json:"knowledge_scope,omitempty"` // 指定答案生成的知识范围
+
+	EnterpriseKnowledgeSource *EnterpriseKnowledgeSourceParam `json:"enterprise_knowledge_source,omitempty"` // 企业内知识的检索范围，选择企业内知识时必填
+
+	Extra *KnowledgeSourceRequestExtra `json:"extra,omitempty"` // 额外信息
+
+	ModelType *string `json:"model_type,omitempty"` // 大模型种类
+}
+
+type KnowledgeQaAnswerRequestBuilder struct {
+	query     string // 用户问题
+	queryFlag bool
+
+	enableImage     bool // 启用图片理解与展示
+	enableImageFlag bool
+
+	knowledgeScope     string // 指定答案生成的知识范围
+	knowledgeScopeFlag bool
+
+	enterpriseKnowledgeSource     *EnterpriseKnowledgeSourceParam // 企业内知识的检索范围，选择企业内知识时必填
+	enterpriseKnowledgeSourceFlag bool
+
+	extra     *KnowledgeSourceRequestExtra // 额外信息
+	extraFlag bool
+
+	modelType     string // 大模型种类
+	modelTypeFlag bool
+}
+
+func NewKnowledgeQaAnswerRequestBuilder() *KnowledgeQaAnswerRequestBuilder {
+	builder := &KnowledgeQaAnswerRequestBuilder{}
+	return builder
+}
+
+// 用户问题
+//
+// 示例值：如何申请显示器
+func (builder *KnowledgeQaAnswerRequestBuilder) Query(query string) *KnowledgeQaAnswerRequestBuilder {
+	builder.query = query
+	builder.queryFlag = true
+	return builder
+}
+
+// 启用图片理解与展示
+//
+// 示例值：false
+func (builder *KnowledgeQaAnswerRequestBuilder) EnableImage(enableImage bool) *KnowledgeQaAnswerRequestBuilder {
+	builder.enableImage = enableImage
+	builder.enableImageFlag = true
+	return builder
+}
+
+// 指定答案生成的知识范围
+//
+// 示例值：enterprise
+func (builder *KnowledgeQaAnswerRequestBuilder) KnowledgeScope(knowledgeScope string) *KnowledgeQaAnswerRequestBuilder {
+	builder.knowledgeScope = knowledgeScope
+	builder.knowledgeScopeFlag = true
+	return builder
+}
+
+// 企业内知识的检索范围，选择企业内知识时必填
+//
+// 示例值：
+func (builder *KnowledgeQaAnswerRequestBuilder) EnterpriseKnowledgeSource(enterpriseKnowledgeSource *EnterpriseKnowledgeSourceParam) *KnowledgeQaAnswerRequestBuilder {
+	builder.enterpriseKnowledgeSource = enterpriseKnowledgeSource
+	builder.enterpriseKnowledgeSourceFlag = true
+	return builder
+}
+
+// 额外信息
+//
+// 示例值：
+func (builder *KnowledgeQaAnswerRequestBuilder) Extra(extra *KnowledgeSourceRequestExtra) *KnowledgeQaAnswerRequestBuilder {
+	builder.extra = extra
+	builder.extraFlag = true
+	return builder
+}
+
+// 大模型种类
+//
+// 示例值：doubao
+func (builder *KnowledgeQaAnswerRequestBuilder) ModelType(modelType string) *KnowledgeQaAnswerRequestBuilder {
+	builder.modelType = modelType
+	builder.modelTypeFlag = true
+	return builder
+}
+
+func (builder *KnowledgeQaAnswerRequestBuilder) Build() *KnowledgeQaAnswerRequest {
+	req := &KnowledgeQaAnswerRequest{}
+	if builder.queryFlag {
+		req.Query = &builder.query
+
+	}
+	if builder.enableImageFlag {
+		req.EnableImage = &builder.enableImage
+
+	}
+	if builder.knowledgeScopeFlag {
+		req.KnowledgeScope = &builder.knowledgeScope
+
+	}
+	if builder.enterpriseKnowledgeSourceFlag {
+		req.EnterpriseKnowledgeSource = builder.enterpriseKnowledgeSource
+	}
+	if builder.extraFlag {
+		req.Extra = builder.extra
+	}
+	if builder.modelTypeFlag {
+		req.ModelType = &builder.modelType
+
+	}
+	return req
+}
+
+type KnowledgeQaAnswerResponse struct {
+	Answer *string `json:"answer,omitempty"` // answer
+
+	ReasoningContent *string `json:"reasoning_content,omitempty"` // reasoning_content
+
+	StatusCode *int `json:"status_code,omitempty"` // 业务状态码
+
+	StatusMessage *string `json:"status_message,omitempty"` // 业务状态消息
+
+	References *KnowledgeQaReference `json:"references,omitempty"` // 参考列表
+}
+
+type KnowledgeQaAnswerResponseBuilder struct {
+	answer     string // answer
+	answerFlag bool
+
+	reasoningContent     string // reasoning_content
+	reasoningContentFlag bool
+
+	statusCode     int // 业务状态码
+	statusCodeFlag bool
+
+	statusMessage     string // 业务状态消息
+	statusMessageFlag bool
+
+	references     *KnowledgeQaReference // 参考列表
+	referencesFlag bool
+}
+
+func NewKnowledgeQaAnswerResponseBuilder() *KnowledgeQaAnswerResponseBuilder {
+	builder := &KnowledgeQaAnswerResponseBuilder{}
+	return builder
+}
+
+// answer
+//
+// 示例值：xxxxx
+func (builder *KnowledgeQaAnswerResponseBuilder) Answer(answer string) *KnowledgeQaAnswerResponseBuilder {
+	builder.answer = answer
+	builder.answerFlag = true
+	return builder
+}
+
+// reasoning_content
+//
+// 示例值：xxxxxx
+func (builder *KnowledgeQaAnswerResponseBuilder) ReasoningContent(reasoningContent string) *KnowledgeQaAnswerResponseBuilder {
+	builder.reasoningContent = reasoningContent
+	builder.reasoningContentFlag = true
+	return builder
+}
+
+// 业务状态码
+//
+// 示例值：0
+func (builder *KnowledgeQaAnswerResponseBuilder) StatusCode(statusCode int) *KnowledgeQaAnswerResponseBuilder {
+	builder.statusCode = statusCode
+	builder.statusCodeFlag = true
+	return builder
+}
+
+// 业务状态消息
+//
+// 示例值：“”
+func (builder *KnowledgeQaAnswerResponseBuilder) StatusMessage(statusMessage string) *KnowledgeQaAnswerResponseBuilder {
+	builder.statusMessage = statusMessage
+	builder.statusMessageFlag = true
+	return builder
+}
+
+// 参考列表
+//
+// 示例值：
+func (builder *KnowledgeQaAnswerResponseBuilder) References(references *KnowledgeQaReference) *KnowledgeQaAnswerResponseBuilder {
+	builder.references = references
+	builder.referencesFlag = true
+	return builder
+}
+
+func (builder *KnowledgeQaAnswerResponseBuilder) Build() *KnowledgeQaAnswerResponse {
+	req := &KnowledgeQaAnswerResponse{}
+	if builder.answerFlag {
+		req.Answer = &builder.answer
+
+	}
+	if builder.reasoningContentFlag {
+		req.ReasoningContent = &builder.reasoningContent
+
+	}
+	if builder.statusCodeFlag {
+		req.StatusCode = &builder.statusCode
+
+	}
+	if builder.statusMessageFlag {
+		req.StatusMessage = &builder.statusMessage
+
+	}
+	if builder.referencesFlag {
+		req.References = builder.references
+	}
+	return req
+}
+
+type KnowledgeQaEnterpriseReference struct {
+	Id *string `json:"id,omitempty"` // passage_id
+
+	SourceType *int `json:"source_type,omitempty"` // source_type
+
+	Title *string `json:"title,omitempty"` // title
+
+	Content *string `json:"content,omitempty"` // content
+
+	Url *string `json:"url,omitempty"` // url
+}
+
+type KnowledgeQaEnterpriseReferenceBuilder struct {
+	id     string // passage_id
+	idFlag bool
+
+	sourceType     int // source_type
+	sourceTypeFlag bool
+
+	title     string // title
+	titleFlag bool
+
+	content     string // content
+	contentFlag bool
+
+	url     string // url
+	urlFlag bool
+}
+
+func NewKnowledgeQaEnterpriseReferenceBuilder() *KnowledgeQaEnterpriseReferenceBuilder {
+	builder := &KnowledgeQaEnterpriseReferenceBuilder{}
+	return builder
+}
+
+// passage_id
+//
+// 示例值：123456
+func (builder *KnowledgeQaEnterpriseReferenceBuilder) Id(id string) *KnowledgeQaEnterpriseReferenceBuilder {
+	builder.id = id
+	builder.idFlag = true
+	return builder
+}
+
+// source_type
+//
+// 示例值：1
+func (builder *KnowledgeQaEnterpriseReferenceBuilder) SourceType(sourceType int) *KnowledgeQaEnterpriseReferenceBuilder {
+	builder.sourceType = sourceType
+	builder.sourceTypeFlag = true
+	return builder
+}
+
+// title
+//
+// 示例值：xxxxx
+func (builder *KnowledgeQaEnterpriseReferenceBuilder) Title(title string) *KnowledgeQaEnterpriseReferenceBuilder {
+	builder.title = title
+	builder.titleFlag = true
+	return builder
+}
+
+// content
+//
+// 示例值：xxxxxx
+func (builder *KnowledgeQaEnterpriseReferenceBuilder) Content(content string) *KnowledgeQaEnterpriseReferenceBuilder {
+	builder.content = content
+	builder.contentFlag = true
+	return builder
+}
+
+// url
+//
+// 示例值：xxxxx
+func (builder *KnowledgeQaEnterpriseReferenceBuilder) Url(url string) *KnowledgeQaEnterpriseReferenceBuilder {
+	builder.url = url
+	builder.urlFlag = true
+	return builder
+}
+
+func (builder *KnowledgeQaEnterpriseReferenceBuilder) Build() *KnowledgeQaEnterpriseReference {
+	req := &KnowledgeQaEnterpriseReference{}
+	if builder.idFlag {
+		req.Id = &builder.id
+
+	}
+	if builder.sourceTypeFlag {
+		req.SourceType = &builder.sourceType
+
+	}
+	if builder.titleFlag {
+		req.Title = &builder.title
+
+	}
+	if builder.contentFlag {
+		req.Content = &builder.content
+
+	}
+	if builder.urlFlag {
+		req.Url = &builder.url
+
+	}
+	return req
+}
+
+type KnowledgeQaInternetReference struct {
+	Title *string `json:"title,omitempty"` // title
+
+	Summary *string `json:"summary,omitempty"` // summary
+
+	Url *string `json:"url,omitempty"` // url
+}
+
+type KnowledgeQaInternetReferenceBuilder struct {
+	title     string // title
+	titleFlag bool
+
+	summary     string // summary
+	summaryFlag bool
+
+	url     string // url
+	urlFlag bool
+}
+
+func NewKnowledgeQaInternetReferenceBuilder() *KnowledgeQaInternetReferenceBuilder {
+	builder := &KnowledgeQaInternetReferenceBuilder{}
+	return builder
+}
+
+// title
+//
+// 示例值：xxxxxx
+func (builder *KnowledgeQaInternetReferenceBuilder) Title(title string) *KnowledgeQaInternetReferenceBuilder {
+	builder.title = title
+	builder.titleFlag = true
+	return builder
+}
+
+// summary
+//
+// 示例值：xxxxx
+func (builder *KnowledgeQaInternetReferenceBuilder) Summary(summary string) *KnowledgeQaInternetReferenceBuilder {
+	builder.summary = summary
+	builder.summaryFlag = true
+	return builder
+}
+
+// url
+//
+// 示例值：xxxxxx
+func (builder *KnowledgeQaInternetReferenceBuilder) Url(url string) *KnowledgeQaInternetReferenceBuilder {
+	builder.url = url
+	builder.urlFlag = true
+	return builder
+}
+
+func (builder *KnowledgeQaInternetReferenceBuilder) Build() *KnowledgeQaInternetReference {
+	req := &KnowledgeQaInternetReference{}
+	if builder.titleFlag {
+		req.Title = &builder.title
+
+	}
+	if builder.summaryFlag {
+		req.Summary = &builder.summary
+
+	}
+	if builder.urlFlag {
+		req.Url = &builder.url
+
+	}
+	return req
+}
+
+type KnowledgeQaReference struct {
+	EnterpriseRefs []*KnowledgeQaEnterpriseReference `json:"enterprise_refs,omitempty"` // enterprise_refs
+
+	InternetRefs []*KnowledgeQaInternetReference `json:"internet_refs,omitempty"` // internet_refs
+}
+
+type KnowledgeQaReferenceBuilder struct {
+	enterpriseRefs     []*KnowledgeQaEnterpriseReference // enterprise_refs
+	enterpriseRefsFlag bool
+
+	internetRefs     []*KnowledgeQaInternetReference // internet_refs
+	internetRefsFlag bool
+}
+
+func NewKnowledgeQaReferenceBuilder() *KnowledgeQaReferenceBuilder {
+	builder := &KnowledgeQaReferenceBuilder{}
+	return builder
+}
+
+// enterprise_refs
+//
+// 示例值：
+func (builder *KnowledgeQaReferenceBuilder) EnterpriseRefs(enterpriseRefs []*KnowledgeQaEnterpriseReference) *KnowledgeQaReferenceBuilder {
+	builder.enterpriseRefs = enterpriseRefs
+	builder.enterpriseRefsFlag = true
+	return builder
+}
+
+// internet_refs
+//
+// 示例值：
+func (builder *KnowledgeQaReferenceBuilder) InternetRefs(internetRefs []*KnowledgeQaInternetReference) *KnowledgeQaReferenceBuilder {
+	builder.internetRefs = internetRefs
+	builder.internetRefsFlag = true
+	return builder
+}
+
+func (builder *KnowledgeQaReferenceBuilder) Build() *KnowledgeQaReference {
+	req := &KnowledgeQaReference{}
+	if builder.enterpriseRefsFlag {
+		req.EnterpriseRefs = builder.enterpriseRefs
+	}
+	if builder.internetRefsFlag {
+		req.InternetRefs = builder.internetRefs
+	}
+	return req
+}
+
+type KnowledgeQaSearchEnterprisePassage struct {
+	Id *string `json:"id,omitempty"` // passage_id
+
+	SourceType *int `json:"source_type,omitempty"` // source_type
+
+	Title *string `json:"title,omitempty"` // title
+
+	Content *string `json:"content,omitempty"` // content
+
+	Url *string `json:"url,omitempty"` // url
+
+	Score *float64 `json:"score,omitempty"` // 相关性打分
+}
+
+type KnowledgeQaSearchEnterprisePassageBuilder struct {
+	id     string // passage_id
+	idFlag bool
+
+	sourceType     int // source_type
+	sourceTypeFlag bool
+
+	title     string // title
+	titleFlag bool
+
+	content     string // content
+	contentFlag bool
+
+	url     string // url
+	urlFlag bool
+
+	score     float64 // 相关性打分
+	scoreFlag bool
+}
+
+func NewKnowledgeQaSearchEnterprisePassageBuilder() *KnowledgeQaSearchEnterprisePassageBuilder {
+	builder := &KnowledgeQaSearchEnterprisePassageBuilder{}
+	return builder
+}
+
+// passage_id
+//
+// 示例值：123456
+func (builder *KnowledgeQaSearchEnterprisePassageBuilder) Id(id string) *KnowledgeQaSearchEnterprisePassageBuilder {
+	builder.id = id
+	builder.idFlag = true
+	return builder
+}
+
+// source_type
+//
+// 示例值：1
+func (builder *KnowledgeQaSearchEnterprisePassageBuilder) SourceType(sourceType int) *KnowledgeQaSearchEnterprisePassageBuilder {
+	builder.sourceType = sourceType
+	builder.sourceTypeFlag = true
+	return builder
+}
+
+// title
+//
+// 示例值：xxxxx
+func (builder *KnowledgeQaSearchEnterprisePassageBuilder) Title(title string) *KnowledgeQaSearchEnterprisePassageBuilder {
+	builder.title = title
+	builder.titleFlag = true
+	return builder
+}
+
+// content
+//
+// 示例值：xxxxxx
+func (builder *KnowledgeQaSearchEnterprisePassageBuilder) Content(content string) *KnowledgeQaSearchEnterprisePassageBuilder {
+	builder.content = content
+	builder.contentFlag = true
+	return builder
+}
+
+// url
+//
+// 示例值：xxxxx
+func (builder *KnowledgeQaSearchEnterprisePassageBuilder) Url(url string) *KnowledgeQaSearchEnterprisePassageBuilder {
+	builder.url = url
+	builder.urlFlag = true
+	return builder
+}
+
+// 相关性打分
+//
+// 示例值：0.0
+func (builder *KnowledgeQaSearchEnterprisePassageBuilder) Score(score float64) *KnowledgeQaSearchEnterprisePassageBuilder {
+	builder.score = score
+	builder.scoreFlag = true
+	return builder
+}
+
+func (builder *KnowledgeQaSearchEnterprisePassageBuilder) Build() *KnowledgeQaSearchEnterprisePassage {
+	req := &KnowledgeQaSearchEnterprisePassage{}
+	if builder.idFlag {
+		req.Id = &builder.id
+
+	}
+	if builder.sourceTypeFlag {
+		req.SourceType = &builder.sourceType
+
+	}
+	if builder.titleFlag {
+		req.Title = &builder.title
+
+	}
+	if builder.contentFlag {
+		req.Content = &builder.content
+
+	}
+	if builder.urlFlag {
+		req.Url = &builder.url
+
+	}
+	if builder.scoreFlag {
+		req.Score = &builder.score
+
+	}
+	return req
+}
+
+type KnowledgeQaSearchRequest struct {
+	Query *string `json:"query,omitempty"` // query
+
+	EnterpriseKnowledgeSource *EnterpriseKnowledgeSourceParam `json:"enterprise_knowledge_source,omitempty"` // enterprise_knowledge_source
+}
+
+type KnowledgeQaSearchRequestBuilder struct {
+	query     string // query
+	queryFlag bool
+
+	enterpriseKnowledgeSource     *EnterpriseKnowledgeSourceParam // enterprise_knowledge_source
+	enterpriseKnowledgeSourceFlag bool
+}
+
+func NewKnowledgeQaSearchRequestBuilder() *KnowledgeQaSearchRequestBuilder {
+	builder := &KnowledgeQaSearchRequestBuilder{}
+	return builder
+}
+
+// query
+//
+// 示例值：hello
+func (builder *KnowledgeQaSearchRequestBuilder) Query(query string) *KnowledgeQaSearchRequestBuilder {
+	builder.query = query
+	builder.queryFlag = true
+	return builder
+}
+
+// enterprise_knowledge_source
+//
+// 示例值：
+func (builder *KnowledgeQaSearchRequestBuilder) EnterpriseKnowledgeSource(enterpriseKnowledgeSource *EnterpriseKnowledgeSourceParam) *KnowledgeQaSearchRequestBuilder {
+	builder.enterpriseKnowledgeSource = enterpriseKnowledgeSource
+	builder.enterpriseKnowledgeSourceFlag = true
+	return builder
+}
+
+func (builder *KnowledgeQaSearchRequestBuilder) Build() *KnowledgeQaSearchRequest {
+	req := &KnowledgeQaSearchRequest{}
+	if builder.queryFlag {
+		req.Query = &builder.query
+
+	}
+	if builder.enterpriseKnowledgeSourceFlag {
+		req.EnterpriseKnowledgeSource = builder.enterpriseKnowledgeSource
+	}
+	return req
+}
+
+type KnowledgeSourceHelpdeskFilter struct {
+	HelpdeskIds []string `json:"helpdesk_ids,omitempty"` // 服务台 ID 列表
+}
+
+type KnowledgeSourceHelpdeskFilterBuilder struct {
+	helpdeskIds     []string // 服务台 ID 列表
+	helpdeskIdsFlag bool
+}
+
+func NewKnowledgeSourceHelpdeskFilterBuilder() *KnowledgeSourceHelpdeskFilterBuilder {
+	builder := &KnowledgeSourceHelpdeskFilterBuilder{}
+	return builder
+}
+
+// 服务台 ID 列表
+//
+// 示例值：
+func (builder *KnowledgeSourceHelpdeskFilterBuilder) HelpdeskIds(helpdeskIds []string) *KnowledgeSourceHelpdeskFilterBuilder {
+	builder.helpdeskIds = helpdeskIds
+	builder.helpdeskIdsFlag = true
+	return builder
+}
+
+func (builder *KnowledgeSourceHelpdeskFilterBuilder) Build() *KnowledgeSourceHelpdeskFilter {
+	req := &KnowledgeSourceHelpdeskFilter{}
+	if builder.helpdeskIdsFlag {
+		req.HelpdeskIds = builder.helpdeskIds
+	}
+	return req
+}
+
+type KnowledgeSourceMessageFilter struct {
+	ChatIds []string `json:"chat_ids,omitempty"` // 会话 ID 列表
+
+	TimeRange *TimeRange `json:"time_range,omitempty"` // 时间范围
+}
+
+type KnowledgeSourceMessageFilterBuilder struct {
+	chatIds     []string // 会话 ID 列表
+	chatIdsFlag bool
+
+	timeRange     *TimeRange // 时间范围
+	timeRangeFlag bool
+}
+
+func NewKnowledgeSourceMessageFilterBuilder() *KnowledgeSourceMessageFilterBuilder {
+	builder := &KnowledgeSourceMessageFilterBuilder{}
+	return builder
+}
+
+// 会话 ID 列表
+//
+// 示例值：
+func (builder *KnowledgeSourceMessageFilterBuilder) ChatIds(chatIds []string) *KnowledgeSourceMessageFilterBuilder {
+	builder.chatIds = chatIds
+	builder.chatIdsFlag = true
+	return builder
+}
+
+// 时间范围
+//
+// 示例值：
+func (builder *KnowledgeSourceMessageFilterBuilder) TimeRange(timeRange *TimeRange) *KnowledgeSourceMessageFilterBuilder {
+	builder.timeRange = timeRange
+	builder.timeRangeFlag = true
+	return builder
+}
+
+func (builder *KnowledgeSourceMessageFilterBuilder) Build() *KnowledgeSourceMessageFilter {
+	req := &KnowledgeSourceMessageFilter{}
+	if builder.chatIdsFlag {
+		req.ChatIds = builder.chatIds
+	}
+	if builder.timeRangeFlag {
+		req.TimeRange = builder.timeRange
+	}
+	return req
+}
+
+type KnowledgeSourceMessageReject struct {
+	MessageIds []string `json:"message_ids,omitempty"` // 消息 ID 列表
+
+	ChatIds []string `json:"chat_ids,omitempty"` // 会话 ID 列表
+}
+
+type KnowledgeSourceMessageRejectBuilder struct {
+	messageIds     []string // 消息 ID 列表
+	messageIdsFlag bool
+
+	chatIds     []string // 会话 ID 列表
+	chatIdsFlag bool
+}
+
+func NewKnowledgeSourceMessageRejectBuilder() *KnowledgeSourceMessageRejectBuilder {
+	builder := &KnowledgeSourceMessageRejectBuilder{}
+	return builder
+}
+
+// 消息 ID 列表
+//
+// 示例值：
+func (builder *KnowledgeSourceMessageRejectBuilder) MessageIds(messageIds []string) *KnowledgeSourceMessageRejectBuilder {
+	builder.messageIds = messageIds
+	builder.messageIdsFlag = true
+	return builder
+}
+
+// 会话 ID 列表
+//
+// 示例值：
+func (builder *KnowledgeSourceMessageRejectBuilder) ChatIds(chatIds []string) *KnowledgeSourceMessageRejectBuilder {
+	builder.chatIds = chatIds
+	builder.chatIdsFlag = true
+	return builder
+}
+
+func (builder *KnowledgeSourceMessageRejectBuilder) Build() *KnowledgeSourceMessageReject {
+	req := &KnowledgeSourceMessageReject{}
+	if builder.messageIdsFlag {
+		req.MessageIds = builder.messageIds
+	}
+	if builder.chatIdsFlag {
+		req.ChatIds = builder.chatIds
+	}
+	return req
+}
+
+type KnowledgeSourceRequestExtra struct {
+	Locale *string `json:"locale,omitempty"` // locale
+
+	Timezone *string `json:"timezone,omitempty"` // timezone
+}
+
+type KnowledgeSourceRequestExtraBuilder struct {
+	locale     string // locale
+	localeFlag bool
+
+	timezone     string // timezone
+	timezoneFlag bool
+}
+
+func NewKnowledgeSourceRequestExtraBuilder() *KnowledgeSourceRequestExtraBuilder {
+	builder := &KnowledgeSourceRequestExtraBuilder{}
+	return builder
+}
+
+// locale
+//
+// 示例值：zh-CN
+func (builder *KnowledgeSourceRequestExtraBuilder) Locale(locale string) *KnowledgeSourceRequestExtraBuilder {
+	builder.locale = locale
+	builder.localeFlag = true
+	return builder
+}
+
+// timezone
+//
+// 示例值：Asia/Tokyo
+func (builder *KnowledgeSourceRequestExtraBuilder) Timezone(timezone string) *KnowledgeSourceRequestExtraBuilder {
+	builder.timezone = timezone
+	builder.timezoneFlag = true
+	return builder
+}
+
+func (builder *KnowledgeSourceRequestExtraBuilder) Build() *KnowledgeSourceRequestExtra {
+	req := &KnowledgeSourceRequestExtra{}
+	if builder.localeFlag {
+		req.Locale = &builder.locale
+
+	}
+	if builder.timezoneFlag {
+		req.Timezone = &builder.timezone
+
+	}
+	return req
+}
+
+type KnowledgeSourceSpaceFilter struct {
+	DocTokens []string `json:"doc_tokens,omitempty"` // 云空间文档 token 列表
+
+	FolderTokens []string `json:"folder_tokens,omitempty"` // 云空间文件夹 token 列表
+}
+
+type KnowledgeSourceSpaceFilterBuilder struct {
+	docTokens     []string // 云空间文档 token 列表
+	docTokensFlag bool
+
+	folderTokens     []string // 云空间文件夹 token 列表
+	folderTokensFlag bool
+}
+
+func NewKnowledgeSourceSpaceFilterBuilder() *KnowledgeSourceSpaceFilterBuilder {
+	builder := &KnowledgeSourceSpaceFilterBuilder{}
+	return builder
+}
+
+// 云空间文档 token 列表
+//
+// 示例值：
+func (builder *KnowledgeSourceSpaceFilterBuilder) DocTokens(docTokens []string) *KnowledgeSourceSpaceFilterBuilder {
+	builder.docTokens = docTokens
+	builder.docTokensFlag = true
+	return builder
+}
+
+// 云空间文件夹 token 列表
+//
+// 示例值：
+func (builder *KnowledgeSourceSpaceFilterBuilder) FolderTokens(folderTokens []string) *KnowledgeSourceSpaceFilterBuilder {
+	builder.folderTokens = folderTokens
+	builder.folderTokensFlag = true
+	return builder
+}
+
+func (builder *KnowledgeSourceSpaceFilterBuilder) Build() *KnowledgeSourceSpaceFilter {
+	req := &KnowledgeSourceSpaceFilter{}
+	if builder.docTokensFlag {
+		req.DocTokens = builder.docTokens
+	}
+	if builder.folderTokensFlag {
+		req.FolderTokens = builder.folderTokens
+	}
+	return req
+}
+
+type KnowledgeSourceSpaceReject struct {
+	DocTokens []string `json:"doc_tokens,omitempty"` // 云空间文档 token 列表
+
+	FolderTokens []string `json:"folder_tokens,omitempty"` // 云空间文件夹 token 列表
+}
+
+type KnowledgeSourceSpaceRejectBuilder struct {
+	docTokens     []string // 云空间文档 token 列表
+	docTokensFlag bool
+
+	folderTokens     []string // 云空间文件夹 token 列表
+	folderTokensFlag bool
+}
+
+func NewKnowledgeSourceSpaceRejectBuilder() *KnowledgeSourceSpaceRejectBuilder {
+	builder := &KnowledgeSourceSpaceRejectBuilder{}
+	return builder
+}
+
+// 云空间文档 token 列表
+//
+// 示例值：
+func (builder *KnowledgeSourceSpaceRejectBuilder) DocTokens(docTokens []string) *KnowledgeSourceSpaceRejectBuilder {
+	builder.docTokens = docTokens
+	builder.docTokensFlag = true
+	return builder
+}
+
+// 云空间文件夹 token 列表
+//
+// 示例值：
+func (builder *KnowledgeSourceSpaceRejectBuilder) FolderTokens(folderTokens []string) *KnowledgeSourceSpaceRejectBuilder {
+	builder.folderTokens = folderTokens
+	builder.folderTokensFlag = true
+	return builder
+}
+
+func (builder *KnowledgeSourceSpaceRejectBuilder) Build() *KnowledgeSourceSpaceReject {
+	req := &KnowledgeSourceSpaceReject{}
+	if builder.docTokensFlag {
+		req.DocTokens = builder.docTokens
+	}
+	if builder.folderTokensFlag {
+		req.FolderTokens = builder.folderTokens
+	}
+	return req
+}
+
+type KnowledgeSourceWikiFilter struct {
+	WikiTokens []string `json:"wiki_tokens,omitempty"` // 知识库文档 token 列表
+
+	NodeTokens []string `json:"node_tokens,omitempty"` // 知识库节点 token 列表
+
+	SpaceIds []string `json:"space_ids,omitempty"` // 知识库空间 ID 列表
+}
+
+type KnowledgeSourceWikiFilterBuilder struct {
+	wikiTokens     []string // 知识库文档 token 列表
+	wikiTokensFlag bool
+
+	nodeTokens     []string // 知识库节点 token 列表
+	nodeTokensFlag bool
+
+	spaceIds     []string // 知识库空间 ID 列表
+	spaceIdsFlag bool
+}
+
+func NewKnowledgeSourceWikiFilterBuilder() *KnowledgeSourceWikiFilterBuilder {
+	builder := &KnowledgeSourceWikiFilterBuilder{}
+	return builder
+}
+
+// 知识库文档 token 列表
+//
+// 示例值：
+func (builder *KnowledgeSourceWikiFilterBuilder) WikiTokens(wikiTokens []string) *KnowledgeSourceWikiFilterBuilder {
+	builder.wikiTokens = wikiTokens
+	builder.wikiTokensFlag = true
+	return builder
+}
+
+// 知识库节点 token 列表
+//
+// 示例值：
+func (builder *KnowledgeSourceWikiFilterBuilder) NodeTokens(nodeTokens []string) *KnowledgeSourceWikiFilterBuilder {
+	builder.nodeTokens = nodeTokens
+	builder.nodeTokensFlag = true
+	return builder
+}
+
+// 知识库空间 ID 列表
+//
+// 示例值：
+func (builder *KnowledgeSourceWikiFilterBuilder) SpaceIds(spaceIds []string) *KnowledgeSourceWikiFilterBuilder {
+	builder.spaceIds = spaceIds
+	builder.spaceIdsFlag = true
+	return builder
+}
+
+func (builder *KnowledgeSourceWikiFilterBuilder) Build() *KnowledgeSourceWikiFilter {
+	req := &KnowledgeSourceWikiFilter{}
+	if builder.wikiTokensFlag {
+		req.WikiTokens = builder.wikiTokens
+	}
+	if builder.nodeTokensFlag {
+		req.NodeTokens = builder.nodeTokens
+	}
+	if builder.spaceIdsFlag {
+		req.SpaceIds = builder.spaceIds
+	}
+	return req
+}
+
+type KnowledgeSourceWikiReject struct {
+	WikiTokens []string `json:"wiki_tokens,omitempty"` // 知识库文档 token 列表
+
+	NodeTokens []string `json:"node_tokens,omitempty"` // 知识库节点 token 列表
+
+	SpaceIds []string `json:"space_ids,omitempty"` // 知识库空间 ID 列表
+}
+
+type KnowledgeSourceWikiRejectBuilder struct {
+	wikiTokens     []string // 知识库文档 token 列表
+	wikiTokensFlag bool
+
+	nodeTokens     []string // 知识库节点 token 列表
+	nodeTokensFlag bool
+
+	spaceIds     []string // 知识库空间 ID 列表
+	spaceIdsFlag bool
+}
+
+func NewKnowledgeSourceWikiRejectBuilder() *KnowledgeSourceWikiRejectBuilder {
+	builder := &KnowledgeSourceWikiRejectBuilder{}
+	return builder
+}
+
+// 知识库文档 token 列表
+//
+// 示例值：
+func (builder *KnowledgeSourceWikiRejectBuilder) WikiTokens(wikiTokens []string) *KnowledgeSourceWikiRejectBuilder {
+	builder.wikiTokens = wikiTokens
+	builder.wikiTokensFlag = true
+	return builder
+}
+
+// 知识库节点 token 列表
+//
+// 示例值：
+func (builder *KnowledgeSourceWikiRejectBuilder) NodeTokens(nodeTokens []string) *KnowledgeSourceWikiRejectBuilder {
+	builder.nodeTokens = nodeTokens
+	builder.nodeTokensFlag = true
+	return builder
+}
+
+// 知识库空间 ID 列表
+//
+// 示例值：
+func (builder *KnowledgeSourceWikiRejectBuilder) SpaceIds(spaceIds []string) *KnowledgeSourceWikiRejectBuilder {
+	builder.spaceIds = spaceIds
+	builder.spaceIdsFlag = true
+	return builder
+}
+
+func (builder *KnowledgeSourceWikiRejectBuilder) Build() *KnowledgeSourceWikiReject {
+	req := &KnowledgeSourceWikiReject{}
+	if builder.wikiTokensFlag {
+		req.WikiTokens = builder.wikiTokens
+	}
+	if builder.nodeTokensFlag {
+		req.NodeTokens = builder.nodeTokens
+	}
+	if builder.spaceIdsFlag {
+		req.SpaceIds = builder.spaceIds
 	}
 	return req
 }
@@ -3508,6 +5072,73 @@ func (builder *PresentDataCallbackDialogRequestBuilder) Build() *PresentDataCall
 	if builder.callbackInfoFlag {
 		req.CallbackInfo = &builder.callbackInfo
 
+	}
+	return req
+}
+
+type RagAnswer struct {
+	Answer *string `json:"answer,omitempty"` // 提问query的答案
+
+	ReasoningContent *string `json:"reasoning_content,omitempty"` // 思考过程
+
+	Passages []*Passage `json:"passages,omitempty"` // 参考资料
+}
+
+type RagAnswerBuilder struct {
+	answer     string // 提问query的答案
+	answerFlag bool
+
+	reasoningContent     string // 思考过程
+	reasoningContentFlag bool
+
+	passages     []*Passage // 参考资料
+	passagesFlag bool
+}
+
+func NewRagAnswerBuilder() *RagAnswerBuilder {
+	builder := &RagAnswerBuilder{}
+	return builder
+}
+
+// 提问query的答案
+//
+// 示例值：answer
+func (builder *RagAnswerBuilder) Answer(answer string) *RagAnswerBuilder {
+	builder.answer = answer
+	builder.answerFlag = true
+	return builder
+}
+
+// 思考过程
+//
+// 示例值：thinking
+func (builder *RagAnswerBuilder) ReasoningContent(reasoningContent string) *RagAnswerBuilder {
+	builder.reasoningContent = reasoningContent
+	builder.reasoningContentFlag = true
+	return builder
+}
+
+// 参考资料
+//
+// 示例值：
+func (builder *RagAnswerBuilder) Passages(passages []*Passage) *RagAnswerBuilder {
+	builder.passages = passages
+	builder.passagesFlag = true
+	return builder
+}
+
+func (builder *RagAnswerBuilder) Build() *RagAnswer {
+	req := &RagAnswer{}
+	if builder.answerFlag {
+		req.Answer = &builder.answer
+
+	}
+	if builder.reasoningContentFlag {
+		req.ReasoningContent = &builder.reasoningContent
+
+	}
+	if builder.passagesFlag {
+		req.Passages = builder.passages
 	}
 	return req
 }
@@ -5371,6 +7002,69 @@ func (builder *SystemInfoBuilder) Build() *SystemInfo {
 type TemplateCardVariables struct {
 }
 
+type TemplateCardVariablesBuilder struct {
+}
+
+func NewTemplateCardVariablesBuilder() *TemplateCardVariablesBuilder {
+	builder := &TemplateCardVariablesBuilder{}
+	return builder
+}
+
+func (builder *TemplateCardVariablesBuilder) Build() *TemplateCardVariables {
+	req := &TemplateCardVariables{}
+	return req
+}
+
+type TimeRange struct {
+	Start *int `json:"start,omitempty"` // 时间范围的起始时间戳
+
+	End *int `json:"end,omitempty"` // 时间范围的截止时间戳
+}
+
+type TimeRangeBuilder struct {
+	start     int // 时间范围的起始时间戳
+	startFlag bool
+
+	end     int // 时间范围的截止时间戳
+	endFlag bool
+}
+
+func NewTimeRangeBuilder() *TimeRangeBuilder {
+	builder := &TimeRangeBuilder{}
+	return builder
+}
+
+// 时间范围的起始时间戳
+//
+// 示例值：1742348544
+func (builder *TimeRangeBuilder) Start(start int) *TimeRangeBuilder {
+	builder.start = start
+	builder.startFlag = true
+	return builder
+}
+
+// 时间范围的截止时间戳
+//
+// 示例值：1742348544
+func (builder *TimeRangeBuilder) End(end int) *TimeRangeBuilder {
+	builder.end = end
+	builder.endFlag = true
+	return builder
+}
+
+func (builder *TimeRangeBuilder) Build() *TimeRange {
+	req := &TimeRange{}
+	if builder.startFlag {
+		req.Start = &builder.start
+
+	}
+	if builder.endFlag {
+		req.End = &builder.end
+
+	}
+	return req
+}
+
 type UserInfo struct {
 	UserLanguage *string `json:"user_language,omitempty"` // 用户使用语言类型
 
@@ -5758,7 +7452,7 @@ func NewCreateAppReqBodyBuilder() *CreateAppReqBodyBuilder {
 
 // 搜索关键词
 //
-// 示例值：测试应用
+//示例值：测试应用
 func (builder *CreateAppReqBodyBuilder) Query(query string) *CreateAppReqBodyBuilder {
 	builder.query = query
 	builder.queryFlag = true
@@ -5838,6 +7532,7 @@ func (builder *CreateAppReqBuilder) PageToken(pageToken string) *CreateAppReqBui
 	return builder
 }
 
+//
 func (builder *CreateAppReqBuilder) Body(body *CreateAppReqBody) *CreateAppReqBuilder {
 	builder.body = body
 	return builder
@@ -6120,7 +7815,7 @@ func NewPatchDataSourceReqBodyBuilder() *PatchDataSourceReqBodyBuilder {
 
 // 数据源的展示名称
 //
-// 示例值：客服工单
+//示例值：客服工单
 func (builder *PatchDataSourceReqBodyBuilder) Name(name string) *PatchDataSourceReqBodyBuilder {
 	builder.name = name
 	builder.nameFlag = true
@@ -6129,7 +7824,7 @@ func (builder *PatchDataSourceReqBodyBuilder) Name(name string) *PatchDataSource
 
 // 数据源状态，0-已上线，1-未上线
 //
-// 示例值：0
+//示例值：0
 func (builder *PatchDataSourceReqBodyBuilder) State(state int) *PatchDataSourceReqBodyBuilder {
 	builder.state = state
 	builder.stateFlag = true
@@ -6138,7 +7833,7 @@ func (builder *PatchDataSourceReqBodyBuilder) State(state int) *PatchDataSourceR
 
 // 对于数据源的描述
 //
-// 示例值：搜索客服工单
+//示例值：搜索客服工单
 func (builder *PatchDataSourceReqBodyBuilder) Description(description string) *PatchDataSourceReqBodyBuilder {
 	builder.description = description
 	builder.descriptionFlag = true
@@ -6147,7 +7842,7 @@ func (builder *PatchDataSourceReqBodyBuilder) Description(description string) *P
 
 // 数据源在 search tab 上的展示图标路径
 //
-// 示例值：https://www.xxx.com/open.jpg
+//示例值：https://www.xxx.com/open.jpg
 func (builder *PatchDataSourceReqBodyBuilder) IconUrl(iconUrl string) *PatchDataSourceReqBodyBuilder {
 	builder.iconUrl = iconUrl
 	builder.iconUrlFlag = true
@@ -6156,7 +7851,7 @@ func (builder *PatchDataSourceReqBodyBuilder) IconUrl(iconUrl string) *PatchData
 
 // 数据源名称多语言配置，json格式，key为语言locale，value为对应文案，例如{"zh_cn":"测试数据源", "en_us":"Test DataSource"}
 //
-// 示例值：
+//示例值：
 func (builder *PatchDataSourceReqBodyBuilder) I18nName(i18nName *I18nMeta) *PatchDataSourceReqBodyBuilder {
 	builder.i18nName = i18nName
 	builder.i18nNameFlag = true
@@ -6165,7 +7860,7 @@ func (builder *PatchDataSourceReqBodyBuilder) I18nName(i18nName *I18nMeta) *Patc
 
 // 数据源描述多语言配置，json格式，key为语言locale，value为对应文案，例如{"zh_cn":"搜索测试数据源相关数据", "en_us":"Search data from Test DataSource"}
 //
-// 示例值：
+//示例值：
 func (builder *PatchDataSourceReqBodyBuilder) I18nDescription(i18nDescription *I18nMeta) *PatchDataSourceReqBodyBuilder {
 	builder.i18nDescription = i18nDescription
 	builder.i18nDescriptionFlag = true
@@ -6174,7 +7869,7 @@ func (builder *PatchDataSourceReqBodyBuilder) I18nDescription(i18nDescription *I
 
 // 修改connector的相关配置
 //
-// 示例值：
+//示例值：
 func (builder *PatchDataSourceReqBodyBuilder) ConnectorParam(connectorParam *ConnectorParam) *PatchDataSourceReqBodyBuilder {
 	builder.connectorParam = connectorParam
 	builder.connectorParamFlag = true
@@ -6183,7 +7878,7 @@ func (builder *PatchDataSourceReqBodyBuilder) ConnectorParam(connectorParam *Con
 
 // 是否使用问答服务
 //
-// 示例值：false
+//示例值：false
 func (builder *PatchDataSourceReqBodyBuilder) EnableAnswer(enableAnswer bool) *PatchDataSourceReqBodyBuilder {
 	builder.enableAnswer = enableAnswer
 	builder.enableAnswerFlag = true
@@ -6606,7 +8301,7 @@ func NewCreateMessageReqBodyBuilder() *CreateMessageReqBodyBuilder {
 
 // 搜索关键词
 //
-// 示例值：测试消息
+//示例值：测试消息
 func (builder *CreateMessageReqBodyBuilder) Query(query string) *CreateMessageReqBodyBuilder {
 	builder.query = query
 	builder.queryFlag = true
@@ -6615,7 +8310,7 @@ func (builder *CreateMessageReqBodyBuilder) Query(query string) *CreateMessageRe
 
 // 消息来自user_id列表
 //
-// 示例值：
+//示例值：
 func (builder *CreateMessageReqBodyBuilder) FromIds(fromIds []string) *CreateMessageReqBodyBuilder {
 	builder.fromIds = fromIds
 	builder.fromIdsFlag = true
@@ -6624,7 +8319,7 @@ func (builder *CreateMessageReqBodyBuilder) FromIds(fromIds []string) *CreateMes
 
 // 消息所在chat_id列表
 //
-// 示例值：
+//示例值：
 func (builder *CreateMessageReqBodyBuilder) ChatIds(chatIds []string) *CreateMessageReqBodyBuilder {
 	builder.chatIds = chatIds
 	builder.chatIdsFlag = true
@@ -6633,7 +8328,7 @@ func (builder *CreateMessageReqBodyBuilder) ChatIds(chatIds []string) *CreateMes
 
 // 消息类型(file/image/media)
 //
-// 示例值：
+//示例值：
 func (builder *CreateMessageReqBodyBuilder) MessageType(messageType string) *CreateMessageReqBodyBuilder {
 	builder.messageType = messageType
 	builder.messageTypeFlag = true
@@ -6642,7 +8337,7 @@ func (builder *CreateMessageReqBodyBuilder) MessageType(messageType string) *Cre
 
 // at用户user_id列表
 //
-// 示例值：
+//示例值：
 func (builder *CreateMessageReqBodyBuilder) AtChatterIds(atChatterIds []string) *CreateMessageReqBodyBuilder {
 	builder.atChatterIds = atChatterIds
 	builder.atChatterIdsFlag = true
@@ -6651,7 +8346,7 @@ func (builder *CreateMessageReqBodyBuilder) AtChatterIds(atChatterIds []string) 
 
 // 消息来自类型(bot/user)
 //
-// 示例值：
+//示例值：
 func (builder *CreateMessageReqBodyBuilder) FromType(fromType string) *CreateMessageReqBodyBuilder {
 	builder.fromType = fromType
 	builder.fromTypeFlag = true
@@ -6660,7 +8355,7 @@ func (builder *CreateMessageReqBodyBuilder) FromType(fromType string) *CreateMes
 
 // 会话类型(group_chat/p2p_chat)
 //
-// 示例值：
+//示例值：
 func (builder *CreateMessageReqBodyBuilder) ChatType(chatType string) *CreateMessageReqBodyBuilder {
 	builder.chatType = chatType
 	builder.chatTypeFlag = true
@@ -6669,7 +8364,7 @@ func (builder *CreateMessageReqBodyBuilder) ChatType(chatType string) *CreateMes
 
 // 消息发送起始时间
 //
-// 示例值：1609296809
+//示例值：1609296809
 func (builder *CreateMessageReqBodyBuilder) StartTime(startTime string) *CreateMessageReqBodyBuilder {
 	builder.startTime = startTime
 	builder.startTimeFlag = true
@@ -6678,7 +8373,7 @@ func (builder *CreateMessageReqBodyBuilder) StartTime(startTime string) *CreateM
 
 // 消息发送结束时间
 //
-// 示例值：1609296809
+//示例值：1609296809
 func (builder *CreateMessageReqBodyBuilder) EndTime(endTime string) *CreateMessageReqBodyBuilder {
 	builder.endTime = endTime
 	builder.endTimeFlag = true
@@ -6894,6 +8589,7 @@ func (builder *CreateMessageReqBuilder) PageToken(pageToken string) *CreateMessa
 	return builder
 }
 
+//
 func (builder *CreateMessageReqBuilder) Body(body *CreateMessageReqBody) *CreateMessageReqBuilder {
 	builder.body = body
 	return builder
@@ -7107,7 +8803,7 @@ func NewPatchSchemaReqBodyBuilder() *PatchSchemaReqBodyBuilder {
 
 // 数据展示相关配置
 //
-// 示例值：
+//示例值：
 func (builder *PatchSchemaReqBodyBuilder) Display(display *SchemaDisplay) *PatchSchemaReqBodyBuilder {
 	builder.display = display
 	builder.displayFlag = true
@@ -7116,7 +8812,7 @@ func (builder *PatchSchemaReqBodyBuilder) Display(display *SchemaDisplay) *Patch
 
 // 数据范式的属性定义
 //
-// 示例值：
+//示例值：
 func (builder *PatchSchemaReqBodyBuilder) Properties(properties []*PatchSchemaProperty) *PatchSchemaReqBodyBuilder {
 	builder.properties = properties
 	builder.propertiesFlag = true

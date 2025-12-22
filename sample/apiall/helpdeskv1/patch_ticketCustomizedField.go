@@ -32,8 +32,8 @@ func main() {
 			DisplayName("").
 			Position("").
 			Description("").
-			Visible(false).
-			Required(false).
+			Visible(true).
+			Required(true).
 			Build()).
 		Build()
 	// 发起请求

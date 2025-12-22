@@ -29,11 +29,21 @@ func main() {
 	req := larkcorehr.NewCreateLocationAddressReqBuilder().
 		LocationId("1616161616").
 		ClientToken("12454646").
+		NeedCustomLatinAddress(true).
 		LocationAddressCreate(larkcorehr.NewLocationAddressCreateBuilder().
 			CountryRegionId("6862995757234914824").
 			RegionId("6863326264296474119").
 			CityId("6863333555859097096").
 			DistinctId("6863333556291110408").
+			AddressLine1("丹佛测试地址-纽埃时区").
+			AddressLine2("PoewH").
+			AddressLine3("PoewH").
+			AddressLine4("jmwJc").
+			AddressLine5("jmwJc").
+			AddressLine6("jmwJc").
+			AddressLine7("jmwJc").
+			AddressLine8("rafSu").
+			AddressLine9("McPRG").
 			LocalAddressLine1("丹佛测试地址-纽埃时区").
 			LocalAddressLine2("丹佛测试地址-纽埃时区").
 			LocalAddressLine3("丹佛测试地址-纽埃时区").

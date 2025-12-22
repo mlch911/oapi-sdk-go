@@ -33,6 +33,7 @@ func main() {
 			JobTitle("高级Java").
 			ResumeSource("lagou").
 			Stage("1").
+			TalentId("6960663240925956459").
 			TerminationReason("不合适").
 			DeliveryType(1).
 			ModifyTime(1618500278645).
